@@ -50,6 +50,10 @@ end
 puts dot_code
 ```
 
+#### DOTコードをGraphizで描画した結果
+
+![](./example_bookstore.svg)
+
 ### 主体の定義
 
 主体（利用者、事業、事業者）を定義します。
