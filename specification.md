@@ -97,7 +97,6 @@ end
 |仮引数|必須|型|説明|
 |------|----|--|----|
 |title| * |string|この図を端的に表す名称|
-|filename||string|この図を画像として 保存する場合のパス|
 
 - 戻値
 
@@ -118,7 +117,7 @@ end
 |仮引数|必須|型|説明|
 |------|----|--|----|
 |name| * |string|主体の名称|
-|position| |number\|symbol\|array|主体の配置位置 省略時は自動的に配置する number: 3x3マスの左上から右下に向けて0~8を指定する symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ array: [x, y]の座標 |
+|position| |number\|symbol\|array|主体の配置位置。省略時の自動配置は以下のルール：type（利用者/事業/事業者）に応じて位置を分ける。 number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
 
 - 戻値
 
@@ -135,7 +134,7 @@ end
 |------|----|--|----|
 |type| * |symbol|主体の種類 :user : 利用者 :business : 事業 :operator : 事業者|
 |name| * |string|主体の名称|
-|position| |number\|symbol\|array|主体の配置位置 省略時は自動的に配置する number: 3x3マスの左上から右下に向けて0~8を指定する symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ array: [x, y]の座標 |
+|position| |number\|symbol\|array|主体の配置位置。省略時の自動配置は以下のルール：type（利用者/事業/事業者）に応じて位置を分ける。 number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
 
 - 戻値
 
@@ -178,3 +177,189 @@ end
 
 オブジェクトを一位に特定するID（number）
 ※使い道はないけど、主体に合わせてる（読み捨ててよい）
+
+内部仕様
+----
+
+### アーキテクチャ
+
+```
+Bizgram
+  ├── Builder（ブロック内での操作を受け取る）
+  │   ├── user/business/operator（主体定義）
+  │   ├── object/money/information（流れ定義）
+  │   └── to_dot（DOT言語生成へ）
+  ├── PositionResolver（位置指定の解決）
+  │   ├── 数値指定（0-8）
+  │   ├── シンボル指定（:lt, :ct等）
+  │   ├── 座標指定（[x,y]）
+  │   └── 自動配置ロジック
+  ├── DotGenerator（DOT言語コード生成）
+  │   ├── ノード定義（Entity → node）
+  │   └── エッジ定義（Arrow → edge）
+  ├── Entity（主体の内部表現）
+  └── Arrow（流れの内部表現）
+```
+
+### クラス と責務
+
+#### `Entity`クラス
+
+主体（利用者、事業、事業者）の内部表現。
+
+**属性**
+- `id` : 一意の識別子（number）
+- `name` : 主体の名称（string）
+- `type` : 主体の種類（:user, :business, :operator）
+- `position` : 3×3マスでの配置位置（0-8のnumber）
+
+#### `Arrow`クラス
+
+流れ（モノ・カネ・情報）の内部表現。
+
+**属性**
+- `id` : 一意の識別子（number）
+- `name` : 流れの名称（string）
+- `type` : 流れの種類（:object, :money, :information）
+- `from` : 流れの開始主体ID（number）
+- `to` : 流れの終了主体ID（number）
+
+#### `PositionResolver`クラス
+
+主体の配置位置を解決する責務を持つ。
+
+**処理**
+
+1. **数値指定の解決**
+   - 0～8の範囲内であることを検証
+   - 範囲外ならば`ArgumentError`を発生
+
+2. **シンボル指定の解決**
+   - 横軸：l（左）, c（中央）, r（右）
+   - 縦軸：t（上）, m（中）, b（下）
+   - 組み合わせ：:lt, :ct, :rt, :lm, :cm, :rm, :lb, :cb, :rb
+   - 無効なシンボルならば`ArgumentError`を発生
+
+3. **座標指定の解決**
+   - [x, y]形式、x: 0～2, y: 0～2
+   - 配列がない、要素数が不正、範囲外ならば`ArgumentError`を発生
+   - 変換式：`position = y * 3 + x`
+
+4. **自動配置**
+   - 位置指定がない場合、typeに応じて配置
+   - `:user` → 上段（0, 1, 2）から利用可能な位置を選択
+   - `:business` → 中段（3, 4, 5）から利用可能な位置を選択
+   - `:operator` → 下段（6, 7, 8）から利用可能な位置を選択
+   - 該当行の位置が全て埋まっていれば、アルゴリズム実行時に`RuntimeError`を発生
+
+#### `Builder`クラス
+
+DSLのブロック内での操作を受け取り、Entity と Arrow を管理する。
+
+**内部状態**
+- `@entities` : {name => Entity} マップ（名前による参照）
+- `@entities_by_id` : {id => Entity} マップ（IDによる参照）
+- `@arrows` : {name => Arrow} マップ（名前による参照）
+- `@arrows_by_id` : {id => Arrow} マップ（IDによる参照）
+- `@next_entity_id` : 次のEntity ID
+- `@next_arrow_id` : 次のArrow ID
+- `@occupied_positions` : 占有済みの位置（Set）
+
+**主要メソッド**
+
+- `entity(type, name, position)` / `user/business/operator(name, position)`
+  1. nameが既に登録済みか確認 → Yes: 既存のIDを返す
+  2. 位置指定を`PositionResolver`で解決
+  3. 位置が占有されていないか確認 → 占有済み: エラー
+  4. Entity を作成し、各マップに登録
+  5. 位置を占有として記録
+  6. IDを返す
+
+- `arrow(type, name, from, to)` / `object/money/information(name, from, to)`
+  1. from, to の Entity参照を解決（ID または名前）
+  2. 両Entity が存在するか確認 → 存在しない: エラー
+  3. Arrow を作成し、各マップに登録
+  4. IDを返す
+
+- `to_dot(title)` → `DotGenerator`に委譲
+
+#### `DotGenerator`クラス
+
+Entity と Arrow から DOT言語コードを生成する。
+
+**配色**
+- `:user` → "#FFE5CC"（オレンジ系）
+- `:business` → "#CCE5FF"（青系）
+- `:operator` → "#E5FFCC"（緑系）
+
+**エッジスタイル**
+- `:object` → color: black
+- `:money` → color: red
+- `:information` → color: blue
+
+**生成ロジック**
+
+1. `digraph Bizgram { ... }` の枠組みを作成
+2. graph属性でタイトルを指定
+3. ノード定義：`node_{id} [label="name", shape=box, style=filled, fillcolor="color"];` の形式で全Entity を出力
+4. エッジ定義：`node_{from} -> node_{to} [label="name", color=color];` の形式で全Arrow を出力
+5. 文字列をDOT言語の特殊文字（"など）をエスケープ
+
+#### `Bizgram.draw`メソッド
+
+ユーザーからの呼び出しエントリーポイント。
+
+**処理**
+1. Builder インスタンスを作成
+2. ブロックを`instance_eval`で Builder上で実行
+   - ブロック内のメソッド呼び出しは、全てBuilder のメソッドへ委譲される
+3. `to_dot(title)`で DOT言語コードを生成
+4. 生成されたDOT言語文字列を返す
+
+### バリデーション
+
+実装されているバリデーション：
+
+1. **Entity名のバリデーション**
+   - 空文字列NG → `ArgumentError`
+   - 非文字列NG → `ArgumentError`
+
+2. **位置指定のバリデーション**
+   - 数値：0～8の範囲外NG → `ArgumentError`
+   - シンボル：未知のシンボルNG → `ArgumentError`
+   - 配列：要素数不正、座標範囲外NG → `ArgumentError`
+
+3. **Entity型のバリデーション**
+   - :user, :business, :operator 以外NG → `ArgumentError`
+
+4. **流れ型のバリデーション**
+   - :object, :money, :information 以外NG → `ArgumentError`
+
+5. **流れの参照チェック**
+   - from/to で指定されたEntity が存在しないNG → `ArgumentError`
+
+6. **位置の競合チェック**
+   - 同じ位置に複数のEntity を配置NG → `RuntimeError`
+
+7. **自動配置の限界チェック**
+   - 該当行（利用者行/事業行/事業者行）に空き位置がないNG → `RuntimeError`
+
+### DOT言語の生成例
+
+```
+digraph Bizgram {
+  graph [label="タイトル", labelloc=top];
+  rankdir=LR;
+
+  node_0 [label="太郎", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_1 [label="次郎", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_2 [label="HOGEビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_3 [label="FUGAビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_4 [label="社員", shape=box, style=filled, fillcolor="#E5FFCC"];
+  node_5 [label="販売員", shape=box, style=filled, fillcolor="#E5FFCC"];
+
+  node_3 -> node_0 [label="商品", color=black];
+  node_0 -> node_2 [label="代金", color=red];
+  node_5 -> node_0 [label="広告", color=blue];
+}
+```
