@@ -232,6 +232,11 @@ Bizgram
 
 1. **数値指定の解決**
    - 0～8の範囲内であることを検証
+        ```
+        0 1 2   (上段：利用者)
+        3 4 5   (中段：事業)
+        6 7 8   (下段：事業者)
+        ```
    - 範囲外ならば`ArgumentError`を発生
 
 2. **シンボル指定の解決**
@@ -256,7 +261,7 @@ Bizgram
 
 DSLのブロック内での操作を受け取り、Entity と Arrow を管理する。
 
-**内部状態**
+##### 内部状態
 - `@entities` : {name => Entity} マップ（名前による参照）
 - `@entities_by_id` : {id => Entity} マップ（IDによる参照）
 - `@arrows` : {name => Arrow} マップ（名前による参照）
@@ -265,7 +270,32 @@ DSLのブロック内での操作を受け取り、Entity と Arrow を管理す
 - `@next_arrow_id` : 次のArrow ID
 - `@occupied_positions` : 占有済みの位置（Set）
 
-**主要メソッド**
+##### 主要メソッド
+
+
+###### `user` / `business` / `operator` / `entity`メソッド
+
+```ruby
+Bizgram.draw("Example") do
+  user "ユーザー名"
+  user "ユーザー名", :ct          # シンボル位置指定
+  user "ユーザー名", [0, 0]       # 座標指定
+  user "ユーザー名", 1            # 数値位置指定
+
+  business "事業名"
+  business "事業名", :cm          # 中央
+
+  operator "事業者名"
+  operator "事業者名", :cb        # 中央下
+end
+```
+```ruby
+Bizgram.draw("Example") do
+  entity :user, "ユーザー"
+  entity :business, "事業"
+  entity :operator, "事業者"
+end
+```
 
 - `entity(type, name, position)` / `user/business/operator(name, position)`
   1. nameが既に登録済みか確認 → Yes: 既存のIDを返す
@@ -274,6 +304,24 @@ DSLのブロック内での操作を受け取り、Entity と Arrow を管理す
   4. Entity を作成し、各マップに登録
   5. 位置を占有として記録
   6. IDを返す
+
+###### `object` / `money` / `information` / `arrow`メソッド
+
+```ruby
+Bizgram.draw("Example") do
+  user "Customer", 1
+  business "Shop", 4
+
+  object "商品", user("Customer"), business("Shop")
+  money "代金", user("Customer"), business("Shop")
+  information "広告", operator("Staff"), user("Customer")
+end
+```
+```ruby
+arrow :object, "商品", 0, 1
+arrow :money, "代金", 1, 3
+arrow :information, "情報", 2, 4
+```
 
 - `arrow(type, name, from, to)` / `object/money/information(name, from, to)`
   1. from, to の Entity参照を解決（ID または名前）
