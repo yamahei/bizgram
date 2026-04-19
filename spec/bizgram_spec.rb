@@ -453,4 +453,146 @@ RSpec.describe Bizgram do
       expect(dot).to include("digraph Bizgram")
     end
   end
+
+  describe "Comment definition" do
+    context "when defining comments with comment_to" do
+      it "creates a comment" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "コメント"
+        end
+        expect(dot).to include("コメント")
+      end
+
+      it "attaches comment to entity by ID" do
+        dot = Bizgram.draw("Test") do
+          id = user "Alice", 0
+          comment_to id, "テストコメント"
+        end
+        expect(dot).to include("テストコメント")
+      end
+
+      it "attaches comment to entity by name" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "コメント内容"
+        end
+        expect(dot).to include("コメント内容")
+      end
+    end
+
+    context "when defining comments with comment (alias)" do
+      it "creates a comment using alias method" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment user("Alice"), "エイリアステスト"
+        end
+        expect(dot).to include("エイリアステスト")
+      end
+
+      it "supports short alias form" do
+        dot = Bizgram.draw("Test") do
+          alice = user "Alice", 0
+          comment alice, "コメント"
+        end
+        expect(dot).to include("コメント")
+      end
+    end
+
+    context "comment validation" do
+      it "raises error for non-string comment text" do
+        expect do
+          Bizgram.draw("Test") do
+            user "Alice", 0
+            comment_to user("Alice"), 123
+          end
+        end.to raise_error(ArgumentError, /Name must be a string/)
+      end
+
+      it "raises error for empty comment text" do
+        expect do
+          Bizgram.draw("Test") do
+            user "Alice", 0
+            comment_to user("Alice"), ""
+          end
+        end.to raise_error(ArgumentError, /Name cannot be empty/)
+      end
+
+      it "raises error when target entity does not exist (integer)" do
+        expect do
+          Bizgram.draw("Test") do
+            comment_to 999, "コメント"
+          end
+        end.to raise_error(ArgumentError, /To entity.*not found/)
+      end
+
+      it "raises error when target entity does not exist (string)" do
+        expect do
+          Bizgram.draw("Test") do
+            user "Alice", 0
+            comment_to "Bob", "コメント"  # String reference to non-existent entity
+          end
+        end.to raise_error(ArgumentError, /Entity '.*' not found/)
+      end
+    end
+
+    context "comment in DOT generation" do
+      it "includes comment nodes in DOT" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "テストコメント"
+        end
+        expect(dot).to include("comment_")
+        expect(dot).to include("テストコメント")
+      end
+
+      it "escapes special characters in comments" do
+        dot = Bizgram.draw("Graph") do
+          user "User", 0
+          comment_to user("User"), "Comment with \"quotes\""
+        end
+        expect(dot).to include('\"quotes\"')
+      end
+
+      it "includes comment edges in DOT" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "コメント"
+        end
+        expect(dot).to include("style=dashed")
+        expect(dot).to include("color=gray")
+      end
+
+      it "uses yellow color for comment nodes" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "コメント"
+        end
+        expect(dot).to include("#FFFFCC")
+      end
+    end
+
+    context "multiple comments" do
+      it "supports multiple comments on the same entity" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          comment_to user("Alice"), "コメント1"
+          comment_to user("Alice"), "コメント2"
+        end
+        expect(dot).to include("コメント1")
+        expect(dot).to include("コメント2")
+      end
+
+      it "supports comments on different entities" do
+        dot = Bizgram.draw("Test") do
+          user "Alice", 0
+          business "Service", 4
+          comment_to user("Alice"), "ユーザーコメント"
+          comment_to business("Service"), "サービスコメント"
+        end
+        expect(dot).to include("ユーザーコメント")
+        expect(dot).to include("サービスコメント")
+      end
+    end
+  end
 end

@@ -28,89 +28,74 @@ bundle install
 使用方法
 --------
 
-### 基本的な例
+### 例
 
 ```ruby
 require "bizgram"
 
-# 図を定義する
-dot_code = Bizgram.draw("オンライン書店のビジネスモデル") do
+dot = Bizgram.draw("スマートフォン販売ビジネスモデル") do
   # 利用者の定義
-  user "読者"
+  consumer = user "消費者"
 
   # 事業の定義
-  business "書籍販売事業"
+  retail_biz = business "小売事業"
+  telecom_biz = business "通信事業"
 
   # 事業者の定義
-  operator "書店スタッフ"
-
-  # 流れの定義
-  money "書籍代金", user("読者"), business("書籍販売事業")
-  object "書籍", business("書籍販売事業"), user("読者")
-  information "PR", operator("書店スタッフ"), user("読者")
-end
-
-# DOT言語コードを出力（Graphvizで処理可能）
-puts dot_code
-```
-
-#### 出力結果
-
-##### DOT（これが出力される）
-
-```
-digraph Bizgram {
-  graph [label="オンライン書店のビジネスモデル", labelloc=top];
-  rankdir=TB;
-
-  node_0 [label="読者", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_3 [label="書籍販売事業", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_6 [label="書店スタッフ", shape=box, style=filled, fillcolor="#E5FFCC"];
-
-  node_0 -> node_3 [label="書籍代金", color=red];
-  node_3 -> node_0 [label="書籍", color=black];
-  node_6 -> node_0 [label="PR", color=blue];
-}
-```
-
-##### SVG（Graphizに食わせて生成した結果）
-
-![](./example/example_bookstore.svg)
-
-
-
-### 完全な例
-
-```ruby
-require "bizgram"
-
-dot = Bizgram.draw("スマートフォン販売") do
-  # 利用者
-  user "消費者"
-
-  # 事業
-  business "小売事業"
-  business "通信事業"
-  provider = operator "通信事業者"
+  telecom_provider = operator "通信事業者"
 
   # モノの流れ
-  object "スマートフォン", business("小売事業"), user("消費者")
-  object "通信サービス", business("通信事業"), user("消費者")
+  object "スマートフォン", retail_biz, consumer
+  object "通信サービス", telecom_biz, consumer
 
   # カネの流れ
-  money "購入代金", user("消費者"), business("小売事業")
-  money "通信料金", user("消費者"), business("通信事業")
+  money "購入代金", consumer, retail_biz
+  money "通信料金", consumer, telecom_biz
 
   # 情報の流れ
-  information "広告", provider, user("消費者")
+  information "広告", telecom_provider, consumer
+
+  # コメント（補足情報）の追加
+  comment consumer, "最終ユーザー"
+  comment_to retail_biz, "端末の販売"
+  comment telecom_biz, "通信サービス提供"
+  comment_to telecom_provider, "サポート体制"
 end
 
 puts dot
 ```
 
-#### 生成されたDOT言語をGraphvizで画像化
+このコードは以下のような DOT言語コードを出力します：
 
-生成されたDOT言語コードをGraphvizで処理します：
+```dot
+digraph Bizgram {
+  graph [label="スマートフォン販売ビジネスモデル", labelloc=top];
+  rankdir=TB;
+
+  node_0 [label="消費者", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_3 [label="小売事業", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_4 [label="通信事業", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_6 [label="通信事業者", shape=box, style=filled, fillcolor="#E5FFCC"];
+  comment_0 [label="最終ユーザー", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  comment_1 [label="端末の販売", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  comment_2 [label="通信サービス提供", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  comment_3 [label="サポート体制", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+
+  node_3 -> node_0 [label="スマートフォン", color=black];
+  node_4 -> node_0 [label="通信サービス", color=black];
+  node_0 -> node_3 [label="購入代金", color=red];
+  node_0 -> node_4 [label="通信料金", color=red];
+  node_6 -> node_0 [label="広告", color=blue];
+  comment_0 -> node_0 [style=dashed, color=gray];
+  comment_1 -> node_3 [style=dashed, color=gray];
+  comment_2 -> node_4 [style=dashed, color=gray];
+  comment_3 -> node_6 [style=dashed, color=gray];
+}
+```
+
+#### DOT言語コードを Graphviz で画像化
+
+生成された DOT言語コードを Graphviz で処理して図を作成できます：
 
 ```bash
 # SVG形式で出力
@@ -119,12 +104,11 @@ dot -Tsvg output.dot -o diagram.svg
 # PNG形式で出力
 dot -Tpng output.dot -o diagram.png
 
-# 一気に実行→出力（svg）
-ruby example/example_smartphone-seller.rb | dot -Tsvg -o bookstore.svg
+# Ruby スクリプトの出力を直接 Graphviz に渡す
+ruby example.rb | dot -Tsvg -o diagram.svg
 ```
 
-オンラインツール：https://dreampuf.github.io/GraphvizOnline/
-（[出力結果](./example/example_smartphone-seller.svg)）
+オンラインツール：https://dreampuf.github.io/GraphvizOnline/ で試すこともできます。
 
 テスト
 ------

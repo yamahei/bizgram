@@ -24,6 +24,16 @@ module Bizgram
     end
   end
 
+  class Comment
+    attr_reader :id, :to, :text
+
+    def initialize(id, to, text)
+      @id = id
+      @to = to
+      @text = text
+    end
+  end
+
   class PositionResolver
     SYMBOL_TO_POSITION = {
       lt: 0, ct: 1, rt: 2,
@@ -93,8 +103,10 @@ module Bizgram
       @entities_by_id = {}  # {id => Entity}
       @arrows = {}          # {name => Arrow}
       @arrows_by_id = {}    # {id => Arrow}
+      @comments = {}        # {id => Comment}
       @next_entity_id = 0
       @next_arrow_id = 0
+      @next_comment_id = 0
       @occupied_positions = Set.new
     end
 
@@ -162,8 +174,27 @@ module Bizgram
       arrow(:information, name, from, to)
     end
 
+    def comment_to(to, text)
+      validate_name(text)
+
+      to_id = resolve_entity_reference(to)
+      raise ArgumentError, "To entity (id: #{to_id}) not found" unless @entities_by_id.key?(to_id)
+
+      id = @next_comment_id
+      @next_comment_id += 1
+
+      com = Comment.new(id, to_id, text)
+      @comments[id] = com
+
+      id
+    end
+
+    def comment(to, text)
+      comment_to(to, text)
+    end
+
     def to_dot(title)
-      DotGenerator.new(@entities_by_id, @arrows_by_id).generate(title)
+      DotGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
     end
 
     private
@@ -207,9 +238,10 @@ module Bizgram
       information: { color: "blue", label: "情報" }
     }.freeze
 
-    def initialize(entities_by_id, arrows_by_id)
+    def initialize(entities_by_id, arrows_by_id, comments)
       @entities = entities_by_id
       @arrows = arrows_by_id
+      @comments = comments
       # ノードID用に位置をキーとするエンティティマップを作成
       @entities_by_position = {}
       @entities.each do |_id, entity|
@@ -229,6 +261,12 @@ module Bizgram
         lines << "  node_#{pos} [label=\"#{escape_dot(entity.name)}\", shape=box, style=filled, fillcolor=\"#{color}\"];"
       end
 
+      # コメントノードの定義
+      @comments.each do |_id, comment|
+        comment_node_id = "comment_#{comment.id}"
+        lines << "  #{comment_node_id} [label=\"#{escape_dot(comment.text)}\", shape=box, style=\"filled,rounded\", fillcolor=\"#FFFFCC\"];"
+      end
+
       lines << ""
 
       # エッジの定義
@@ -239,6 +277,14 @@ module Bizgram
         from_pos = from_entity.position
         to_pos = to_entity.position
         lines << "  node_#{from_pos} -> node_#{to_pos} [label=\"#{escape_dot(arrow.name)}\", color=#{style[:color]}];"
+      end
+
+      # コメント矢印の定義
+      @comments.each do |_id, comment|
+        target_entity = @entities[comment.to]
+        target_pos = target_entity.position
+        comment_node_id = "comment_#{comment.id}"
+        lines << "  #{comment_node_id} -> node_#{target_pos} [style=dashed, color=gray];"
       end
 
       lines << "}"

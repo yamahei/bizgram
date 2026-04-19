@@ -273,6 +273,15 @@ Bizgram
 - `from` : 流れの開始主体ID（number）
 - `to` : 流れの終了主体ID（number）
 
+#### `Comment`クラス
+
+補足情報（コメント）の内部表現。
+
+**属性**
+- `id` : 一意の識別子（number）
+- `to` : コメント対象の主体ID（number）
+- `text` : コメント内容（string）
+
 #### `PositionResolver`クラス
 
 主体の配置位置を解決する責務を持つ。
@@ -315,8 +324,10 @@ DSLのブロック内での操作を受け取り、Entity と Arrow を管理す
 - `@entities_by_id` : {id => Entity} マップ（IDによる参照）
 - `@arrows` : {name => Arrow} マップ（名前による参照）
 - `@arrows_by_id` : {id => Arrow} マップ（IDによる参照）
+- `@comments` : {id => Comment} マップ（IDによる参照）
 - `@next_entity_id` : 次のEntity ID
 - `@next_arrow_id` : 次のArrow ID
+- `@next_comment_id` : 次のComment ID
 - `@occupied_positions` : 占有済みの位置（Set）
 
 ##### 主要メソッド
@@ -378,16 +389,34 @@ arrow :information, "情報", 2, 4
   3. Arrow を作成し、各マップに登録
   4. IDを返す
 
+###### `comment_to` / `comment`メソッド
+
+```ruby
+Bizgram.draw("Example") do
+  user "Alice", 0
+  comment_to user("Alice"), "コメント内容"
+  comment alice_id, "短い書き方"  # comment_to のエイリアス
+end
+```
+
+- `comment_to(to, text)` / `comment(to, text)`
+  1. text をバリデーション
+  2. to の Entity参照を解決（ID または名前）
+  3. Entity が存在するか確認 → 存在しない: エラー
+  4. Comment を作成し、マップに登録
+  5. IDを返す
+
 - `to_dot(title)` → `DotGenerator`に委譲
 
 #### `DotGenerator`クラス
 
-Entity と Arrow から DOT言語コードを生成する。
+Entity と Arrow から DOT言語コードを生成する。また、Comment も処理する。
 
 **配色**
 - `:user` → "#FFE5CC"（オレンジ系）
 - `:business` → "#CCE5FF"（青系）
 - `:operator` → "#E5FFCC"（緑系）
+- Comment → "#FFFFCC"（黄系）
 
 **エッジスタイル**
 - `:object` → color: black
@@ -399,8 +428,10 @@ Entity と Arrow から DOT言語コードを生成する。
 1. `digraph Bizgram { ... }` の枠組みを作成
 2. graph属性でタイトルを指定
 3. ノード定義：`node_{id} [label="name", shape=box, style=filled, fillcolor="color"];` の形式で全Entity を出力
-4. エッジ定義：`node_{from} -> node_{to} [label="name", color=color];` の形式で全Arrow を出力
-5. 文字列をDOT言語の特殊文字（"など）をエスケープ
+4. コメントノード定義：`comment_{id} [label="text", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];` の形式で全Comment を出力
+5. エッジ定義：`node_{from} -> node_{to} [label="name", color=color];` の形式で全Arrow を出力
+6. コメントエッジ定義：`comment_{id} -> node_{target} [style=dashed, color=gray];` の形式で全Comment を出力
+7. 文字列をDOT言語の特殊文字（"など）をエスケープ
 
 #### `Bizgram.draw`メソッド
 
@@ -441,22 +472,34 @@ Entity と Arrow から DOT言語コードを生成する。
 7. **自動配置の限界チェック**
    - 該当行（利用者行/事業行/事業者行）に空き位置がないNG → `RuntimeError`
 
+8. **コメント内容のバリデーション**
+   - 空文字列NG → `ArgumentError`
+   - 非文字列NG → `ArgumentError`
+
+9. **コメント対象のバリデーション**
+   - to で指定されたEntity が存在しないNG → `ArgumentError`
+
 ### DOT言語の生成例
 
 ```
 digraph Bizgram {
   graph [label="タイトル", labelloc=top];
-  rankdir=LR;
+  rankdir=TB;
 
   node_0 [label="太郎", shape=box, style=filled, fillcolor="#FFE5CC"];
   node_1 [label="次郎", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_2 [label="HOGEビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_3 [label="FUGAビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_4 [label="社員", shape=box, style=filled, fillcolor="#E5FFCC"];
-  node_5 [label="販売員", shape=box, style=filled, fillcolor="#E5FFCC"];
+  node_3 [label="HOGEビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_4 [label="FUGAビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_6 [label="社員", shape=box, style=filled, fillcolor="#E5FFCC"];
+  node_7 [label="販売員", shape=box, style=filled, fillcolor="#E5FFCC"];
+  comment_0 [label="太郎君", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  comment_1 [label="次郎君", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
 
-  node_3 -> node_0 [label="商品", color=black];
-  node_0 -> node_2 [label="代金", color=red];
-  node_5 -> node_0 [label="広告", color=blue];
+  node_4 -> node_0 [label="商品", color=black];
+  node_0 -> node_3 [label="代金", color=red];
+  node_7 -> node_0 [label="広告", color=blue];
+  comment_0 -> node_0 [style=dashed, color=gray];
+  comment_1 -> node_1 [style=dashed, color=gray];
 }
 ```
+
