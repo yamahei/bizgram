@@ -189,6 +189,17 @@ end
   - [補足](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg)
   - [全体](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
 
+Graphizの`image`属性で参照するための各エンティティSVG
+
+- https://yamahei.github.io/bizgram/
+  - ヒト: https://yamahei.github.io/bizgram/image/entity_person.svg
+  - 会社: https://yamahei.github.io/bizgram/image/entity_company.svg
+  - カネ: https://yamahei.github.io/bizgram/image/entity_money.svg
+  - モノ: https://yamahei.github.io/bizgram/image/entity_object.svg
+  - 情報: https://yamahei.github.io/bizgram/image/entity_information.svg
+  - スマートフォン: https://yamahei.github.io/bizgram/image/entity_smartphone.svg
+  - 店舗: https://yamahei.github.io/bizgram/image/entity_store.svg
+  - その他: https://yamahei.github.io/bizgram/image/entity_other.svg
 
 内部仕様
 --------
