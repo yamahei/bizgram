@@ -86,6 +86,11 @@ Bizgram.draw "タイトル" do
   money "代金", jiro, fuga # カネの流れのエイリアス（ID指定）
   information "広告", clerk, jiro # 情報の流れの流れのエイリアス（ID指定）
 
+  # その他の補足情報（コメント）の定義
+  comment_to user("太郎"), "太郎君"
+  comment_to jiro, "次郎君" # IDで対象を指定する
+  comment clerk, "広告" # 3文字だけ短く書けるエイリアス
+
 end
 ```
 
@@ -101,6 +106,7 @@ end
 - 戻値
 
 [Graphiz](https://graphviz.org/)で描画可能な[DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)コード文字列
+
 
 #### 主体を定義するメソッド
 
@@ -172,6 +178,26 @@ end
 |name| * |string|主体の名称|
 |from| * |number|矢印の元の主体ID|
 |to| * |number|矢印の先の主体ID|
+
+- 戻値
+
+オブジェクトを一位に特定するID（number）
+※使い道はないけど、主体に合わせてる（読み捨ててよい）
+
+
+
+#### その他の補足情報（コメント）を定義するメソッド
+
+##### `comment_to`（`comment`）メソッド
+
+`comment`は`comment_to`のエイリアスであり、挙動は全く同じ。
+
+- 引数
+
+|仮引数|必須|型|説明|
+|------|----|--|----|
+|to| * |number|コメントを付与する対象の主体ID|
+|text| * |string|コメント内容の文字列|
 
 - 戻値
 

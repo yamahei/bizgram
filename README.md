@@ -75,7 +75,7 @@ digraph Bizgram {
 
 ##### SVG（Graphizに食わせて生成した結果）
 
-![](./example_bookstore.svg)
+![](./example/example_bookstore.svg)
 
 
 
@@ -120,11 +120,11 @@ dot -Tsvg output.dot -o diagram.svg
 dot -Tpng output.dot -o diagram.png
 
 # 一気に実行→出力（svg）
-ruby example_smartphone-seller.rb | dot -Tsvg -o bookstore.svg
+ruby example/example_smartphone-seller.rb | dot -Tsvg -o bookstore.svg
 ```
 
 オンラインツール：https://dreampuf.github.io/GraphvizOnline/
-（[出力結果](./example_smartphone-seller.svg)）
+（[出力結果](./example/example_smartphone-seller.svg)）
 
 テスト
 ------
