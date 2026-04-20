@@ -210,22 +210,14 @@ end
 （AIに読んでもらうために一部分割、編集している）
 
 - ビジネスモデル図解ツールキット配布版P3描画要素
-  - [主体](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_主体.svg)
-  - [矢印](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_矢印.svg)
-  - [補足](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg)
-  - [全体](./ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
+  - [主体](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_主体.svg), [矢印](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_矢印.svg), [補足](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg), [全体](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
 
-Graphizの`image`属性で参照するための各エンティティSVG
+各エンティティSVG（個別に切り出し）
 
-- https://yamahei.github.io/bizgram/
-  - ヒト: https://yamahei.github.io/bizgram/image/entity_person.svg
-  - 会社: https://yamahei.github.io/bizgram/image/entity_company.svg
-  - カネ: https://yamahei.github.io/bizgram/image/entity_money.svg
-  - モノ: https://yamahei.github.io/bizgram/image/entity_object.svg
-  - 情報: https://yamahei.github.io/bizgram/image/entity_information.svg
-  - スマートフォン: https://yamahei.github.io/bizgram/image/entity_smartphone.svg
-  - 店舗: https://yamahei.github.io/bizgram/image/entity_store.svg
-  - その他: https://yamahei.github.io/bizgram/image/entity_other.svg
+|ヒト|会社|カネ|モノ|情報|スマートフォン|店舗|その他|
+|-|-|-|-|-|-|-|-|
+|![](./doc/image/entity_person.svg)|![](./doc/image/entity_company.svg)|![](./doc/image/entity_money.svg)|![](./doc/image/entity_object.svg)|![](./doc/image/entity_information.svg)|![](./doc/image/entity_smartphone.svg)|![](./doc/image/entity_store.svg)|![](./doc/image/entity_other.svg)|
+
 
 内部仕様
 --------
