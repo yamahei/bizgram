@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="20.236225mm"
+   height="36.561409mm"
+   viewBox="0 0 20.236225 36.561409"
+   version="1.1"
+   id="svg1393"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="entity_money.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1395"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.73406285"
+     inkscape:cx="141.67724"
+     inkscape:cy="69.47634"
+     inkscape:window-width="1228"
+     inkscape:window-height="472"
+     inkscape:window-x="617"
+     inkscape:window-y="97"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1390" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-94.881887,-130.21929)">
+    <path
+       style="fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round"
+       d="M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z"
+       id="path1111" />
+    <g
+       id="g25203"
+       transform="translate(-77.828485,-11.250351)">
+      <rect
+         style="fill:#ffff00;stroke:none;stroke-width:0.765;stroke-linecap:round;stroke-linejoin:round"
+         id="rect23959"
+         width="19.17499"
+         height="25.275"
+         x="173.241"
+         y="151.39893" />
+      <path
+         fill="#000000"
+         fill-opacity="0"
+         d="m 173.24099,142.18785 h 19.17499 v 35.12499 h -19.17499 z"
+         fill-rule="evenodd"
+         id="path113"
+         style="fill:#ffffff;stroke-width:0.264583" />
+      <path
+         stroke="#000000"
+         stroke-width="1.05833"
+         stroke-miterlimit="400"
+         stroke-linecap="butt"
+         d="m 173.24099,142.18785 h 19.17499 v 35.12499 h -19.17499 z"
+         fill-rule="evenodd"
+         id="path115"
+         style="fill:none" />
+      <path
+         fill="#000000"
+         fill-opacity="0"
+         d="m 173.10738,160.5939 h 19.30833 v 6.875 h -19.30833 z"
+         fill-rule="evenodd"
+         id="path117"
+         style="fill:#ffffff;stroke-width:0.264583" />
+      <path
+         fill="#000000"
+         fill-opacity="0"
+         d="m 172.90841,151.65137 h 19.84166"
+         fill-rule="evenodd"
+         id="path121"
+         style="fill:#ffffff;stroke-width:0.264583" />
+      <path
+         stroke="#000000"
+         stroke-width="0.529167"
+         stroke-miterlimit="400"
+         stroke-linecap="butt"
+         d="m 172.90841,151.65137 h 19.84166"
+         fill-rule="evenodd"
+         id="path123"
+         style="fill:#ffffff" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:9.87778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="179.77626"
+         y="167.36728"
+         id="text3252"><tspan
+           sodipodi:role="line"
+           id="tspan3250"
+           style="font-size:9.87778px;stroke-width:0.264583"
+           x="179.77626"
+           y="167.36728"
+           dy="0">￥</tspan></text>
+    </g>
+  </g>
+</svg>
