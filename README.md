@@ -4,14 +4,14 @@ bizgram
 Bizgram（ビジネスモデル図解）をRubyコードで書くためのDSLライブラリです。
 このライブラリで定義したビジネスモデルは、[DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)コードとして出力され、[Graphviz](https://graphviz.org/)を通すことで、Bizgram（ビジネスモデル図解）として描画できます。
 
-- 資料：[ビジネスモデル図解ツールキット配布版](./doc/ビジネスモデル図解ツールキット配布版.pdf)
+- 資料：[ビジネスモデル図解ツールキット配布版](./reference/ビジネスモデル図解ツールキット配布版.pdf)
 
 特徴
 ----
 
 - **Rubyの内部DSL** - Rubyの文法をそのまま活用でき、専用パーサーが不要
-- **シンプルな記述ルール** - Rubyを知らなくてもBizgramが定義できる
-- **DOT言語出力** - 変更差分がGitで管理しやすいテキストデータ
+- **シンプルな記述ルール** - Rubyを知らなくてもBizgramが定義できる？
+- **テキストで定義** - 変更差分がGitで管理しやすいテキストデータ
 
 セットアップ
 -----------
@@ -67,7 +67,10 @@ puts dot
 
 このコードは以下のような DOT言語コードを出力します：
 
-```dot
+```sh
+ruby example/example_smartphone-seller.rb
+```
+```
 digraph Bizgram {
   graph [label="スマートフォン販売ビジネスモデル", labelloc=top];
   rankdir=TB;
@@ -92,6 +95,12 @@ digraph Bizgram {
   comment_3 -> node_6 [style=dashed, color=gray];
 }
 ```
+このコードは以下のような 図を出力します：
+
+```sh
+ruby example/example_smartphone-seller.rb | dot -Tsvg -o example/example_smartphone-seller.svg
+```
+![](./example/example_smartphone-seller.svg)
 
 #### DOT言語コードを Graphviz で画像化
 
@@ -132,6 +141,11 @@ bundle exec rspec spec/bizgram_spec.rb
 
 - [外部仕様](./specification.md#外部仕様) - ユーザー向けのメソッド仕様
 - [内部仕様](./specification.md#内部仕様) - アーキテクチャ、クラス設計、バリデーション
+
+この先の開発の方向性については、以下を参照してください：
+
+- [ロードマップ](./ROADMAP.md) - やりたいことに優先度付けしたリスト
+
 
 参照
 ----

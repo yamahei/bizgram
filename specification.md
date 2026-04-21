@@ -210,13 +210,13 @@ end
 （AIに読んでもらうために一部分割、編集している）
 
 - ビジネスモデル図解ツールキット配布版P3描画要素
-  - [主体](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_主体.svg), [矢印](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_矢印.svg), [補足](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg), [全体](./doc/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
+  - [主体](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_主体.svg), [矢印](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_矢印.svg), [補足](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg), [全体](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
 
 各エンティティSVG（個別に切り出し）
 
 |ヒト|会社|カネ|モノ|情報|スマートフォン|店舗|その他|
 |-|-|-|-|-|-|-|-|
-|![](./doc/image/entity_person.svg)|![](./doc/image/entity_company.svg)|![](./doc/image/entity_money.svg)|![](./doc/image/entity_object.svg)|![](./doc/image/entity_information.svg)|![](./doc/image/entity_smartphone.svg)|![](./doc/image/entity_store.svg)|![](./doc/image/entity_other.svg)|
+| ![](./reference/image/entity_person.svg) | ![](./reference/image/entity_company.svg) | ![](./reference/image/entity_money.svg) | ![](./reference/image/entity_object.svg) | ![](./reference/image/entity_information.svg) | ![](./reference/image/entity_smartphone.svg) | ![](./reference/image/entity_store.svg) | ![](./reference/image/entity_other.svg) |
 
 
 内部仕様
