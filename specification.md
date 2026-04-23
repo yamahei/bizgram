@@ -88,9 +88,9 @@ Bizgram.draw "タイトル" do
   arrow :object, "商品", business("FUGAビジネス"), user("太郎") # モノの流れ
   arrow :money, "代金", user("太郎"), business("HOGEビジネス") # カネの流れ
   arrow :information, "広告", operator("販売員"), to: user("太郎") # 情報の流れ
-  object "商品", fuga, jiro # モノの流れのエイリアス（ID指定）
-  money "代金", jiro, fuga # カネの流れのエイリアス（ID指定）
-  information "広告", clerk, jiro # 情報の流れの流れのエイリアス（ID指定）
+  arrow :object, "商品", fuga, jiro # モノの流れ
+  arrow :money, "代金", jiro, fuga # カネの流れ
+  arrow :information, "広告", clerk, jiro # 情報の流れ
 
   # その他の補足情報（コメント）の定義
   comment_to user("太郎"), "太郎君"
@@ -155,26 +155,9 @@ end
 
 #### モノ・カネ・情報の流れを定義するメソッド
 
-##### `object`, `money`, `information`メソッド
-
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|name| * |string|主体の名称|
-|from| * |number|矢印の元の主体ID|
-|to| * |number|矢印の先の主体ID|
-
-
-- 戻値
-
-オブジェクトを一位に特定するID（number）
-※使い道はないけど、主体に合わせてる（読み捨ててよい）
-
 ##### `arrow`メソッド
 
-`object`, `money`, `information`メソッドと同様に、流れを定義するメソッド。
-（むしろ`object`, `money`, `information`メソッドは`arrow`メソッドのエイリアス）
+流れを定義するメソッド。
 
 - 引数
 
@@ -234,7 +217,7 @@ end
 Bizgram
   ├── Builder（ブロック内での操作を受け取る）
   │   ├── user/business/operator（主体定義）
-  │   ├── object/money/information（流れ定義）
+  │   ├── arrow（流れ定義）
   │   └── to_dot（DOT言語生成へ）
   ├── PositionResolver（位置指定の解決）
   │   ├── 数値指定（0-8）
@@ -363,25 +346,20 @@ end
   5. 位置を占有として記録
   6. IDを返す
 
-###### `object` / `money` / `information` / `arrow`メソッド
+###### `arrow`メソッド
 
 ```ruby
 Bizgram.draw("Example") do
   user "Customer", 1
   business "Shop", 4
 
-  object "商品", user("Customer"), business("Shop")
-  money "代金", user("Customer"), business("Shop")
-  information "広告", operator("Staff"), user("Customer")
+  arrow :object "商品", user("Customer"), business("Shop")
+  arrow :money "代金", user("Customer"), business("Shop")
+  arrow :information "広告", operator("Staff"), user("Customer")
 end
 ```
-```ruby
-arrow :object, "商品", 0, 1
-arrow :money, "代金", 1, 3
-arrow :information, "情報", 2, 4
-```
 
-- `arrow(type, name, from, to)` / `object/money/information(name, from, to)`
+- `arrow(type, name, from, to)`
   1. from, to の Entity参照を解決（ID または名前）
   2. 両Entity が存在するか確認 → 存在しない: エラー
   3. Arrow を作成し、各マップに登録

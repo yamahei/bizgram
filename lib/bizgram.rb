@@ -162,18 +162,6 @@ module Bizgram
       id
     end
 
-    def object(name, from, to)
-      arrow(:object, name, from, to)
-    end
-
-    def money(name, from, to)
-      arrow(:money, name, from, to)
-    end
-
-    def information(name, from, to)
-      arrow(:information, name, from, to)
-    end
-
     def comment_to(to, text)
       validate_name(text)
 

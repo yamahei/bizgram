@@ -45,15 +45,15 @@ dot = Bizgram.draw("スマートフォン販売ビジネスモデル") do
   telecom_provider = operator "通信事業者"
 
   # モノの流れ
-  object "スマートフォン", retail_biz, consumer
-  object "通信サービス", telecom_biz, consumer
+  arrow :object, "スマートフォン", retail_biz, consumer
+  arrow :object, "通信サービス", telecom_biz, consumer
 
   # カネの流れ
-  money "購入代金", consumer, retail_biz
-  money "通信料金", consumer, telecom_biz
+  arrow :money, "購入代金", consumer, retail_biz
+  arrow :money, "通信料金", consumer, telecom_biz
 
   # 情報の流れ
-  information "広告", telecom_provider, consumer
+  arrow :information, "広告", telecom_provider, consumer
 
   # コメント（補足情報）の追加
   comment consumer, "最終ユーザー"

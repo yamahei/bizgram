@@ -216,74 +216,40 @@ RSpec.describe Bizgram do
   end
 
   describe "Arrow definition" do
-    context "when defining object flow" do
-      it "creates an object arrow" do
-        dot = Bizgram.draw("Test") do
-          user "Alice", 0
-          business "Service", 4
-          object "Product", 0, 1
-        end
-        expect(dot).to include("Product")
-      end
-    end
-
-    context "when defining money flow" do
-      it "creates a money arrow" do
-        dot = Bizgram.draw("Test") do
-          user "Alice", 0
-          business "Service", 4
-          money "Payment", 0, 1
-        end
-        expect(dot).to include("Payment")
-      end
-    end
-
-    context "when defining information flow" do
-      it "creates an information arrow" do
-        dot = Bizgram.draw("Test") do
-          user "Alice", 0
-          business "Service", 4
-          information "Notice", 0, 1
-        end
-        expect(dot).to include("Notice")
-      end
-    end
-
-    context "using arrow method" do
-      it "creates flow with type :object" do
-        dot = Bizgram.draw("Test") do
-          user "A", 0
-          business "B", 4
-          arrow :object, "Goods", 0, 1
-        end
-        expect(dot).to include("Goods")
-      end
-
-      it "creates flow with type :money" do
-        dot = Bizgram.draw("Test") do
-          user "A", 0
-          business "B", 4
-          arrow :money, "Fund", 0, 1
-        end
-        expect(dot).to include("Fund")
-      end
-
-      it "creates flow with type :information" do
-        dot = Bizgram.draw("Test") do
-          user "A", 0
-          business "B", 4
-          arrow :information, "Data", 0, 1
-        end
-        expect(dot).to include("Data")
-      end
-    end
 
     context "entity reference in arrows" do
+      it "type :object" do
+        dot = Bizgram.draw("Test") do
+          id1 = user "User", 0
+          id2 = business "Biz", 4
+          arrow :object, "Object", id1, id2
+        end
+        expect(dot).to include("Object")
+      end
+
+      it "type :money" do
+        dot = Bizgram.draw("Test") do
+          id1 = user "User", 0
+          id2 = business "Biz", 4
+          arrow :money, "Money", id1, id2
+        end
+        expect(dot).to include("Money")
+      end
+
+      it "type :information" do
+        dot = Bizgram.draw("Test") do
+          id1 = user "User", 0
+          id2 = business "Biz", 4
+          arrow :information, "Information", id1, id2
+        end
+        expect(dot).to include("Information")
+      end
+
       it "accepts numeric entity IDs" do
         dot = Bizgram.draw("Test") do
           id1 = user "User", 0
           id2 = business "Biz", 4
-          object "Prod", id1, id2
+          arrow :object, "Prod", id1, id2
         end
         expect(dot).to include("Prod")
       end
@@ -292,7 +258,7 @@ RSpec.describe Bizgram do
         dot = Bizgram.draw("Test") do
           user "Alice", 0
           business "Service", 4
-          object "Item", user("Alice"), business("Service")
+          arrow :object, "Item", user("Alice"), business("Service")
         end
         expect(dot).to include("Item")
       end
@@ -345,7 +311,7 @@ RSpec.describe Bizgram do
         expect do
           Bizgram.draw("Test") do
             user "A", 0
-            object "Item", 999, 0  # ID 999 doesn't exist
+            arrow :object, "Item", 999, 0  # ID 999 doesn't exist
           end
         end.to raise_error(ArgumentError, /From entity.*not found/)
       end
@@ -354,7 +320,7 @@ RSpec.describe Bizgram do
         expect do
           Bizgram.draw("Test") do
             user "A", 0
-            object "Item", 0, 999  # ID 999 doesn't exist
+            arrow :object, "Item", 0, 999  # ID 999 doesn't exist
           end
         end.to raise_error(ArgumentError, /To entity.*not found/)
       end
@@ -378,8 +344,8 @@ RSpec.describe Bizgram do
         user "Alice", 0
         business "Service", 4
         operator "Manager", 8
-        object "Product", 0, 1
-        money "Payment", 0, 1
+        arrow :object, "Product", 0, 1
+        arrow :money, "Payment", 0, 1
       end
 
       expect(dot).to include("digraph Bizgram")
@@ -415,9 +381,9 @@ RSpec.describe Bizgram do
         user "A", 0
         business "B", 4
         operator "O", 8
-        object "Obj", 0, 1
-        money "Money", 1, 2
-        information "Info", 2, 0
+        arrow :object, "Obj", 0, 1
+        arrow :money, "Money", 1, 2
+        arrow :information, "Info", 2, 0
       end
       expect(dot).to include("color=black")   # Object
       expect(dot).to include("color=red")     # Money
@@ -435,9 +401,9 @@ RSpec.describe Bizgram do
         fuga = business "FUGAビジネス", :lm
         clerk = operator "販売員", :lb
 
-        object "商品", business("FUGAビジネス"), user("太郎")
-        money "代金", user("太郎"), business("HOGEビジネス")
-        information "広告", operator("販売員"), user("太郎")
+        arrow :object, "商品", business("FUGAビジネス"), user("太郎")
+        arrow :money, "代金", user("太郎"), business("HOGEビジネス")
+        arrow :information, "広告", operator("販売員"), user("太郎")
       end
 
       expect(dot).to include("タイトル")
