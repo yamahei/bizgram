@@ -172,7 +172,7 @@ end
 
 |仮引数|必須|型|説明|
 |------|----|--|----|
-|type| * |symbol|流れの種類 :object : モノ :money : お金 :information : 情報|
+|type| * |symbol|流れの種類 :object : モノ :money : お金 :information : 情報 :other : その他|
 |name| * |string|主体の名称|
 |from| * |number|矢印の元の主体ID|
 |to| * |number|矢印の先の主体ID|
@@ -259,7 +259,7 @@ Bizgram
 **属性**
 - `id` : 一意の識別子（number）
 - `name` : 流れの名称（string）
-- `type` : 流れの種類（:object, :money, :information）
+- `type` : 流れの種類（:object, :money, :information, :other）
 - `from` : 流れの開始主体ID（number）
 - `to` : 流れの終了主体ID（number）
 

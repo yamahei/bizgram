@@ -46,11 +46,11 @@ dot = Bizgram.draw("CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulm
   arrow(:object, "短い待ち時間で提供", salad, user)
   arrow(:object, "店舗で手作り", service, salad)
   arrow(:information, "顧客データ", service, info)
-  arrow(:information, "運用改善", info, service) # TODO: type :other
+  arrow(:other, "運用改善", info, service)
   arrow(:money, "売上", service, company)
   arrow(:money, "運営", company, service)
   arrow(:money, "時給", company, staff)
-  arrow(:money, "勤務", staff, company) # TODO: type :other
+  arrow(:other, "勤務", staff, company)
 
 end
 
@@ -78,11 +78,11 @@ digraph Bizgram {
   node_3 -> node_1 [label="短い待ち時間で提供", color=black];
   node_4 -> node_3 [label="店舗で手作り", color=black];
   node_4 -> node_5 [label="顧客データ", color=blue];
-  node_5 -> node_4 [label="運用改善", color=blue];
+  node_5 -> node_4 [label="運用改善", color=black];
   node_4 -> node_7 [label="売上", color=red];
   node_7 -> node_4 [label="運営", color=red];
   node_7 -> node_8 [label="時給", color=red];
-  node_8 -> node_7 [label="勤務", color=red];
+  node_8 -> node_7 [label="勤務", color=black];
 }
 ```
 このコードは以下のような 図を出力します：

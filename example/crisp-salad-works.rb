@@ -13,11 +13,11 @@ dot = Bizgram.draw("CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulm
   arrow(:object, "短い待ち時間で提供", salad, user)
   arrow(:object, "店舗で手作り", service, salad)
   arrow(:information, "顧客データ", service, info)
-  arrow(:information, "運用改善", info, service) # TODO: type :other
+  arrow(:other, "運用改善", info, service)
   arrow(:money, "売上", service, company)
   arrow(:money, "運営", company, service)
   arrow(:money, "時給", company, staff)
-  arrow(:money, "勤務", staff, company) # TODO: type :other
+  arrow(:other, "勤務", staff, company)
 
 end
 

@@ -222,7 +222,7 @@ module Bizgram
     end
 
     def validate_arrow_type(type)
-      raise ArgumentError, "Invalid arrow type: #{type}" unless [:object, :money, :information].include?(type)
+      raise ArgumentError, "Invalid arrow type: #{type}" unless [:object, :money, :information, :other].include?(type)
     end
 
     def validate_name(name)
@@ -258,7 +258,8 @@ module Bizgram
     ARROW_STYLES = {
       object: { color: "black", label: "モノ" },
       money: { color: "red", label: "カネ" },
-      information: { color: "blue", label: "情報" }
+      information: { color: "blue", label: "情報" },
+      other: { color: "black" }
     }.freeze
 
     def initialize(entities_by_id, arrows_by_id, comments)

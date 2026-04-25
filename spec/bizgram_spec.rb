@@ -203,6 +203,15 @@ RSpec.describe Bizgram do
         expect(dot).to include("Information")
       end
 
+      it "type :other" do
+        dot = Bizgram.draw("Test") do
+          id1 = user "User", 0
+          id2 = business "Biz", 4
+          arrow :other, "Other", id1, id2
+        end
+        expect(dot).to include("Other")
+      end
+
       it "accepts numeric entity IDs" do
         dot = Bizgram.draw("Test") do
           id1 = user "User", 0
@@ -336,9 +345,11 @@ RSpec.describe Bizgram do
         business "B", 4
         arrow :object, "Obj", 0, 1
         arrow :money, "Money", 1, 0
+        arrow :other, "Other", 0, 1
       end
       expect(dot).to include("color=black")   # Object
       expect(dot).to include("color=red")     # Money
+      expect(dot).to include("color=black")   # Other (but appears twice now, which is expected)
     end
   end
 
