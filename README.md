@@ -33,33 +33,25 @@ bundle install
 ```ruby
 require "bizgram"
 
-dot = Bizgram.draw("スマートフォン販売ビジネスモデル") do
-  # 利用者の定義
-  consumer = user "消費者", :ct
+dot = Bizgram.draw("CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulmfg") do
+  # 主体の定義
+  user = user("オフィス街で働く人", :ct)
+  salad = object("栄養満点で主食になるサラダ", :lm)
+  service = device("CRISP SALAD WORKS", :cm)
+  info = info("顧客の行動分析データ", :rm)
+  company = company("株式会社CRISP", :cb)
+  staff = user("従業員", :rb)
+  # モノ・カネ・情報の定義
+  arrow(:money, "デジタル注文/支払", user, service)
+  arrow(:object, "短い待ち時間で提供", salad, user)
+  arrow(:object, "店舗で手作り", service, salad)
+  arrow(:information, "顧客データ", service, info)
+  arrow(:information, "運用改善", info, service) # TODO: type :other
+  arrow(:money, "売上", service, company)
+  arrow(:money, "運営", company, service)
+  arrow(:money, "時給", company, staff)
+  arrow(:money, "勤務", staff, company) # TODO: type :other
 
-  # 事業の定義
-  retail_biz = business "小売事業", :lm
-  telecom_biz = business "通信事業", :cm
-
-  # 事業者の定義
-  telecom_provider = operator "通信事業者", :cb
-
-  # モノの流れ
-  arrow :object, "スマートフォン", retail_biz, consumer
-  arrow :object, "通信サービス", telecom_biz, consumer
-
-  # カネの流れ
-  arrow :money, "購入代金", consumer, retail_biz
-  arrow :money, "通信料金", consumer, telecom_biz
-
-  # 情報の流れ
-  arrow :information, "広告", telecom_provider, consumer
-
-  # コメント（補足情報）の追加
-  comment consumer, "最終ユーザー"
-  comment_to retail_biz, "端末の販売"
-  comment telecom_biz, "通信サービス提供"
-  comment_to telecom_provider, "サポート体制"
 end
 
 puts dot
@@ -68,39 +60,37 @@ puts dot
 このコードは以下のような DOT言語コードを出力します：
 
 ```sh
-ruby example/example_smartphone-seller.rb
+ruby example/crisp-salad-works.rb
 ```
 ```
 digraph Bizgram {
-  graph [label="スマートフォン販売ビジネスモデル", labelloc=top];
+  graph [label="CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulmfg", labelloc=top];
   rankdir=TB;
 
-  node_0 [label="消費者", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_3 [label="小売事業", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_4 [label="通信事業", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_6 [label="通信事業者", shape=box, style=filled, fillcolor="#E5FFCC"];
-  comment_0 [label="最終ユーザー", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-  comment_1 [label="端末の販売", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-  comment_2 [label="通信サービス提供", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-  comment_3 [label="サポート体制", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  node_1 [label="オフィス街で働く人", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_3 [label="栄養満点で主食になるサラダ", shape=box, style=filled, fillcolor="#E5E5E5"];
+  node_4 [label="CRISP SALAD WORKS", shape=box, style=filled, fillcolor="#FFCCFF"];
+  node_5 [label="顧客の行動分析データ", shape=box, style=filled, fillcolor="#E5CCFF"];
+  node_7 [label="株式会社CRISP", shape=box, style=filled, fillcolor="#CCE5FF"];
+  node_8 [label="従業員", shape=box, style=filled, fillcolor="#FFE5CC"];
 
-  node_3 -> node_0 [label="スマートフォン", color=black];
-  node_4 -> node_0 [label="通信サービス", color=black];
-  node_0 -> node_3 [label="購入代金", color=red];
-  node_0 -> node_4 [label="通信料金", color=red];
-  node_6 -> node_0 [label="広告", color=blue];
-  comment_0 -> node_0 [style=dashed, color=gray];
-  comment_1 -> node_3 [style=dashed, color=gray];
-  comment_2 -> node_4 [style=dashed, color=gray];
-  comment_3 -> node_6 [style=dashed, color=gray];
+  node_1 -> node_4 [label="デジタル注文/支払", color=red];
+  node_3 -> node_1 [label="短い待ち時間で提供", color=black];
+  node_4 -> node_3 [label="店舗で手作り", color=black];
+  node_4 -> node_5 [label="顧客データ", color=blue];
+  node_5 -> node_4 [label="運用改善", color=blue];
+  node_4 -> node_7 [label="売上", color=red];
+  node_7 -> node_4 [label="運営", color=red];
+  node_7 -> node_8 [label="時給", color=red];
+  node_8 -> node_7 [label="勤務", color=red];
 }
 ```
 このコードは以下のような 図を出力します：
 
 ```sh
-ruby example/example_smartphone-seller.rb | dot -Tsvg -o example/example_smartphone-seller.svg
+ruby example/crisp-salad-works.rb | dot -Tsvg -o example/crisp-salad-works.svg
 ```
-![](./example/example_smartphone-seller.svg)
+![](./example/crisp-salad-works.svg)
 
 #### DOT言語コードを Graphviz で画像化
 
