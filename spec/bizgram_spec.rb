@@ -7,7 +7,7 @@ RSpec.describe Bizgram do
   describe ".draw" do
     it "returns a DOT language string" do
       dot = Bizgram.draw("Test") do
-        user "Alice"
+        user "Alice", 0
       end
       expect(dot).to be_a(String)
       expect(dot).to include("digraph Bizgram")
@@ -20,7 +20,7 @@ RSpec.describe Bizgram do
       it "creates a user entity" do
         id = nil
         dot = Bizgram.draw("Test") do
-          id = user "Alice"
+          id = user "Alice", 0
         end
         expect(id).to eq(0)
         expect(dot).to include("Alice")
@@ -30,8 +30,8 @@ RSpec.describe Bizgram do
         id1 = nil
         id2 = nil
         Bizgram.draw("Test") do
-          id1 = user "Bob"
-          id2 = user "Bob"
+          id1 = user "Bob", 0
+          id2 = user "Bob", 0
         end
         expect(id1).to eq(id2)
       end
@@ -40,7 +40,7 @@ RSpec.describe Bizgram do
     context "when defining business" do
       it "creates a business entity" do
         dot = Bizgram.draw("Test") do
-          business "Service"
+          business "Service", 4
         end
         expect(dot).to include("Service")
       end
@@ -49,7 +49,7 @@ RSpec.describe Bizgram do
     context "when defining operators" do
       it "creates an operator entity" do
         dot = Bizgram.draw("Test") do
-          operator "Staff"
+          operator "Staff", 8
         end
         expect(dot).to include("Staff")
       end
@@ -58,21 +58,21 @@ RSpec.describe Bizgram do
     context "using entity method" do
       it "creates user with type :user" do
         dot = Bizgram.draw("Test") do
-          entity :user, "Charlie"
+          entity :user, "Charlie", 0
         end
         expect(dot).to include("Charlie")
       end
 
       it "creates business with type :business" do
         dot = Bizgram.draw("Test") do
-          entity :business, "Company"
+          entity :business, "Company", 4
         end
         expect(dot).to include("Company")
       end
 
       it "creates operator with type :operator" do
         dot = Bizgram.draw("Test") do
-          entity :operator, "Manager"
+          entity :operator, "Manager", 8
         end
         expect(dot).to include("Manager")
       end
@@ -156,50 +156,29 @@ RSpec.describe Bizgram do
       end
     end
 
-    context "automatic position assignment" do
-      it "assigns users to top row" do
-        dot = Bizgram.draw("Test") do
-          user "User1"
-          user "User2"
-          user "User3"
-        end
-        # Users should be auto-assigned to positions 0, 1, 2 (top row)
-        expect(dot).to include("User1")
-        expect(dot).to include("User2")
-        expect(dot).to include("User3")
-      end
-
-      it "assigns business to middle row" do
-        dot = Bizgram.draw("Test") do
-          business "Biz1"
-          business "Biz2"
-          business "Biz3"
-        end
-        expect(dot).to include("Biz1")
-        expect(dot).to include("Biz2")
-        expect(dot).to include("Biz3")
-      end
-
-      it "assigns operators to bottom row" do
-        dot = Bizgram.draw("Test") do
-          operator "Op1"
-          operator "Op2"
-          operator "Op3"
-        end
-        expect(dot).to include("Op1")
-        expect(dot).to include("Op2")
-        expect(dot).to include("Op3")
-      end
-
-      it "raises error when all positions in row are occupied" do
+    context "when position is not specified" do
+      it "raises error for user without position" do
         expect do
           Bizgram.draw("Test") do
-            user "U1", 0
-            user "U2", 1
-            user "U3", 2
-            user "U4"  # Should fail - all user positions occupied
+            user "User1"
           end
-        end.to raise_error(/Cannot auto-assign position/)
+        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
+      end
+
+      it "raises error for business without position" do
+        expect do
+          Bizgram.draw("Test") do
+            business "Biz1"
+          end
+        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
+      end
+
+      it "raises error for operator without position" do
+        expect do
+          Bizgram.draw("Test") do
+            operator "Op1"
+          end
+        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
       end
     end
 
@@ -292,7 +271,7 @@ RSpec.describe Bizgram do
       it "raises error for non-string name" do
         expect do
           Bizgram.draw("Test") do
-            user 123
+            user 123, 0
           end
         end.to raise_error(ArgumentError, /Name must be a string/)
       end
@@ -300,7 +279,7 @@ RSpec.describe Bizgram do
       it "raises error for empty name" do
         expect do
           Bizgram.draw("Test") do
-            user ""
+            user "", 0
           end
         end.to raise_error(ArgumentError, /Name cannot be empty/)
       end
@@ -359,7 +338,7 @@ RSpec.describe Bizgram do
 
     it "escapes special characters in labels" do
       dot = Bizgram.draw("Graph \"Title\"") do
-        user "User \"Alice\""
+        user "User \"Alice\"", 0
       end
       expect(dot).to include('\"Title\"')
       expect(dot).to include('\"Alice\"')

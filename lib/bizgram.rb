@@ -47,12 +47,6 @@ module Bizgram
       6 => [0, 2], 7 => [1, 2], 8 => [2, 2]
     }.freeze
 
-    SYMBOL_ROWS = {
-      user: [0, 1, 2],        # 上段
-      business: [3, 4, 5],    # 中段
-      operator: [6, 7, 8]     # 下段
-    }.freeze
-
     def self.resolve(position, type, occupied_positions)
       case position
       when Integer
@@ -63,7 +57,7 @@ module Bizgram
       when Array
         resolve_from_array(position)
       when nil
-        auto_assign(type, occupied_positions)
+        raise ArgumentError, "Position must be explicitly specified (Integer, Symbol, or Array)"
       else
         raise ArgumentError, "Invalid position: #{position.inspect}"
       end
@@ -85,15 +79,6 @@ module Bizgram
       x, y = pos
       raise ArgumentError, "Position coordinates must be 0-2, got [#{x}, #{y}]" unless (0..2).include?(x) && (0..2).include?(y)
       y * 3 + x
-    end
-
-    def self.auto_assign(type, occupied)
-      candidates = SYMBOL_ROWS[type]
-      raise ArgumentError, "Unknown entity type: #{type}" unless candidates
-
-      available = candidates.find { |pos| !occupied.include?(pos) }
-      raise "Cannot auto-assign position for type #{type}: all positions are occupied" unless available
-      available
     end
   end
 

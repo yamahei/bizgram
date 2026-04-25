@@ -35,14 +35,14 @@ require "bizgram"
 
 dot = Bizgram.draw("スマートフォン販売ビジネスモデル") do
   # 利用者の定義
-  consumer = user "消費者"
+  consumer = user "消費者", :ct
 
   # 事業の定義
-  retail_biz = business "小売事業"
-  telecom_biz = business "通信事業"
+  retail_biz = business "小売事業", :lm
+  telecom_biz = business "通信事業", :cm
 
   # 事業者の定義
-  telecom_provider = operator "通信事業者"
+  telecom_provider = operator "通信事業者", :cb
 
   # モノの流れ
   arrow :object, "スマートフォン", retail_biz, consumer

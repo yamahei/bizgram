@@ -129,7 +129,7 @@ end
 |仮引数|必須|型|説明|
 |------|----|--|----|
 |name| * |string|主体の名称|
-|position| |number\|symbol\|array|主体の配置位置。省略時の自動配置は以下のルール：type（利用者/事業/事業者）に応じて位置を分ける。 number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
+|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
 
 - 戻値
 
@@ -146,7 +146,7 @@ end
 |------|----|--|----|
 |type| * |symbol|主体の種類 :user : 利用者 :business : 事業 :operator : 事業者|
 |name| * |string|主体の名称|
-|position| |number\|symbol\|array|主体の配置位置。省略時の自動配置は以下のルール：type（利用者/事業/事業者）に応じて位置を分ける。 number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
+|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
 
 - 戻値
 
