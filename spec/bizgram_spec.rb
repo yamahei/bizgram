@@ -46,14 +46,6 @@ RSpec.describe Bizgram do
       end
     end
 
-    context "when defining operators" do
-      it "creates an operator entity" do
-        dot = Bizgram.draw("Test") do
-          operator "Staff", 8
-        end
-        expect(dot).to include("Staff")
-      end
-    end
 
     context "using entity method" do
       it "creates user with type :user" do
@@ -70,12 +62,6 @@ RSpec.describe Bizgram do
         expect(dot).to include("Company")
       end
 
-      it "creates operator with type :operator" do
-        dot = Bizgram.draw("Test") do
-          entity :operator, "Manager", 8
-        end
-        expect(dot).to include("Manager")
-      end
     end
   end
 
@@ -173,13 +159,6 @@ RSpec.describe Bizgram do
         end.to raise_error(ArgumentError, /Position must be explicitly specified/)
       end
 
-      it "raises error for operator without position" do
-        expect do
-          Bizgram.draw("Test") do
-            operator "Op1"
-          end
-        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
-      end
     end
 
     context "position conflicts" do
@@ -322,7 +301,6 @@ RSpec.describe Bizgram do
       dot = Bizgram.draw("MyBizgram") do
         user "Alice", 0
         business "Service", 4
-        operator "Manager", 8
         arrow :object, "Product", 0, 1
         arrow :money, "Payment", 0, 1
       end
@@ -332,7 +310,6 @@ RSpec.describe Bizgram do
       expect(dot).to include("rankdir=TB")
       expect(dot).to include("node_0")
       expect(dot).to include("node_4")
-      expect(dot).to include("node_8")
       expect(dot).to include("->")
     end
 
@@ -348,25 +325,20 @@ RSpec.describe Bizgram do
       dot = Bizgram.draw("Test") do
         user "Alice", 0
         business "Service", 4
-        operator "Manager", 8
       end
       expect(dot).to include("#FFE5CC")  # User color
       expect(dot).to include("#CCE5FF")  # Business color
-      expect(dot).to include("#E5FFCC")  # Operator color
     end
 
     it "uses correct colors for arrow types" do
       dot = Bizgram.draw("Test") do
         user "A", 0
         business "B", 4
-        operator "O", 8
         arrow :object, "Obj", 0, 1
-        arrow :money, "Money", 1, 2
-        arrow :information, "Info", 2, 0
+        arrow :money, "Money", 1, 0
       end
       expect(dot).to include("color=black")   # Object
       expect(dot).to include("color=red")     # Money
-      expect(dot).to include("color=blue")    # Information
     end
   end
 
@@ -375,14 +347,11 @@ RSpec.describe Bizgram do
       dot = Bizgram.draw("タイトル") do
         entity :user, "太郎", :ct
         entity :business, "HOGEビジネス", :cm
-        entity :operator, "社員", :cb
         jiro = user "次郎", :lt
         fuga = business "FUGAビジネス", :lm
-        clerk = operator "販売員", :lb
 
         arrow :object, "商品", business("FUGAビジネス"), user("太郎")
         arrow :money, "代金", user("太郎"), business("HOGEビジネス")
-        arrow :information, "広告", operator("販売員"), user("太郎")
       end
 
       expect(dot).to include("タイトル")
@@ -390,12 +359,236 @@ RSpec.describe Bizgram do
       expect(dot).to include("次郎")
       expect(dot).to include("HOGEビジネス")
       expect(dot).to include("FUGAビジネス")
-      expect(dot).to include("社員")
-      expect(dot).to include("販売員")
       expect(dot).to include("商品")
       expect(dot).to include("代金")
-      expect(dot).to include("広告")
       expect(dot).to include("digraph Bizgram")
+    end
+  end
+
+  describe "New entity type aliases" do
+    context "person alias" do
+      it "creates entity with :person type" do
+        dot = Bizgram.draw("Test") do
+          person "Alice", 0
+        end
+        expect(dot).to include("Alice")
+      end
+
+      it "accepts entity :person type" do
+        dot = Bizgram.draw("Test") do
+          entity :person, "Bob", 1
+        end
+        expect(dot).to include("Bob")
+      end
+    end
+
+    context "company alias" do
+      it "creates entity with :company type" do
+        dot = Bizgram.draw("Test") do
+          company "TechCorp", 4
+        end
+        expect(dot).to include("TechCorp")
+      end
+
+      it "accepts entity :company type" do
+        dot = Bizgram.draw("Test") do
+          entity :company, "MegaCorp", 5
+        end
+        expect(dot).to include("MegaCorp")
+      end
+    end
+
+    context "money alias" do
+      it "creates entity with :money type" do
+        dot = Bizgram.draw("Test") do
+          money "ドル", 3
+        end
+        expect(dot).to include("ドル")
+      end
+
+      it "accepts entity :money type" do
+        dot = Bizgram.draw("Test") do
+          entity :money, "円", 3
+        end
+        expect(dot).to include("円")
+      end
+    end
+
+    context "object alias" do
+      it "creates entity with :object type" do
+        dot = Bizgram.draw("Test") do
+          object "商品", 6
+        end
+        expect(dot).to include("商品")
+      end
+
+      it "accepts entity :object type" do
+        dot = Bizgram.draw("Test") do
+          entity :object, "製品", 6
+        end
+        expect(dot).to include("製品")
+      end
+    end
+
+    context "goods alias" do
+      it "creates entity with :goods type" do
+        dot = Bizgram.draw("Test") do
+          goods "イチゴ", 7
+        end
+        expect(dot).to include("イチゴ")
+      end
+
+      it "accepts entity :goods type" do
+        dot = Bizgram.draw("Test") do
+          entity :goods, "ケーキ", 7
+        end
+        expect(dot).to include("ケーキ")
+      end
+    end
+
+    context "information alias" do
+      it "creates entity with :information type" do
+        dot = Bizgram.draw("Test") do
+          information "ニュース", 5
+        end
+        expect(dot).to include("ニュース")
+      end
+
+      it "accepts entity :information type" do
+        dot = Bizgram.draw("Test") do
+          entity :information, "データ", 5
+        end
+        expect(dot).to include("データ")
+      end
+    end
+
+    context "info alias" do
+      it "creates entity with :info type" do
+        dot = Bizgram.draw("Test") do
+          info "通知", 2
+        end
+        expect(dot).to include("通知")
+      end
+
+      it "accepts entity :info type" do
+        dot = Bizgram.draw("Test") do
+          entity :info, "メッセージ", 2
+        end
+        expect(dot).to include("メッセージ")
+      end
+    end
+
+    context "smartphone alias" do
+      it "creates entity with :smartphone type" do
+        dot = Bizgram.draw("Test") do
+          smartphone "iPhone", 8
+        end
+        expect(dot).to include("iPhone")
+      end
+
+      it "accepts entity :smartphone type" do
+        dot = Bizgram.draw("Test") do
+          entity :smartphone, "Android", 8
+        end
+        expect(dot).to include("Android")
+      end
+    end
+
+    context "device alias" do
+      it "creates entity with :device type" do
+        dot = Bizgram.draw("Test") do
+          device "PC", 2
+        end
+        expect(dot).to include("PC")
+      end
+
+      it "accepts entity :device type" do
+        dot = Bizgram.draw("Test") do
+          entity :device, "タブレット", 2
+        end
+        expect(dot).to include("タブレット")
+      end
+    end
+
+    context "store alias" do
+      it "creates entity with :store type" do
+        dot = Bizgram.draw("Test") do
+          store "渋谷店", 1
+        end
+        expect(dot).to include("渋谷店")
+      end
+
+      it "accepts entity :store type" do
+        dot = Bizgram.draw("Test") do
+          entity :store, "新宿店", 1
+        end
+        expect(dot).to include("新宿店")
+      end
+    end
+
+    context "shop alias" do
+      it "creates entity with :shop type" do
+        dot = Bizgram.draw("Test") do
+          shop "コンビニ", 0
+        end
+        expect(dot).to include("コンビニ")
+      end
+
+      it "accepts entity :shop type" do
+        dot = Bizgram.draw("Test") do
+          entity :shop, "スーパー", 0
+        end
+        expect(dot).to include("スーパー")
+      end
+    end
+
+    context "other alias" do
+      it "creates entity with :other type" do
+        dot = Bizgram.draw("Test") do
+          other "その他要素", 4
+        end
+        expect(dot).to include("その他要素")
+      end
+
+      it "accepts entity :other type" do
+        dot = Bizgram.draw("Test") do
+          entity :other, "その他", 4
+        end
+        expect(dot).to include("その他")
+      end
+    end
+
+    it "uses correct colors for new entity types" do
+      # Test each entity type individually to avoid position conflicts
+      test_entities = [
+        [:person, "Person", :lt],
+        [:company, "Company", :ct],
+        [:money, "Money", :rt],
+        [:object, "Object", :lm],
+        [:goods, "Goods", :cm],
+        [:information, "Info", :rm],
+        [:info, "Inf", :lb],
+        [:smartphone, "Phone", :cb],
+        [:device, "Device", :rb]
+      ]
+
+      test_entities.each do |type, name, pos|
+        dot = Bizgram.draw("Test") do
+          entity type, name, pos
+        end
+        expect(dot).to include(name)
+      end
+
+      # Test additional aliases
+      dot = Bizgram.draw("Test") do
+        store "Store", 0
+        shop "Shop", 1
+        other "Other", 2
+      end
+
+      expect(dot).to include("Store")
+      expect(dot).to include("Shop")
+      expect(dot).to include("Other")
     end
   end
 

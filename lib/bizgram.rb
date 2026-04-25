@@ -115,16 +115,60 @@ module Bizgram
       id
     end
 
+    def person(name, position = nil)
+      entity(:person, name, position)
+    end
+
     def user(name, position = nil)
       entity(:user, name, position)
+    end
+
+    def company(name, position = nil)
+      entity(:company, name, position)
     end
 
     def business(name, position = nil)
       entity(:business, name, position)
     end
 
-    def operator(name, position = nil)
-      entity(:operator, name, position)
+    def money(name, position = nil)
+      entity(:money, name, position)
+    end
+
+    def object(name, position = nil)
+      entity(:object, name, position)
+    end
+
+    def goods(name, position = nil)
+      entity(:goods, name, position)
+    end
+
+    def information(name, position = nil)
+      entity(:information, name, position)
+    end
+
+    def info(name, position = nil)
+      entity(:info, name, position)
+    end
+
+    def smartphone(name, position = nil)
+      entity(:smartphone, name, position)
+    end
+
+    def device(name, position = nil)
+      entity(:device, name, position)
+    end
+
+    def store(name, position = nil)
+      entity(:store, name, position)
+    end
+
+    def shop(name, position = nil)
+      entity(:shop, name, position)
+    end
+
+    def other(name, position = nil)
+      entity(:other, name, position)
     end
 
     def arrow(type, name, from, to)
@@ -173,7 +217,8 @@ module Bizgram
     private
 
     def validate_entity_type(type)
-      raise ArgumentError, "Invalid entity type: #{type}" unless [:user, :business, :operator].include?(type)
+      valid_types = [:person, :user, :company, :business, :money, :object, :goods, :information, :info, :smartphone, :device, :store, :shop, :other]
+      raise ArgumentError, "Invalid entity type: #{type}" unless valid_types.include?(type)
     end
 
     def validate_arrow_type(type)
@@ -200,9 +245,14 @@ module Bizgram
 
   class DotGenerator
     ENTITY_COLORS = {
-      user: "#FFE5CC",
-      business: "#CCE5FF",
-      operator: "#E5FFCC"
+      person: "#FFE5CC", user: "#FFE5CC",
+      company: "#CCE5FF", business: "#CCE5FF",
+      money: "#FFCCCC",
+      object: "#E5E5E5", goods: "#E5E5E5",
+      information: "#E5CCFF", info: "#E5CCFF",
+      smartphone: "#FFCCFF", device: "#FFCCFF",
+      store: "#FFFFCC", shop: "#FFFFCC",
+      other: "#F0F0F0"
     }.freeze
 
     ARROW_STYLES = {
