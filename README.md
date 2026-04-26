@@ -66,14 +66,14 @@ digraph Bizgram {
   node_4 [label="利用者のデバイス", shape=box, style=filled, fillcolor="#FFCCFF"];
   node_5 [label="ゲーム配布サイト", shape=box, style=filled, fillcolor="#F0F0F0"];
   node_7 [label="(株)HOGEゲームズ", shape=box, style=filled, fillcolor="#CCE5FF"];
-  comment_0 [label="Google Play的な", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
+  comment_9 [label="Google Play的な", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
 
   node_1 -> node_5 [label="ゲーム購入", color=red];
   node_5 -> node_4 [label="インストール", color=black];
   node_1 -> node_4 [label="プレイ", color=black];
   node_7 -> node_5 [label="作品アップロード", color=black];
   node_5 -> node_7 [label="売上", color=red];
-  comment_0 -> node_5 [style=dashed, color=gray];
+  comment_9 -> node_5 [style=dashed, color=gray];
 }
 ```
 このコードは以下のような 図を出力します：

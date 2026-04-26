@@ -131,7 +131,7 @@ end
 
 - 戻値
 
-オブジェクトを一位に特定するID（number）
+主体を表す `Entity` オブジェクト
 
 ##### エイリアスメソッド
 
@@ -142,11 +142,11 @@ end
 |仮引数|必須|型|説明|
 |------|----|--|----|
 |name| * |string|主体の名称|
-|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
+|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 array: [x, y]の座標指定(0~2) |
 
 - 戻値
 
-オブジェクトを一位に特定するID（number）
+主体を表す `Entity` オブジェクト
 
 - エイリアスメソッド一覧
 
@@ -172,16 +172,14 @@ end
 
 |仮引数|必須|型|説明|
 |------|----|--|----|
-|type| * |symbol|流れの種類 :object : モノ :money : お金 :information : 情報 :other : その他|
-|name| * |string|主体の名称|
-|from| * |number|矢印の元の主体ID|
-|to| * |number|矢印の先の主体ID|
+|type| * |symbol|流れの種類 `:object`: モノ `:money`: お金 `:information`: 情報 `:other`: その他|
+|name| * |string|流れの名称|
+|from| * |Entity, number, or string|矢印の元の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
+|to| * |Entity, number, or string|矢印の先の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
 
 - 戻値
 
-オブジェクトを一位に特定するID（number）
-※使い道はないけど、主体に合わせてる（読み捨ててよい）
-
+流れを表す `Arrow` オブジェクト
 
 
 #### その他の補足情報（コメント）を定義するメソッド
@@ -194,13 +192,12 @@ end
 
 |仮引数|必須|型|説明|
 |------|----|--|----|
-|to| * |number|コメントを付与する対象の主体ID|
+|to| * |Entity, number, or string|コメントを付与する対象の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
 |text| * |string|コメント内容の文字列|
 
 - 戻値
 
-オブジェクトを一位に特定するID（number）
-※使い道はないけど、主体に合わせてる（読み捨ててよい）
+補足を表す `Comment` オブジェクト
 
 
 #### 体裁・装飾の参考資料
@@ -225,19 +222,21 @@ end
 ```
 Bizgram
   ├── Builder（ブロック内での操作を受け取る）
-  │   ├── user/business/operator（主体定義）
+  │   ├── entity / person(user) / company(business) / money / object(goods) / information(info) / smartphone(device) / store(shop) / other（主体定義）
   │   ├── arrow（流れ定義）
+  │   ├── comment_to(comment)（コメント定義）
   │   └── to_dot（DOT言語生成へ）
   ├── PositionResolver（位置指定の解決）
   │   ├── 数値指定（0-8）
   │   ├── シンボル指定（:lt, :ct等）
-  │   ├── 座標指定（[x,y]）
-  │   └── 自動配置ロジック
+  │   └── 座標指定（[x,y]）
   ├── DotGenerator（DOT言語コード生成）
   │   ├── ノード定義（Entity → node）
-  │   └── エッジ定義（Arrow → edge）
+  │   ├── エッジ定義（Arrow → edge）
+  │   └── コメント定義（Comment → node）
   ├── Entity（主体の内部表現）
-  └── Arrow（流れの内部表現）
+  ├── Arrow（流れの内部表現）
+  └── Comment（コメントの内部表現）
 ```
 
 ### クラス と責務
@@ -247,7 +246,7 @@ Bizgram
 主体（利用者、事業、事業者）の内部表現。
 
 **属性**
-- `id` : 一意の識別子（number）
+- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
 - `name` : 主体の名称（string）
 - `type` : 主体の種類（:user, :business, :operator）
 - `position` : 3×3マスでの配置位置（0-8のnumber）
@@ -257,7 +256,7 @@ Bizgram
 流れ（モノ・カネ・情報）の内部表現。
 
 **属性**
-- `id` : 一意の識別子（number）
+- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
 - `name` : 流れの名称（string）
 - `type` : 流れの種類（:object, :money, :information, :other）
 - `from` : 流れの開始主体ID（number）
@@ -268,7 +267,7 @@ Bizgram
 補足情報（コメント）の内部表現。
 
 **属性**
-- `id` : 一意の識別子（number）
+- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
 - `to` : コメント対象の主体ID（number）
 - `text` : コメント内容（string）
 
@@ -298,16 +297,9 @@ Bizgram
    - 配列がない、要素数が不正、範囲外ならば`ArgumentError`を発生
    - 変換式：`position = y * 3 + x`
 
-4. **自動配置**
-   - 位置指定がない場合、typeに応じて配置
-   - `:user` → 上段（0, 1, 2）から利用可能な位置を選択
-   - `:business` → 中段（3, 4, 5）から利用可能な位置を選択
-   - `:operator` → 下段（6, 7, 8）から利用可能な位置を選択
-   - 該当行の位置が全て埋まっていれば、アルゴリズム実行時に`RuntimeError`を発生
-
 #### `Builder`クラス
 
-DSLのブロック内での操作を受け取り、Entity と Arrow を管理する。
+DSLのブロック内での操作を受け取り、Entity と Arrow 、Comment を管理する。
 
 ##### 内部状態
 - `@entities` : {name => Entity} マップ（名前による参照）
@@ -315,9 +307,7 @@ DSLのブロック内での操作を受け取り、Entity と Arrow を管理す
 - `@arrows` : {name => Arrow} マップ（名前による参照）
 - `@arrows_by_id` : {id => Arrow} マップ（IDによる参照）
 - `@comments` : {id => Comment} マップ（IDによる参照）
-- `@next_entity_id` : 次のEntity ID
-- `@next_arrow_id` : 次のArrow ID
-- `@next_comment_id` : 次のComment ID
+- `@next_global_id` : 次のグローバルID（Entity, Arrow, Commentで共有）
 - `@occupied_positions` : 占有済みの位置（Set）
 
 ##### 主要メソッド

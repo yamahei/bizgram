@@ -89,9 +89,7 @@ module Bizgram
       @arrows = {}          # {name => Arrow}
       @arrows_by_id = {}    # {id => Arrow}
       @comments = {}        # {id => Comment}
-      @next_entity_id = 0
-      @next_arrow_id = 0
-      @next_comment_id = 0
+      @next_global_id = 0
       @occupied_positions = Set.new
     end
 
@@ -99,20 +97,18 @@ module Bizgram
       validate_entity_type(type)
       validate_name(name)
 
-      return @entities[name].id if @entities.key?(name)
+      return @entities[name] if @entities.key?(name)
 
       pos = PositionResolver.resolve(position, type, @occupied_positions)
       raise "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
 
-      id = @next_entity_id
-      @next_entity_id += 1
-
+      id = next_id
       ent = Entity.new(id, name, type, pos)
       @entities[name] = ent
       @entities_by_id[id] = ent
       @occupied_positions.add(pos)
 
-      id
+      ent
     end
 
     def person(name, position = nil)
@@ -181,14 +177,12 @@ module Bizgram
       raise ArgumentError, "From entity (id: #{from_id}) not found" unless @entities_by_id.key?(from_id)
       raise ArgumentError, "To entity (id: #{to_id}) not found" unless @entities_by_id.key?(to_id)
 
-      id = @next_arrow_id
-      @next_arrow_id += 1
-
+      id = next_id
       arr = Arrow.new(id, name, type, from_id, to_id)
       @arrows[name] = arr
       @arrows_by_id[id] = arr
 
-      id
+      arr
     end
 
     def comment_to(to, text)
@@ -197,13 +191,11 @@ module Bizgram
       to_id = resolve_entity_reference(to)
       raise ArgumentError, "To entity (id: #{to_id}) not found" unless @entities_by_id.key?(to_id)
 
-      id = @next_comment_id
-      @next_comment_id += 1
-
+      id = next_id
       com = Comment.new(id, to_id, text)
       @comments[id] = com
 
-      id
+      com
     end
 
     def comment(to, text)
@@ -237,9 +229,17 @@ module Bizgram
       when String
         raise ArgumentError, "Entity '#{ref}' not found" unless @entities.key?(ref)
         @entities[ref].id
+      when Entity
+        ref.id
       else
-        raise ArgumentError, "Entity reference must be Integer or String, got #{ref.class}"
+        raise ArgumentError, "Entity reference must be Integer, String, or Entity object, got #{ref.class}"
       end
+    end
+
+    def next_id
+      id = @next_global_id
+      @next_global_id += 1
+      id
     end
   end
 

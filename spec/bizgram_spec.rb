@@ -18,22 +18,22 @@ RSpec.describe Bizgram do
   describe "Entity definition" do
     context "when defining users" do
       it "creates a user entity" do
-        id = nil
+        alice = nil
         dot = Bizgram.draw("Test") do
-          id = user "Alice", 0
+          alice = user "Alice", 0
         end
-        expect(id).to eq(0)
+        expect(alice.id).to eq(0)
         expect(dot).to include("Alice")
       end
 
       it "returns the same ID for an existing entity" do
-        id1 = nil
-        id2 = nil
+        bob_1 = nil
+        bob_2 = nil
         Bizgram.draw("Test") do
-          id1 = user "Bob", 0
-          id2 = user "Bob", 0
+          bob_1 = user "Bob", 0
+          bob_2 = user "Bob", 0
         end
-        expect(id1).to eq(id2)
+        expect(bob_1).to equal(bob_2)
       end
     end
 
@@ -178,45 +178,45 @@ RSpec.describe Bizgram do
     context "entity reference in arrows" do
       it "type :object" do
         dot = Bizgram.draw("Test") do
-          id1 = user "User", 0
-          id2 = business "Biz", 4
-          arrow :object, "Object", id1, id2
+          user_obj = user "User", 0
+          business_obj = business "Biz", 4
+          arrow :object, "Object", user_obj, business_obj
         end
         expect(dot).to include("Object")
       end
 
       it "type :money" do
         dot = Bizgram.draw("Test") do
-          id1 = user "User", 0
-          id2 = business "Biz", 4
-          arrow :money, "Money", id1, id2
+          user_obj = user "User", 0
+          business_obj = business "Biz", 4
+          arrow :money, "Money", user_obj, business_obj
         end
         expect(dot).to include("Money")
       end
 
       it "type :information" do
         dot = Bizgram.draw("Test") do
-          id1 = user "User", 0
-          id2 = business "Biz", 4
-          arrow :information, "Information", id1, id2
+          user_obj = user "User", 0
+          business_obj = business "Biz", 4
+          arrow :information, "Information", user_obj, business_obj
         end
         expect(dot).to include("Information")
       end
 
       it "type :other" do
         dot = Bizgram.draw("Test") do
-          id1 = user "User", 0
-          id2 = business "Biz", 4
-          arrow :other, "Other", id1, id2
+          user_obj = user "User", 0
+          business_obj = business "Biz", 4
+          arrow :other, "Other", user_obj, business_obj
         end
         expect(dot).to include("Other")
       end
 
       it "accepts numeric entity IDs" do
         dot = Bizgram.draw("Test") do
-          id1 = user "User", 0
-          id2 = business "Biz", 4
-          arrow :object, "Prod", id1, id2
+          user_obj = user "User", 0
+          business_obj = business "Biz", 4
+          arrow :object, "Prod", user_obj, business_obj
         end
         expect(dot).to include("Prod")
       end
@@ -615,8 +615,8 @@ RSpec.describe Bizgram do
 
       it "attaches comment to entity by ID" do
         dot = Bizgram.draw("Test") do
-          id = user "Alice", 0
-          comment_to id, "テストコメント"
+          alice = user "Alice", 0
+          comment_to alice, "テストコメント"
         end
         expect(dot).to include("テストコメント")
       end
@@ -742,6 +742,59 @@ RSpec.describe Bizgram do
         expect(dot).to include("ユーザーコメント")
         expect(dot).to include("サービスコメント")
       end
+    end
+  end
+
+  describe "Global ID sequence" do
+    it "assigns sequential global IDs across Entity, Arrow, and Comment" do
+      entity_id = nil
+      arrow_id = nil
+      comment_id = nil
+      Bizgram.draw("Test") do
+        user_entity = user "User", 0
+        entity_id = user_entity.id
+
+        device_entity = smartphone "Device", 4
+        arr = arrow :object, "Uses", user_entity, device_entity
+        arrow_id = arr.id
+
+        com = comment_to device_entity, "Important device"
+        comment_id = com.id
+      end
+      expect(entity_id).to eq(0)
+      expect(arrow_id).to eq(2)
+      expect(comment_id).to eq(3)
+    end
+
+    it "maintains sequential IDs even when entities share the same object" do
+      entity1_id = nil
+      entity2_id = nil
+      arrow_id = nil
+      Bizgram.draw("Test") do
+        user_entity = user "User", 0
+        entity1_id = user_entity.id
+
+        company_entity = company "Company", 4
+        entity2_id = company_entity.id
+
+        arr = arrow :money, "Pays", user_entity, company_entity
+        arrow_id = arr.id
+      end
+      expect(entity1_id).to eq(0)
+      expect(entity2_id).to eq(1)
+      expect(arrow_id).to eq(2)
+    end
+
+    it "assigns unique IDs regardless of object type" do
+      ids = []
+      Bizgram.draw("Test") do
+        ids << (user "User", 0).id
+        ids << (business "Business", 4).id
+        ids << (arrow :object, "Flow", 0, 1).id
+        ids << (comment_to 0, "Comment").id
+      end
+      expect(ids).to eq([0, 1, 2, 3])
+      expect(ids.uniq).to eq(ids)  # All IDs are unique
     end
   end
 end
