@@ -80,9 +80,9 @@ Bizgram.draw "タイトル" do
   entity :user, "太郎", :ct # 利用者
   entity :business, "HOGEビジネス", :cm # 事業
   entity :operator, "社員", :cb # 事業者
-  jiro = user "次郎", [1, 0] # 利用者のエイリアス
-  fuga = business "FUGAビジネス", [1, 1] # 事業のエイリアス
-  clerk = operator "販売員", [1, 2] # 事業者のエイリアス
+  jiro = user "次郎", [1, 0] # 利用者のショートカット
+  fuga = business "FUGAビジネス", [1, 1] # 事業のショートカット
+  clerk = operator "販売員", [1, 2] # 事業者のショートカット
 
   # モノ・カネ・情報の流れの定義
   arrow :object, "商品", business("FUGAビジネス"), user("太郎") # モノの流れ
@@ -95,7 +95,7 @@ Bizgram.draw "タイトル" do
   # その他の補足情報（コメント）の定義
   comment_to user("太郎"), "太郎君"
   comment_to jiro, "次郎君" # IDで対象を指定する
-  comment clerk, "広告" # 3文字だけ短く書けるエイリアス
+  comment clerk, "広告" # 3文字だけ短く書けるショートカット
 
 end
 ```
@@ -119,7 +119,7 @@ end
 ##### `entity`メソッド
 
 主体を定義する基本メソッド。
-次項のエイリアスメソッドは、`entity` メソッドを便利に呼び出すための仕組み。
+次項のショートカットメソッドは、`entity` メソッドを便利に呼び出すための仕組み。
 
 - 引数
 
@@ -127,15 +127,15 @@ end
 |------|----|--|----|
 |type| * |symbol|主体の種類。以下の値を指定可能：`:person`(`:user`), `:company`(`:business`), `:money`, `:object`(`:goods`), `:information`(`:info`), `:smartphone`(`:device`), `:store`(`:shop`), `:other`|
 |name| * |string|主体の名称|
-|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：:ct は中央上段）。 array: [x, y]の座標指定(0~2) |
+|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて`0`～`8`を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 array: `[x, y]`の座標指定(`0`～`2`) |
 
 - 戻値
 
 主体を表す `Entity` オブジェクト
 
-##### エイリアスメソッド
+##### `entity`のショートカットメソッド
 
-`person`(`user`), `company`(`business`), `money`, `object`(`goods`), `information`(`info`), `smartphone`(`device`), `store`(`shop`), `other` メソッドは、`entity` メソッドの便利なエイリアスメソッド。
+`person`(`user`), `company`(`business`), `money`, `object`(`goods`), `information`(`info`), `smartphone`(`device`), `store`(`shop`), `other` メソッドは、`entity` メソッドの便利なショートカットメソッド。
 
 - 引数
 
@@ -148,19 +148,18 @@ end
 
 主体を表す `Entity` オブジェクト
 
-- エイリアスメソッド一覧
+- ショートカットメソッド一覧
 
-|メソッド名|entity type|説明|
-|----------|-----------|---|
-|`person`(`user`)|`:person`(`:user`)|ヒト（利用者、人物）|
-|`company`(`business`)|`:company`(`:business`)|会社（事業者）|
-|`money`|`:money`|カネ（金銭）|
-|`object`(`goods`)|`:object`(`:goods`)|モノ（商品、物資）|
-|`information`(`info`)|`:information`(`:info`)|情報、知識|
-|`smartphone`(`device`)|`:smartphone`(`:device`)|スマートフォン(デバイス)|
-|`store`(`shop`)|`:store`(`:shop`)|店舗|
-|`other`|`:other`|その他の要素|
-
+|メソッド名|entity type|説明|図形|
+|----------|-----------|----|----|
+|`person`(`user`)|`:person`(`:user`)|ヒト（利用者、人物）|![](./reference/image/entity_person.svg)|
+|`company`(`business`)|`:company`(`:business`)|会社（事業者）|![](./reference/image/entity_company.svg)|
+|`money`|`:money`|カネ（金銭）|![](./reference/image/entity_money.svg)|
+|`object`(`goods`)|`:object`(`:goods`)|モノ（商品、物資）|![](./reference/image/entity_object.svg)|
+|`information`(`info`)|`:information`(`:info`)|情報、知識|![](./reference/image/entity_information.svg)|
+|`smartphone`(`device`)|`:smartphone`(`:device`)|スマートフォン(デバイス)|![](./reference/image/entity_smartphone.svg)|
+|`store`(`shop`)|`:store`(`:shop`)|店舗|![](./reference/image/entity_store.svg)|
+|`other`|`:other`|その他の要素|![](./reference/image/entity_other.svg)|
 
 #### モノ・カネ・情報の流れを定義するメソッド
 

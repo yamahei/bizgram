@@ -634,9 +634,9 @@ RSpec.describe Bizgram do
       it "creates a comment using alias method" do
         dot = Bizgram.draw("Test") do
           user "Alice", 0
-          comment user("Alice"), "エイリアステスト"
+          comment user("Alice"), "ショートカットテスト"
         end
-        expect(dot).to include("エイリアステスト")
+        expect(dot).to include("ショートカットテスト")
       end
 
       it "supports short alias form" do
