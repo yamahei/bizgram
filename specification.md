@@ -137,18 +137,10 @@ end
 
 `person`(`user`), `company`(`business`), `money`, `object`(`goods`), `information`(`info`), `smartphone`(`device`), `store`(`shop`), `other` メソッドは、`entity` メソッドの便利なショートカットメソッド。
 
-- 引数
+- 引数：※`entity`メソッドの`type`なし
+- 戻値：※`entity`メソッドと同じ
 
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|name| * |string|主体の名称|
-|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて`0`～`8`を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 `array: [x, y]`の座標指定(`0`～`2`) |
-
-- 戻値
-
-主体を表す `Entity` オブジェクト
-
-- ショートカットメソッド一覧
+**ショートカットメソッド一覧**
 
 |メソッド名|entity type|説明|図形|
 |----------|-----------|----|----|
@@ -197,6 +189,55 @@ end
 - 戻値
 
 補足を表す `Comment` オブジェクト
+
+
+#### 主体と流れを視覚的に表現するためのメソッド
+
+以下の文法を実現するためのメソッド
+
+```rb
+# ※`entity.position`未指定については検討が必要
+other("サイト") --info("情報")--> user("太郎")
+```
+
+##### `Entity.--`メソッド
+
+Entithを呼び出し元（from）としたArrowを生成する。
+（toはnil）
+
+- 引数
+
+|仮引数|必須|型|説明|
+|------|----|--|----|
+|type| * |symbol|流れの種類 `:object`: モノ `:money`: お金 `:information`: 情報 `:other`: その他|
+|name|  |string|流れの名称|
+
+- 戻値
+
+流れを表す `Arrow` オブジェクト※
+※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
+
+**`--`のショートカットメソッド**
+
+`--object`, `--money`(`--yen`), `--information`(`--info`), `--other` メソッドは、`--` メソッドの便利なショートカットメソッド。
+
+- 引数：※`--`メソッドの`type`なし
+- 戻値：※`--`メソッドと同じ
+
+##### `Arrow.-->`メソッド
+
+※`Array.from != nil`かつ`Array.to == nil`でないArrayで呼び出した場合エラー
+
+- 引数
+
+|仮引数|必須|型|説明|
+|------|----|--|----|
+|to| * |Entity, number, or string|矢印の先の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
+
+- 戻値
+
+流れを表す `Arrow` オブジェクト※
+※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
 
 
 #### 体裁・装飾の参考資料
@@ -249,6 +290,8 @@ Bizgram
 - `name` : 主体の名称（string）
 - `type` : 主体の種類（:user, :business, :operator）
 - `position` : 3×3マスでの配置位置（0-8のnumber）
+**メソッド**
+- `--` : TODO
 
 #### `Arrow`クラス
 
@@ -260,6 +303,9 @@ Bizgram
 - `type` : 流れの種類（:object, :money, :information, :other）
 - `from` : 流れの開始主体ID（number）
 - `to` : 流れの終了主体ID（number）
+**メソッド**
+- `-->` : TODO
+
 
 #### `Comment`クラス
 
