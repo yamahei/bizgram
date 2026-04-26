@@ -33,25 +33,20 @@ bundle install
 ```ruby
 require "bizgram"
 
-dot = Bizgram.draw("CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulmfg") do
+dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
   # 主体の定義
-  user = user("オフィス街で働く人", :ct)
-  salad = object("栄養満点で主食になるサラダ", :lm)
-  service = device("CRISP SALAD WORKS", :cm)
-  info = info("顧客の行動分析データ", :rm)
-  company = company("株式会社CRISP", :cb)
-  staff = user("従業員", :rb)
+  user = user("ゲーム利用者", :ct)
+  device = smartphone("利用者のデバイス", :cm)
+  site = other("ゲーム配布サイト", 5)
+  company = company("(株)HOGEゲームズ", 7)
   # モノ・カネ・情報の定義
-  arrow(:money, "デジタル注文/支払", user, service)
-  arrow(:object, "短い待ち時間で提供", salad, user)
-  arrow(:object, "店舗で手作り", service, salad)
-  arrow(:information, "顧客データ", service, info)
-  arrow(:other, "運用改善", info, service)
-  arrow(:money, "売上", service, company)
-  arrow(:money, "運営", company, service)
-  arrow(:money, "時給", company, staff)
-  arrow(:other, "勤務", staff, company)
-
+  arrow(:money, "ゲーム購入", user, site)
+  arrow(:object, "インストール", site, device)
+  arrow(:other, "プレイ", user, device)
+  arrow(:object, "作品アップロード", company, site)
+  arrow(:money, "売上", site, company)
+  # コメントの定義
+  comment_to(site, "Google Play的な")
 end
 
 puts dot
@@ -60,37 +55,33 @@ puts dot
 このコードは以下のような DOT言語コードを出力します：
 
 ```sh
-ruby example/crisp-salad-works.rb
+ruby example/game.rb
 ```
 ```
 digraph Bizgram {
-  graph [label="CRISP SALAD WORKS: https://bizgram.zukai.co/models/ivldryulmfg", labelloc=top];
+  graph [label="例）買い切り型のスマホゲーム", labelloc=top];
   rankdir=TB;
 
-  node_1 [label="オフィス街で働く人", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_3 [label="栄養満点で主食になるサラダ", shape=box, style=filled, fillcolor="#E5E5E5"];
-  node_4 [label="CRISP SALAD WORKS", shape=box, style=filled, fillcolor="#FFCCFF"];
-  node_5 [label="顧客の行動分析データ", shape=box, style=filled, fillcolor="#E5CCFF"];
-  node_7 [label="株式会社CRISP", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_8 [label="従業員", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_1 [label="ゲーム利用者", shape=box, style=filled, fillcolor="#FFE5CC"];
+  node_4 [label="利用者のデバイス", shape=box, style=filled, fillcolor="#FFCCFF"];
+  node_5 [label="ゲーム配布サイト", shape=box, style=filled, fillcolor="#F0F0F0"];
+  node_7 [label="(株)HOGEゲームズ", shape=box, style=filled, fillcolor="#CCE5FF"];
+  comment_0 [label="Google Play的な", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
 
-  node_1 -> node_4 [label="デジタル注文/支払", color=red];
-  node_3 -> node_1 [label="短い待ち時間で提供", color=black];
-  node_4 -> node_3 [label="店舗で手作り", color=black];
-  node_4 -> node_5 [label="顧客データ", color=blue];
-  node_5 -> node_4 [label="運用改善", color=black];
-  node_4 -> node_7 [label="売上", color=red];
-  node_7 -> node_4 [label="運営", color=red];
-  node_7 -> node_8 [label="時給", color=red];
-  node_8 -> node_7 [label="勤務", color=black];
+  node_1 -> node_5 [label="ゲーム購入", color=red];
+  node_5 -> node_4 [label="インストール", color=black];
+  node_1 -> node_4 [label="プレイ", color=black];
+  node_7 -> node_5 [label="作品アップロード", color=black];
+  node_5 -> node_7 [label="売上", color=red];
+  comment_0 -> node_5 [style=dashed, color=gray];
 }
 ```
 このコードは以下のような 図を出力します：
 
 ```sh
-ruby example/crisp-salad-works.rb | dot -Tsvg -o example/crisp-salad-works.svg
+ruby example/game.rb | dot -Tsvg -o example/game.svg
 ```
-![](./example/crisp-salad-works.svg)
+![](./example/game.svg)
 
 #### DOT言語コードを Graphviz で画像化
 
