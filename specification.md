@@ -142,7 +142,7 @@ end
 |仮引数|必須|型|説明|
 |------|----|--|----|
 |name| * |string|主体の名称|
-|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて0~8を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 array: [x, y]の座標指定(0~2) |
+|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて`0`～`8`を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 `array: [x, y]`の座標指定(`0`～`2`) |
 
 - 戻値
 
