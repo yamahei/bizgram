@@ -52,53 +52,83 @@ end
 puts dot
 ```
 
-このコードは以下のような DOT言語コードを出力します：
+このコードは以下のような SVGドキュメントを出力します：
 
 ```sh
 ruby example/game.rb
 ```
-```
-digraph Bizgram {
-  graph [label="例）買い切り型のスマホゲーム", labelloc=top];
-  rankdir=TB;
 
-  node_1 [label="ゲーム利用者", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_4 [label="利用者のデバイス", shape=box, style=filled, fillcolor="#FFCCFF"];
-  node_5 [label="ゲーム配布サイト", shape=box, style=filled, fillcolor="#F0F0F0"];
-  node_7 [label="(株)HOGEゲームズ", shape=box, style=filled, fillcolor="#CCE5FF"];
-  comment_9 [label="Google Play的な", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-
-  node_1 -> node_5 [label="ゲーム購入", color=red];
-  node_5 -> node_4 [label="インストール", color=black];
-  node_1 -> node_4 [label="プレイ", color=black];
-  node_7 -> node_5 [label="作品アップロード", color=black];
-  node_5 -> node_7 [label="売上", color=red];
-  comment_9 -> node_5 [style=dashed, color=gray];
-}
-```
-このコードは以下のような 図を出力します：
-
-```sh
-ruby example/game.rb | dot -Tsvg -o example/game.svg
-```
 ![](./example/game.svg)
 
-#### DOT言語コードを Graphviz で画像化
+<details>
+<summary>SVGコード</summary>
 
-生成された DOT言語コードを Graphviz で処理して図を作成できます：
+```svg
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  version="1.1"
+  viewBox="0.0 0.0 1440.0 900.0"
+  width="1440"
+  height="900"
+  xmlns="http://www.w3.org/2000/svg">
+  <title>例）買い切り型のスマホゲーム</title>
 
-```bash
-# SVG形式で出力
-dot -Tsvg output.dot -o diagram.svg
-
-# PNG形式で出力
-dot -Tpng output.dot -o diagram.png
-
-# Ruby スクリプトの出力を直接 Graphviz に渡す
-ruby example.rb | dot -Tsvg -o diagram.svg
+  <!-- Entities -->
+  <g id="entity_0">
+    <rect x="683.23193" y="0" width="72.47241" height="132.75592" fill="#FFE5CC" stroke="#000000" stroke-width="4" />
+    <text x="719.4681350000001" y="66.37796" font-size="24" font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" fill
+="#000000">ゲーム利用者</text>
+  </g>
+  <g id="entity_1">
+    <rect x="683.23193" y="350.26513" width="72.47241" height="132.75592" fill="#FFCCFF" stroke="#000000" stroke-width="4" />
+    <text x="719.4681350000001" y="416.64309000000003" font-size="24" font-family="sans-serif" text-anchor="middle" dominant-baseline="mi
+ddle" fill="#000000">利用者のデバイス</text>
+  </g>
+  <g id="entity_2">
+    <rect x="937.0625" y="350.26513" width="72.47241" height="132.75592" fill="#F0F0F0" stroke="#000000" stroke-width="4" />
+    <text x="973.298705" y="416.64309000000003" font-size="24" font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" f
+ill="#000000">ゲーム配布サイト</text>
+  </g>
+  <g id="entity_3">
+    <rect x="683.23193" y="635.41785" width="72.47241" height="132.75592" fill="#CCE5FF" stroke="#000000" stroke-width="4" />
+    <text x="719.4681350000001" y="701.7958100000001" font-size="24" font-family="sans-serif" text-anchor="middle" dominant-baseline="mid
+dle" fill="#000000">(株)HOGEゲームズ</text>
+  </g>
+  <!-- Arrows -->
+  <g id="arrow_4">
+    <line x1="719.4681350000001" y1="66.37796" x2="973.298705" y2="416.64309000000003" stroke="#FF0000" stroke-width="3" />
+    <text x="846.3834200000001" y="231.51052500000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">ゲーム
+購入</text>
+  </g>
+  <g id="arrow_5">
+    <line x1="973.298705" y1="416.64309000000003" x2="719.4681350000001" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
+    <text x="846.3834200000001" y="406.64309000000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">インス
+トール</text>
+  </g>
+  <g id="arrow_6">
+    <line x1="719.4681350000001" y1="66.37796" x2="719.4681350000001" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
+    <text x="719.4681350000001" y="231.51052500000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">プレイ
+</text>
+  </g>
+  <g id="arrow_7">
+    <line x1="719.4681350000001" y1="701.7958100000001" x2="973.298705" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
+    <text x="846.3834200000001" y="549.21945" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">作品アップロー
+ド</text>
+  </g>
+  <g id="arrow_8">
+    <line x1="973.298705" y1="416.64309000000003" x2="719.4681350000001" y2="701.7958100000001" stroke="#FF0000" stroke-width="3" />
+    <text x="846.3834200000001" y="549.21945" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">売上</text>
+  </g>
+  <!-- Comments -->
+  <g id="comment_9">
+    <rect x="933.298705" y="336.64309000000003" width="80" height="40" fill="#FFFC41" stroke="#000000" stroke-width="3" rx="5" />
+    <text x="973.298705" y="356.64309000000003" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" f
+ill="#000000">Google Play的な</text>
+  </g>
+</svg>
 ```
+</details>
 
-オンラインツール：https://dreampuf.github.io/GraphvizOnline/ で試すこともできます。
 
 テスト
 ------

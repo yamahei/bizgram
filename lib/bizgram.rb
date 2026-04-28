@@ -1,6 +1,37 @@
 # frozen_string_literal: true
 
 module Bizgram
+  # SVG Layout Constants - from reference materials
+  SVG_CANVAS_WIDTH = 1440.0
+  SVG_CANVAS_HEIGHT = 900.0
+
+  # Grid row Y positions
+  SVG_GRID_ROWS = [
+    0,
+    350.26513,
+    635.41785,
+    900.0
+  ].freeze
+
+  # Grid column X positions (approximate from reference materials)
+  SVG_GRID_COLS = [
+    426.1472,
+    683.23193,
+    937.0625
+  ].freeze
+
+  # Entity box dimensions
+  SVG_ENTITY_WIDTH = 72.47241
+  SVG_ENTITY_HEIGHT = 132.75592
+
+  # Styling constants
+  SVG_ENTITY_STROKE_WIDTH = 4
+  SVG_ARROW_STROKE_WIDTH = 3
+  SVG_FONT_SIZE = 24
+  SVG_FONT_FAMILY = "sans-serif"
+  SVG_COMMENT_BG_COLOR = "#FFFC41"
+  SVG_COMMENT_STROKE_WIDTH = 3
+
   class Entity
     attr_reader :id, :name, :type, :position
 
@@ -206,6 +237,10 @@ module Bizgram
       DotGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
     end
 
+    def to_svg(title)
+      SvgGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
+    end
+
     private
 
     def validate_entity_type(type)
@@ -322,9 +357,159 @@ module Bizgram
     end
   end
 
+  class SvgGenerator
+    ENTITY_COLORS = {
+      person: "#FFE5CC", user: "#FFE5CC",
+      company: "#CCE5FF", business: "#CCE5FF",
+      money: "#FFCCCC",
+      object: "#E5E5E5", goods: "#E5E5E5",
+      information: "#E5CCFF", info: "#E5CCFF",
+      smartphone: "#FFCCFF", device: "#FFCCFF",
+      store: "#FFFFCC", shop: "#FFFFCC",
+      other: "#F0F0F0"
+    }.freeze
+
+    ARROW_COLORS = {
+      object: "#000000",
+      money: "#FF0000",
+      information: "#0000FF",
+      other: "#000000"
+    }.freeze
+
+    def initialize(entities_by_id, arrows_by_id, comments)
+      @entities = entities_by_id
+      @arrows = arrows_by_id
+      @comments = comments
+      @entities_by_position = {}
+      @entities.each do |_id, entity|
+        @entities_by_position[entity.position] = entity
+      end
+    end
+
+    def generate(title)
+      lines = []
+      lines << svg_header(title)
+      lines << render_entities
+      lines << render_arrows
+      lines << render_comments
+      lines << svg_footer
+      lines.join("\n")
+    end
+
+    private
+
+    def svg_header(title)
+      <<~SVG
+        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        <svg
+          version="1.1"
+          viewBox="0.0 0.0 #{SVG_CANVAS_WIDTH} #{SVG_CANVAS_HEIGHT}"
+          width="#{SVG_CANVAS_WIDTH.to_i}"
+          height="#{SVG_CANVAS_HEIGHT.to_i}"
+          xmlns="http://www.w3.org/2000/svg">
+          <title>#{escape_xml(title)}</title>
+      SVG
+    end
+
+    def svg_footer
+      "  </svg>\n"
+    end
+
+    def render_entities
+      lines = []
+      lines << "  <!-- Entities -->"
+      @entities_by_position.each do |pos, entity|
+        x, y = position_to_svg_coords(pos)
+        color = ENTITY_COLORS[entity.type]
+
+        # Entity rectangle
+        lines << "  <g id=\"entity_#{entity.id}\">"
+        lines << "    <rect x=\"#{x}\" y=\"#{y}\" width=\"#{SVG_ENTITY_WIDTH}\" height=\"#{SVG_ENTITY_HEIGHT}\" fill=\"#{color}\" stroke=\"#000000\" stroke-width=\"#{SVG_ENTITY_STROKE_WIDTH}\" />"
+
+        # Entity text (centered)
+        text_x = x + SVG_ENTITY_WIDTH / 2.0
+        text_y = y + SVG_ENTITY_HEIGHT / 2.0
+        lines << "    <text x=\"#{text_x}\" y=\"#{text_y}\" font-size=\"#{SVG_FONT_SIZE}\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(entity.name)}</text>"
+        lines << "  </g>"
+      end
+      lines.join("\n")
+    end
+
+    def render_arrows
+      lines = []
+      lines << "  <!-- Arrows -->"
+      @arrows.each do |_id, arrow|
+        from_entity = @entities[arrow.from]
+        to_entity = @entities[arrow.to]
+        from_x, from_y = position_to_svg_coords(from_entity.position)
+        to_x, to_y = position_to_svg_coords(to_entity.position)
+
+        # Center of entities
+        from_center_x = from_x + SVG_ENTITY_WIDTH / 2.0
+        from_center_y = from_y + SVG_ENTITY_HEIGHT / 2.0
+        to_center_x = to_x + SVG_ENTITY_WIDTH / 2.0
+        to_center_y = to_y + SVG_ENTITY_HEIGHT / 2.0
+
+        color = ARROW_COLORS[arrow.type]
+
+        # Simple straight line for now
+        lines << "  <g id=\"arrow_#{arrow.id}\">"
+        lines << "    <line x1=\"#{from_center_x}\" y1=\"#{from_center_y}\" x2=\"#{to_center_x}\" y2=\"#{to_center_y}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" />"
+
+        # Arrow label (midpoint)
+        label_x = (from_center_x + to_center_x) / 2.0
+        label_y = (from_center_y + to_center_y) / 2.0
+        lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
+        lines << "  </g>"
+      end
+      lines.join("\n")
+    end
+
+    def render_comments
+      lines = []
+      return lines.join("\n") if @comments.empty?
+
+      lines << "  <!-- Comments -->"
+      @comments.each do |_id, comment|
+        target_entity = @entities[comment.to]
+        target_x, target_y = position_to_svg_coords(target_entity.position)
+        target_center_x = target_x + SVG_ENTITY_WIDTH / 2.0
+        target_center_y = target_y + SVG_ENTITY_HEIGHT / 2.0
+
+        # Simple comment box positioned above the target entity
+        comment_x = target_center_x - 40
+        comment_y = target_center_y - 80
+        comment_width = 80
+        comment_height = 40
+
+        lines << "  <g id=\"comment_#{comment.id}\">"
+        lines << "    <rect x=\"#{comment_x}\" y=\"#{comment_y}\" width=\"#{comment_width}\" height=\"#{comment_height}\" fill=\"#{SVG_COMMENT_BG_COLOR}\" stroke=\"#000000\" stroke-width=\"#{SVG_COMMENT_STROKE_WIDTH}\" rx=\"5\" />"
+        lines << "    <text x=\"#{comment_x + comment_width / 2.0}\" y=\"#{comment_y + comment_height / 2.0}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(comment.text)}</text>"
+        lines << "  </g>"
+      end
+      lines.join("\n")
+    end
+
+    def position_to_svg_coords(position)
+      row = position / 3
+      col = position % 3
+      x = SVG_GRID_COLS[col]
+      y = SVG_GRID_ROWS[row]
+      [x, y]
+    end
+
+    def escape_xml(str)
+      str.gsub("&", "&amp;")
+         .gsub("<", "&lt;")
+         .gsub(">", "&gt;")
+         .gsub('"', "&quot;")
+         .gsub("'", "&apos;")
+    end
+  end
+
   def self.draw(title, &block)
     builder = Builder.new
     builder.instance_eval(&block)
-    builder.to_dot(title)
+    builder.to_svg(title)
   end
 end

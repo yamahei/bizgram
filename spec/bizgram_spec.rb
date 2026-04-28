@@ -5,13 +5,14 @@ require_relative "../lib/bizgram"
 
 RSpec.describe Bizgram do
   describe ".draw" do
-    it "returns a DOT language string" do
-      dot = Bizgram.draw("Test") do
+    it "returns an SVG string" do
+      svg = Bizgram.draw("Test") do
         user "Alice", 0
       end
-      expect(dot).to be_a(String)
-      expect(dot).to include("digraph Bizgram")
-      expect(dot).to include("Test")
+      expect(svg).to be_a(String)
+      expect(svg).to include("<svg")
+      expect(svg).to include("Test")
+      expect(svg).not_to include("digraph")
     end
   end
 
@@ -19,11 +20,11 @@ RSpec.describe Bizgram do
     context "when defining users" do
       it "creates a user entity" do
         alice = nil
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           alice = user "Alice", 0
         end
         expect(alice.id).to eq(0)
-        expect(dot).to include("Alice")
+        expect(svg).to include("Alice")
       end
 
       it "returns the same ID for an existing entity" do
@@ -39,27 +40,27 @@ RSpec.describe Bizgram do
 
     context "when defining business" do
       it "creates a business entity" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           business "Service", 4
         end
-        expect(dot).to include("Service")
+        expect(svg).to include("Service")
       end
     end
 
 
     context "using entity method" do
       it "creates user with type :user" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :user, "Charlie", 0
         end
-        expect(dot).to include("Charlie")
+        expect(svg).to include("Charlie")
       end
 
       it "creates business with type :business" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :business, "Company", 4
         end
-        expect(dot).to include("Company")
+        expect(svg).to include("Company")
       end
 
     end
@@ -177,57 +178,57 @@ RSpec.describe Bizgram do
 
     context "entity reference in arrows" do
       it "type :object" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user_obj = user "User", 0
           business_obj = business "Biz", 4
           arrow :object, "Object", user_obj, business_obj
         end
-        expect(dot).to include("Object")
+        expect(svg).to include("Object")
       end
 
       it "type :money" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user_obj = user "User", 0
           business_obj = business "Biz", 4
           arrow :money, "Money", user_obj, business_obj
         end
-        expect(dot).to include("Money")
+        expect(svg).to include("Money")
       end
 
       it "type :information" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user_obj = user "User", 0
           business_obj = business "Biz", 4
           arrow :information, "Information", user_obj, business_obj
         end
-        expect(dot).to include("Information")
+        expect(svg).to include("Information")
       end
 
       it "type :other" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user_obj = user "User", 0
           business_obj = business "Biz", 4
           arrow :other, "Other", user_obj, business_obj
         end
-        expect(dot).to include("Other")
+        expect(svg).to include("Other")
       end
 
       it "accepts numeric entity IDs" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user_obj = user "User", 0
           business_obj = business "Biz", 4
           arrow :object, "Prod", user_obj, business_obj
         end
-        expect(dot).to include("Prod")
+        expect(svg).to include("Prod")
       end
 
       it "accepts entity names by calling the method" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           business "Service", 4
           arrow :object, "Item", user("Alice"), business("Service")
         end
-        expect(dot).to include("Item")
+        expect(svg).to include("Item")
       end
     end
   end
@@ -305,57 +306,62 @@ RSpec.describe Bizgram do
     end
   end
 
-  describe "DOT language generation" do
-    it "generates valid DOT syntax" do
-      dot = Bizgram.draw("MyBizgram") do
+  describe "SVG generation" do
+    it "generates valid SVG syntax" do
+      svg = Bizgram.draw("MyBizgram") do
         user "Alice", 0
         business "Service", 4
         arrow :object, "Product", 0, 1
         arrow :money, "Payment", 0, 1
       end
 
-      expect(dot).to include("digraph Bizgram")
-      expect(dot).to include("label=\"MyBizgram\"")
-      expect(dot).to include("rankdir=TB")
-      expect(dot).to include("node_0")
-      expect(dot).to include("node_4")
-      expect(dot).to include("->")
+      expect(svg).to include("<?xml")
+      expect(svg).to include("<svg")
+      expect(svg).to include("MyBizgram")
+      expect(svg).to include("Alice")
+      expect(svg).to include("Service")
+      expect(svg).to include("Product")
+      expect(svg).to include("Payment")
+      expect(svg).to include("</svg>")
     end
 
-    it "escapes special characters in labels" do
-      dot = Bizgram.draw("Graph \"Title\"") do
-        user "User \"Alice\"", 0
+    it "escapes special XML characters in labels" do
+      svg = Bizgram.draw('Graph "Title"') do
+        user 'User "Alice"', 0
       end
-      expect(dot).to include('\"Title\"')
-      expect(dot).to include('\"Alice\"')
+      expect(svg).to include("&quot;")
+      expect(svg).to include("Title")
+      expect(svg).to include("Alice")
     end
 
     it "uses correct colors for entity types" do
-      dot = Bizgram.draw("Test") do
+      svg = Bizgram.draw("Test") do
         user "Alice", 0
         business "Service", 4
       end
-      expect(dot).to include("#FFE5CC")  # User color
-      expect(dot).to include("#CCE5FF")  # Business color
+      expect(svg).to include("#FFE5CC")  # User color
+      expect(svg).to include("#CCE5FF")  # Business color
     end
 
     it "uses correct colors for arrow types" do
-      dot = Bizgram.draw("Test") do
-        user "A", 0
-        business "B", 4
-        arrow :object, "Obj", 0, 1
-        arrow :money, "Money", 1, 0
-        arrow :other, "Other", 0, 1
+      svg = Bizgram.draw("Test") do
+        user_obj = user "A", 0
+        business_obj = business "B", 4
+        other_obj = other "C", 8
+        arrow :object, "Obj", user_obj, business_obj
+        arrow :money, "Money", user_obj, business_obj
+        arrow :information, "Info", business_obj, other_obj
+        arrow :other, "Other", user_obj, other_obj
       end
-      expect(dot).to include("color=black")   # Object
-      expect(dot).to include("color=red")     # Money
-      expect(dot).to include("color=black")   # Other (but appears twice now, which is expected)
+      expect(svg).to include("#000000")  # Object (black)
+      expect(svg).to include("#FF0000")  # Money (red)
+      expect(svg).to include("#0000FF")  # Information (blue)
     end
   end
 
   describe "Complex scenario" do
     it "handles the example from specification" do
-      dot = Bizgram.draw("タイトル") do
+      svg = Bizgram.draw("タイトル") do
         entity :user, "太郎", :ct
         entity :business, "HOGEビジネス", :cm
         jiro = user "次郎", :lt
@@ -365,207 +371,207 @@ RSpec.describe Bizgram do
         arrow :money, "代金", user("太郎"), business("HOGEビジネス")
       end
 
-      expect(dot).to include("タイトル")
-      expect(dot).to include("太郎")
-      expect(dot).to include("次郎")
-      expect(dot).to include("HOGEビジネス")
-      expect(dot).to include("FUGAビジネス")
-      expect(dot).to include("商品")
-      expect(dot).to include("代金")
-      expect(dot).to include("digraph Bizgram")
+      expect(svg).to include("タイトル")
+      expect(svg).to include("太郎")
+      expect(svg).to include("次郎")
+      expect(svg).to include("HOGEビジネス")
+      expect(svg).to include("FUGAビジネス")
+      expect(svg).to include("商品")
+      expect(svg).to include("代金")
+      expect(svg).to include("<svg")
     end
   end
 
   describe "New entity type aliases" do
     context "person alias" do
       it "creates entity with :person type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           person "Alice", 0
         end
-        expect(dot).to include("Alice")
+        expect(svg).to include("Alice")
       end
 
       it "accepts entity :person type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :person, "Bob", 1
         end
-        expect(dot).to include("Bob")
+        expect(svg).to include("Bob")
       end
     end
 
     context "company alias" do
       it "creates entity with :company type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           company "TechCorp", 4
         end
-        expect(dot).to include("TechCorp")
+        expect(svg).to include("TechCorp")
       end
 
       it "accepts entity :company type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :company, "MegaCorp", 5
         end
-        expect(dot).to include("MegaCorp")
+        expect(svg).to include("MegaCorp")
       end
     end
 
     context "money alias" do
       it "creates entity with :money type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           money "ドル", 3
         end
-        expect(dot).to include("ドル")
+        expect(svg).to include("ドル")
       end
 
       it "accepts entity :money type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :money, "円", 3
         end
-        expect(dot).to include("円")
+        expect(svg).to include("円")
       end
     end
 
     context "object alias" do
       it "creates entity with :object type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           object "商品", 6
         end
-        expect(dot).to include("商品")
+        expect(svg).to include("商品")
       end
 
       it "accepts entity :object type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :object, "製品", 6
         end
-        expect(dot).to include("製品")
+        expect(svg).to include("製品")
       end
     end
 
     context "goods alias" do
       it "creates entity with :goods type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           goods "イチゴ", 7
         end
-        expect(dot).to include("イチゴ")
+        expect(svg).to include("イチゴ")
       end
 
       it "accepts entity :goods type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :goods, "ケーキ", 7
         end
-        expect(dot).to include("ケーキ")
+        expect(svg).to include("ケーキ")
       end
     end
 
     context "information alias" do
       it "creates entity with :information type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           information "ニュース", 5
         end
-        expect(dot).to include("ニュース")
+        expect(svg).to include("ニュース")
       end
 
       it "accepts entity :information type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :information, "データ", 5
         end
-        expect(dot).to include("データ")
+        expect(svg).to include("データ")
       end
     end
 
     context "info alias" do
       it "creates entity with :info type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           info "通知", 2
         end
-        expect(dot).to include("通知")
+        expect(svg).to include("通知")
       end
 
       it "accepts entity :info type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :info, "メッセージ", 2
         end
-        expect(dot).to include("メッセージ")
+        expect(svg).to include("メッセージ")
       end
     end
 
     context "smartphone alias" do
       it "creates entity with :smartphone type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           smartphone "iPhone", 8
         end
-        expect(dot).to include("iPhone")
+        expect(svg).to include("iPhone")
       end
 
       it "accepts entity :smartphone type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :smartphone, "Android", 8
         end
-        expect(dot).to include("Android")
+        expect(svg).to include("Android")
       end
     end
 
     context "device alias" do
       it "creates entity with :device type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           device "PC", 2
         end
-        expect(dot).to include("PC")
+        expect(svg).to include("PC")
       end
 
       it "accepts entity :device type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :device, "タブレット", 2
         end
-        expect(dot).to include("タブレット")
+        expect(svg).to include("タブレット")
       end
     end
 
     context "store alias" do
       it "creates entity with :store type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           store "渋谷店", 1
         end
-        expect(dot).to include("渋谷店")
+        expect(svg).to include("渋谷店")
       end
 
       it "accepts entity :store type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :store, "新宿店", 1
         end
-        expect(dot).to include("新宿店")
+        expect(svg).to include("新宿店")
       end
     end
 
     context "shop alias" do
       it "creates entity with :shop type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           shop "コンビニ", 0
         end
-        expect(dot).to include("コンビニ")
+        expect(svg).to include("コンビニ")
       end
 
       it "accepts entity :shop type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :shop, "スーパー", 0
         end
-        expect(dot).to include("スーパー")
+        expect(svg).to include("スーパー")
       end
     end
 
     context "other alias" do
       it "creates entity with :other type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           other "その他要素", 4
         end
-        expect(dot).to include("その他要素")
+        expect(svg).to include("その他要素")
       end
 
       it "accepts entity :other type" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity :other, "その他", 4
         end
-        expect(dot).to include("その他")
+        expect(svg).to include("その他")
       end
     end
 
@@ -584,67 +590,67 @@ RSpec.describe Bizgram do
       ]
 
       test_entities.each do |type, name, pos|
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           entity type, name, pos
         end
-        expect(dot).to include(name)
+        expect(svg).to include(name)
       end
 
       # Test additional aliases
-      dot = Bizgram.draw("Test") do
+      svg = Bizgram.draw("Test") do
         store "Store", 0
         shop "Shop", 1
         other "Other", 2
       end
 
-      expect(dot).to include("Store")
-      expect(dot).to include("Shop")
-      expect(dot).to include("Other")
+      expect(svg).to include("Store")
+      expect(svg).to include("Shop")
+      expect(svg).to include("Other")
     end
   end
 
   describe "Comment definition" do
     context "when defining comments with comment_to" do
       it "creates a comment" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment_to user("Alice"), "コメント"
         end
-        expect(dot).to include("コメント")
+        expect(svg).to include("コメント")
       end
 
       it "attaches comment to entity by ID" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           alice = user "Alice", 0
           comment_to alice, "テストコメント"
         end
-        expect(dot).to include("テストコメント")
+        expect(svg).to include("テストコメント")
       end
 
       it "attaches comment to entity by name" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment_to user("Alice"), "コメント内容"
         end
-        expect(dot).to include("コメント内容")
+        expect(svg).to include("コメント内容")
       end
     end
 
     context "when defining comments with comment (alias)" do
       it "creates a comment using alias method" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment user("Alice"), "ショートカットテスト"
         end
-        expect(dot).to include("ショートカットテスト")
+        expect(svg).to include("ショートカットテスト")
       end
 
       it "supports short alias form" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           alice = user "Alice", 0
           comment alice, "コメント"
         end
-        expect(dot).to include("コメント")
+        expect(svg).to include("コメント")
       end
     end
 
@@ -685,62 +691,53 @@ RSpec.describe Bizgram do
       end
     end
 
-    context "comment in DOT generation" do
-      it "includes comment nodes in DOT" do
-        dot = Bizgram.draw("Test") do
+    context "comment in SVG generation" do
+      it "includes comment elements in SVG" do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment_to user("Alice"), "テストコメント"
         end
-        expect(dot).to include("comment_")
-        expect(dot).to include("テストコメント")
+        expect(svg).to include("comment_")
+        expect(svg).to include("テストコメント")
       end
 
       it "escapes special characters in comments" do
-        dot = Bizgram.draw("Graph") do
+        svg = Bizgram.draw("Graph") do
           user "User", 0
-          comment_to user("User"), "Comment with \"quotes\""
+          comment_to user("User"), 'Comment with "quotes"'
         end
-        expect(dot).to include('\"quotes\"')
+        expect(svg).to include("&quot;")
       end
 
-      it "includes comment edges in DOT" do
-        dot = Bizgram.draw("Test") do
+      it "uses yellow color for comment boxes" do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment_to user("Alice"), "コメント"
         end
-        expect(dot).to include("style=dashed")
-        expect(dot).to include("color=gray")
-      end
-
-      it "uses yellow color for comment nodes" do
-        dot = Bizgram.draw("Test") do
-          user "Alice", 0
-          comment_to user("Alice"), "コメント"
-        end
-        expect(dot).to include("#FFFFCC")
+        expect(svg).to include("#FFFC41")
       end
     end
 
     context "multiple comments" do
       it "supports multiple comments on the same entity" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           comment_to user("Alice"), "コメント1"
           comment_to user("Alice"), "コメント2"
         end
-        expect(dot).to include("コメント1")
-        expect(dot).to include("コメント2")
+        expect(svg).to include("コメント1")
+        expect(svg).to include("コメント2")
       end
 
       it "supports comments on different entities" do
-        dot = Bizgram.draw("Test") do
+        svg = Bizgram.draw("Test") do
           user "Alice", 0
           business "Service", 4
           comment_to user("Alice"), "ユーザーコメント"
           comment_to business("Service"), "サービスコメント"
         end
-        expect(dot).to include("ユーザーコメント")
-        expect(dot).to include("サービスコメント")
+        expect(svg).to include("ユーザーコメント")
+        expect(svg).to include("サービスコメント")
       end
     end
   end
