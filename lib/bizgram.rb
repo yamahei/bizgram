@@ -429,6 +429,21 @@ module Bizgram
           height="#{SVG_CANVAS_HEIGHT.to_i}"
           xmlns="http://www.w3.org/2000/svg">
           <title>#{escape_xml(title)}</title>
+          <defs>
+            <!-- Arrow head markers for different arrow types -->
+            <marker id="marker_object" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
+            </marker>
+            <marker id="marker_money" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#FF0000"/>
+            </marker>
+            <marker id="marker_information" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#0000FF"/>
+            </marker>
+            <marker id="marker_other" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
+            </marker>
+          </defs>
       SVG
     end
 
@@ -469,21 +484,19 @@ module Bizgram
         from_x, from_y = position_to_svg_coords(from_entity.position)
         to_x, to_y = position_to_svg_coords(to_entity.position)
 
-        # Center of entities
-        from_center_x = from_x + SVG_ENTITY_WIDTH / 2.0
-        from_center_y = from_y + SVG_ENTITY_HEIGHT / 2.0
-        to_center_x = to_x + SVG_ENTITY_WIDTH / 2.0
-        to_center_y = to_y + SVG_ENTITY_HEIGHT / 2.0
+        # Get edge connection points (from entity edge to to entity edge)
+        from_exit_x, from_exit_y, to_enter_x, to_enter_y = get_edge_connection_points(from_x, from_y, to_x, to_y)
 
         color = ARROW_COLORS[arrow.type]
+        marker_id = "marker_#{arrow.type}"
 
-        # Simple straight line for now
+        # Arrow with edge connection points
         lines << "  <g id=\"arrow_#{arrow.id}\">"
-        lines << "    <line x1=\"#{from_center_x}\" y1=\"#{from_center_y}\" x2=\"#{to_center_x}\" y2=\"#{to_center_y}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" />"
+        lines << "    <line x1=\"#{from_exit_x}\" y1=\"#{from_exit_y}\" x2=\"#{to_enter_x}\" y2=\"#{to_enter_y}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" marker-end=\"url(##{marker_id})\" />"
 
         # Arrow label (midpoint)
-        label_x = (from_center_x + to_center_x) / 2.0
-        label_y = (from_center_y + to_center_y) / 2.0
+        label_x = (from_exit_x + to_enter_x) / 2.0
+        label_y = (from_exit_y + to_enter_y) / 2.0
         lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
         lines << "  </g>"
       end
@@ -506,10 +519,20 @@ module Bizgram
         comment_y = target_center_y - 80
         comment_width = 80
         comment_height = 40
+        comment_box_center_x = comment_x + comment_width / 2.0
+        comment_box_center_y = comment_y + comment_height / 2.0
+
+        # Connection from comment box to target entity (from bottom of box to top of entity)
+        from_exit_x = comment_box_center_x
+        from_exit_y = comment_y + comment_height
+        to_enter_x = target_center_x
+        to_enter_y = target_y
 
         lines << "  <g id=\"comment_#{comment.id}\">"
         lines << "    <rect x=\"#{comment_x}\" y=\"#{comment_y}\" width=\"#{comment_width}\" height=\"#{comment_height}\" fill=\"#{SVG_COMMENT_BG_COLOR}\" stroke=\"#000000\" stroke-width=\"#{SVG_COMMENT_STROKE_WIDTH}\" rx=\"5\" />"
-        lines << "    <text x=\"#{comment_x + comment_width / 2.0}\" y=\"#{comment_y + comment_height / 2.0}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(comment.text)}</text>"
+        lines << "    <text x=\"#{comment_box_center_x}\" y=\"#{comment_box_center_y}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(comment.text)}</text>"
+        # Connection line (dashed)
+        lines << "    <line x1=\"#{from_exit_x}\" y1=\"#{from_exit_y}\" x2=\"#{to_enter_x}\" y2=\"#{to_enter_y}\" stroke=\"#999999\" stroke-width=\"2\" stroke-dasharray=\"5,5\" />"
         lines << "  </g>"
       end
       lines.join("\n")
@@ -521,6 +544,39 @@ module Bizgram
       x = SVG_GRID_COLS[col]
       y = SVG_GRID_ROWS[row]
       [x, y]
+    end
+
+    def get_edge_connection_points(from_x, from_y, to_x, to_y)
+      # Calculate edge connection points based on entity positions
+      # Returns: [from_exit_x, from_exit_y, to_enter_x, to_enter_y]
+      from_center_x = from_x + SVG_ENTITY_WIDTH / 2.0
+      from_center_y = from_y + SVG_ENTITY_HEIGHT / 2.0
+      to_center_x = to_x + SVG_ENTITY_WIDTH / 2.0
+      to_center_y = to_y + SVG_ENTITY_HEIGHT / 2.0
+
+      dx = to_center_x - from_center_x
+      dy = to_center_y - from_center_y
+
+      # Determine exit and entry points based on direction
+      if dx.abs > dy.abs
+        # Horizontal direction is more significant
+        if dx > 0
+          # Exit from right side of 'from', enter from left side of 'to'
+          [from_x + SVG_ENTITY_WIDTH, from_center_y, to_x, to_center_y]
+        else
+          # Exit from left side of 'from', enter from right side of 'to'
+          [from_x, from_center_y, to_x + SVG_ENTITY_WIDTH, to_center_y]
+        end
+      else
+        # Vertical direction is more significant
+        if dy > 0
+          # Exit from bottom side of 'from', enter from top side of 'to'
+          [from_center_x, from_y + SVG_ENTITY_HEIGHT, to_center_x, to_y]
+        else
+          # Exit from top side of 'from', enter from bottom side of 'to'
+          [from_center_x, from_y, to_center_x, to_y + SVG_ENTITY_HEIGHT]
+        end
+      end
     end
 
     def load_entity_svg_as_data_uri(entity_type)

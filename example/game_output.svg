@@ -6,6 +6,21 @@
   height="900"
   xmlns="http://www.w3.org/2000/svg">
   <title>例）買い切り型のスマホゲーム</title>
+  <defs>
+    <!-- Arrow head markers for different arrow types -->
+    <marker id="marker_object" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
+    </marker>
+    <marker id="marker_money" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0,0 L 10,3 L 0,6 Z" fill="#FF0000"/>
+    </marker>
+    <marker id="marker_information" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0,0 L 10,3 L 0,6 Z" fill="#0000FF"/>
+    </marker>
+    <marker id="marker_other" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
+    </marker>
+  </defs>
 
   <!-- Entities -->
   <g id="entity_0">
@@ -26,28 +41,29 @@
   </g>
   <!-- Arrows -->
   <g id="arrow_4">
-    <line x1="719.4681350000001" y1="66.37796" x2="973.298705" y2="416.64309000000003" stroke="#FF0000" stroke-width="3" />
-    <text x="846.3834200000001" y="231.51052500000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">ゲーム購入</text>
+    <line x1="719.4681350000001" y1="132.75592" x2="973.298705" y2="350.26513" stroke="#FF0000" stroke-width="3" marker-end="url(#marker_money)" />
+    <text x="846.3834200000001" y="231.510525" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">ゲーム購入</text>
   </g>
   <g id="arrow_5">
-    <line x1="973.298705" y1="416.64309000000003" x2="719.4681350000001" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
-    <text x="846.3834200000001" y="406.64309000000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">インストール</text>
+    <line x1="937.0625" y1="416.64309000000003" x2="755.70434" y2="416.64309000000003" stroke="#000000" stroke-width="3" marker-end="url(#marker_object)" />
+    <text x="846.38342" y="406.64309000000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">インストール</text>
   </g>
   <g id="arrow_6">
-    <line x1="719.4681350000001" y1="66.37796" x2="719.4681350000001" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
-    <text x="719.4681350000001" y="231.51052500000003" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">プレイ</text>
+    <line x1="719.4681350000001" y1="132.75592" x2="719.4681350000001" y2="350.26513" stroke="#000000" stroke-width="3" marker-end="url(#marker_other)" />
+    <text x="719.4681350000001" y="231.510525" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">プレイ</text>
   </g>
   <g id="arrow_7">
-    <line x1="719.4681350000001" y1="701.7958100000001" x2="973.298705" y2="416.64309000000003" stroke="#000000" stroke-width="3" />
+    <line x1="719.4681350000001" y1="635.41785" x2="973.298705" y2="483.02105" stroke="#000000" stroke-width="3" marker-end="url(#marker_object)" />
     <text x="846.3834200000001" y="549.21945" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">作品アップロード</text>
   </g>
   <g id="arrow_8">
-    <line x1="973.298705" y1="416.64309000000003" x2="719.4681350000001" y2="701.7958100000001" stroke="#FF0000" stroke-width="3" />
+    <line x1="973.298705" y1="483.02105" x2="719.4681350000001" y2="635.41785" stroke="#FF0000" stroke-width="3" marker-end="url(#marker_money)" />
     <text x="846.3834200000001" y="549.21945" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">売上</text>
   </g>
   <!-- Comments -->
   <g id="comment_9">
     <rect x="933.298705" y="336.64309000000003" width="80" height="40" fill="#FFFC41" stroke="#000000" stroke-width="3" rx="5" />
     <text x="973.298705" y="356.64309000000003" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="middle" fill="#000000">Google Play的な</text>
+    <line x1="973.298705" y1="376.64309000000003" x2="973.298705" y2="350.26513" stroke="#999999" stroke-width="2" stroke-dasharray="5,5" />
   </g>
   </svg>
