@@ -55,7 +55,7 @@ puts dot
 このコードは以下のような SVGドキュメントを出力します：
 
 ```sh
-ruby example/game.rb
+ruby example/game.rb > example/game.svg
 ```
 
 ![](./example/game.svg)
