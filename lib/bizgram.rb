@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'base64'
+
 module Bizgram
   # SVG Layout Constants - from reference materials
   SVG_CANVAS_WIDTH = 1440.0
@@ -376,6 +378,24 @@ module Bizgram
       other: "#000000"
     }.freeze
 
+    # Entity type to SVG image file mapping
+    ENTITY_IMAGE_MAP = {
+      person: "entity_person.svg",
+      user: "entity_person.svg",
+      company: "entity_company.svg",
+      business: "entity_company.svg",
+      money: "entity_money.svg",
+      object: "entity_object.svg",
+      goods: "entity_object.svg",
+      information: "entity_information.svg",
+      info: "entity_information.svg",
+      smartphone: "entity_smartphone.svg",
+      device: "entity_smartphone.svg",
+      store: "entity_store.svg",
+      shop: "entity_store.svg",
+      other: "entity_other.svg"
+    }.freeze
+
     def initialize(entities_by_id, arrows_by_id, comments)
       @entities = entities_by_id
       @arrows = arrows_by_id
@@ -384,6 +404,7 @@ module Bizgram
       @entities.each do |_id, entity|
         @entities_by_position[entity.position] = entity
       end
+      @entity_svg_cache = {} # Cache for loaded entity SVGs
     end
 
     def generate(title)
@@ -420,16 +441,20 @@ module Bizgram
       lines << "  <!-- Entities -->"
       @entities_by_position.each do |pos, entity|
         x, y = position_to_svg_coords(pos)
-        color = ENTITY_COLORS[entity.type]
 
-        # Entity rectangle
+        # Entity group
         lines << "  <g id=\"entity_#{entity.id}\">"
-        lines << "    <rect x=\"#{x}\" y=\"#{y}\" width=\"#{SVG_ENTITY_WIDTH}\" height=\"#{SVG_ENTITY_HEIGHT}\" fill=\"#{color}\" stroke=\"#000000\" stroke-width=\"#{SVG_ENTITY_STROKE_WIDTH}\" />"
 
-        # Entity text (centered)
+        # Embedded entity SVG image as data URI
+        data_uri = load_entity_svg_as_data_uri(entity.type)
+        if data_uri
+          lines << "    <image x=\"#{x}\" y=\"#{y}\" width=\"#{SVG_ENTITY_WIDTH}\" height=\"#{SVG_ENTITY_HEIGHT}\" href=\"#{data_uri}\"/>"
+        end
+
+        # Entity text label (below image)
+        label_y = y + SVG_ENTITY_HEIGHT + 8  # 8px margin below image
         text_x = x + SVG_ENTITY_WIDTH / 2.0
-        text_y = y + SVG_ENTITY_HEIGHT / 2.0
-        lines << "    <text x=\"#{text_x}\" y=\"#{text_y}\" font-size=\"#{SVG_FONT_SIZE}\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(entity.name)}</text>"
+        lines << "    <text x=\"#{text_x}\" y=\"#{label_y}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"text-before-edge\" fill=\"#000000\" word-spacing=\"0\" letter-spacing=\"0\" style=\"white-space: pre-wrap; word-wrap: break-word;\">#{escape_xml(entity.name)}</text>"
         lines << "  </g>"
       end
       lines.join("\n")
@@ -496,6 +521,114 @@ module Bizgram
       x = SVG_GRID_COLS[col]
       y = SVG_GRID_ROWS[row]
       [x, y]
+    end
+
+    def load_entity_svg_as_data_uri(entity_type)
+      return @entity_svg_cache[entity_type] if @entity_svg_cache.key?(entity_type)
+
+      filename = ENTITY_IMAGE_MAP[entity_type]
+      return nil unless filename
+
+      svg_path = File.expand_path("../../reference/image/#{filename}", __FILE__)
+      return nil unless File.exist?(svg_path)
+
+      svg_content = File.read(svg_path)
+      # Base64 encode the SVG content
+      encoded = Base64.encode64(svg_content).gsub("\n", "")
+      data_uri = "data:image/svg+xml;base64,#{encoded}"
+
+      @entity_svg_cache[entity_type] = data_uri
+      data_uri
+    end
+
+    def load_entity_svg(entity_type)
+      return @entity_svg_cache[entity_type] if @entity_svg_cache.key?(entity_type)
+
+      filename = ENTITY_IMAGE_MAP[entity_type]
+      return nil unless filename
+
+      svg_path = File.expand_path("../../reference/image/#{filename}", __FILE__)
+      return nil unless File.exist?(svg_path)
+
+      svg_content = extract_svg_content(svg_path)
+      @entity_svg_cache[entity_type] = svg_content
+      svg_content
+    end
+
+    def load_entity_svg_with_transform(entity_type, x, y)
+      svg_content = load_entity_svg(entity_type)
+      return nil unless svg_content
+
+      # Wrap with indentation and translate transform
+      lines = []
+      lines << "    <g transform=\"translate(#{x}, #{y})\">"
+      # Indent the svg_content lines
+      svg_content.split("\n").each do |line|
+        lines << "      #{line}" if line.strip.length > 0
+      end
+      lines << "    </g>"
+      lines.join("\n")
+    end
+
+    def extract_svg_content(svg_path)
+      content = File.read(svg_path)
+
+      # Extract layer1 element with its transform attribute preserved
+      # The layer1 transform is CRITICAL for coordinate normalization in Inkscape-generated SVGs
+      if content.match(%r{<g\s+[^>]*id="layer1"[^>]*>(.*)</g>}m)
+        layer_content = Regexp.last_match(1).strip
+
+        # Extract layer1's transform attribute for coordinate normalization
+        layer_transform = nil
+        if content.match(%r{<g\s+[^>]*id="layer1"[^>]*transform="([^"]*)"[^>]*>}m)
+          layer_transform = Regexp.last_match(1)
+        end
+
+        # Remove inkscape-specific attributes (inkscape:*, sodipodi:*, style attributes with transform-like content)
+        # but preserve the actual SVG structure and transform chains
+        layer_content = layer_content.gsub(/\s+inkscape:[^=]*="[^"]*"/, '')
+        layer_content = layer_content.gsub(/\s+sodipodi:[^=]*="[^"]*"/, '')
+
+        scaled_content = scale_svg_content(layer_content, layer_transform)
+        scaled_content
+      else
+        nil
+      end
+    end
+
+    def scale_svg_content(content, layer_transform = nil)
+      # The reference images have viewBox="0 0 20.236225 36.561409"
+      # We need to scale them to SVG_ENTITY_WIDTH x SVG_ENTITY_HEIGHT
+      ref_width = 20.236225
+      ref_height = 36.561409
+      scale_x = SVG_ENTITY_WIDTH / ref_width
+      scale_y = SVG_ENTITY_HEIGHT / ref_height
+
+      # Build nested g elements for explicit transform order
+      # Nested transforms are ALWAYS evaluated outer→inner, which is what we want
+      lines = []
+
+      if layer_transform
+        # Outermost: layer1's transform (coordinate normalization)
+        lines << "<g transform=\"#{layer_transform}\">"
+      end
+
+      # Middle: scale transformation
+      lines << "  <g transform=\"scale(#{scale_x}, #{scale_y})\">"
+
+      # Innermost: content
+      content_lines = content.split("\n")
+      content_lines.each do |line|
+        lines << "    #{line}" if line.strip.length > 0
+      end
+
+      lines << "  </g>"
+
+      if layer_transform
+        lines << "</g>"
+      end
+
+      lines.join("\n")
     end
 
     def escape_xml(str)

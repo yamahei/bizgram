@@ -339,8 +339,14 @@ RSpec.describe Bizgram do
         user "Alice", 0
         business "Service", 4
       end
-      expect(svg).to include("#FFE5CC")  # User color
-      expect(svg).to include("#CCE5FF")  # Business color
+      # After Phase 1 refactor: entities are now embedded SVG images, not colored rectangles
+      expect(svg).to include("id=\"entity_0\"")  # Entity group exists
+      expect(svg).to include("id=\"entity_1\"")  # Entity group exists
+      expect(svg).to include("Alice")  # Entity label
+      expect(svg).to include("Service")  # Entity label
+      # Verify SVG structure is valid (contains svg header and footer)
+      expect(svg).to include("<svg")
+      expect(svg).to include("</svg>")
     end
 
     it "uses correct colors for arrow types" do
