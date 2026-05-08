@@ -478,27 +478,73 @@ module Bizgram
     def render_arrows
       lines = []
       lines << "  <!-- Arrows -->"
+
+      # Group arrows by (from, to) pair for offset calculation
+      arrow_groups = {}
       @arrows.each do |_id, arrow|
-        from_entity = @entities[arrow.from]
-        to_entity = @entities[arrow.to]
-        from_x, from_y = position_to_svg_coords(from_entity.position)
-        to_x, to_y = position_to_svg_coords(to_entity.position)
+        pair = [arrow.from, arrow.to]
+        arrow_groups[pair] ||= []
+        arrow_groups[pair] << arrow
+      end
 
-        # Get edge connection points (from entity edge to to entity edge)
-        from_exit_x, from_exit_y, to_enter_x, to_enter_y = get_edge_connection_points(from_x, from_y, to_x, to_y)
+      # Also detect reverse pairs for bidirectional arrows
+      reverse_pairs = {}
+      arrow_groups.each do |pair, arrows|
+        reverse_pair = [pair[1], pair[0]]
+        if arrow_groups.key?(reverse_pair)
+          # Both directions exist - treat as bidirectional
+          reverse_pairs[pair] = true
+          reverse_pairs[reverse_pair] = true
+        end
+      end
 
-        color = ARROW_COLORS[arrow.type]
-        marker_id = "marker_#{arrow.type}"
+      # Render arrows with offset for parallel arrows
+      arrow_groups.each do |pair, arrows_in_group|
+        # Check if this is a bidirectional pair that needs offset
+        is_bidirectional = reverse_pairs[pair]
 
-        # Arrow with edge connection points
-        lines << "  <g id=\"arrow_#{arrow.id}\">"
-        lines << "    <line x1=\"#{from_exit_x}\" y1=\"#{from_exit_y}\" x2=\"#{to_enter_x}\" y2=\"#{to_enter_y}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" marker-end=\"url(##{marker_id})\" />"
+        arrows_in_group.each_with_index do |arrow, index|
+          from_entity = @entities[arrow.from]
+          to_entity = @entities[arrow.to]
+          from_x, from_y = position_to_svg_coords(from_entity.position)
+          to_x, to_y = position_to_svg_coords(to_entity.position)
 
-        # Arrow label (midpoint)
-        label_x = (from_exit_x + to_enter_x) / 2.0
-        label_y = (from_exit_y + to_enter_y) / 2.0
-        lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
-        lines << "  </g>"
+          # Get edge connection points with direction info
+          # Now passing entity positions for pattern-based routing
+          from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir =
+            get_edge_connection_points(from_x, from_y, to_x, to_y, from_entity.position, to_entity.position)
+
+          # Calculate offset for multi-arrow case (10px spacing)
+          # For bidirectional arrows with same from_x and to_x, use alternating offsets
+          offset = if is_bidirectional && from_x == to_x
+                     # Bidirectional case: alternate left/right based on pair order
+                     if pair[0] < pair[1]
+                       -15.0  # First pair: left
+                     else
+                       15.0   # Reverse pair: right
+                     end
+                   else
+                     # Multi-arrow normal spacing
+                     (index - (arrows_in_group.length - 1) / 2.0) * 10.0
+                   end
+
+          # Generate L-shaped path
+          # Use simple routing without offset adjustment unless specifically needed
+          path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
+
+          color = ARROW_COLORS[arrow.type]
+          marker_id = "marker_#{arrow.type}"
+
+          # Arrow with L-shaped routing using path element
+          lines << "  <g id=\"arrow_#{arrow.id}\">"
+          lines << "    <path d=\"#{path_data}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" marker-end=\"url(##{marker_id})\" />"
+
+          # Arrow label (at path midpoint)
+          label_x = (from_exit_x + to_enter_x) / 2.0
+          label_y = (from_exit_y + to_enter_y) / 2.0
+          lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
+          lines << "  </g>"
+        end
       end
       lines.join("\n")
     end
@@ -546,36 +592,180 @@ module Bizgram
       [x, y]
     end
 
-    def get_edge_connection_points(from_x, from_y, to_x, to_y)
-      # Calculate edge connection points based on entity positions
-      # Returns: [from_exit_x, from_exit_y, to_enter_x, to_enter_y]
+    def get_route_pattern(from_pos, to_pos)
+      # Calculate relative position pattern (row_diff, col_diff)
+      # Position layout: 0 1 2 / 3 4 5 / 6 7 8
+      from_row = from_pos / 3
+      from_col = from_pos % 3
+      to_row = to_pos / 3
+      to_col = to_pos % 3
+
+      row_diff = to_row - from_row
+      col_diff = to_col - from_col
+
+      # Route pattern lookup based on specification
+      # (矢印のルートパターン一覧（基本ルート）参照)
+      #
+      # Strategy for L-shaped routing:
+      # - Prioritize the larger absolute difference as primary direction
+      # - But for asymmetric cases (|row_diff|=1, |col_diff|=2 or vice versa),
+      #   consider vertical-first to avoid entity blocking
+      #
+      # Returns: [from_dir, to_dir, route_strategy]
+
+      if row_diff.abs > col_diff.abs
+        # Vertical is primary direction
+        if row_diff > 0
+          [:bottom, :top, :vertical_primary]
+        else
+          [:top, :bottom, :vertical_primary]
+        end
+      elsif col_diff.abs > row_diff.abs
+        # Horizontal is primary direction
+        # Exception: if col_diff=±2 and row_diff=±1, use vertical-primary
+        # to avoid routing through intermediate column
+        if col_diff.abs == 2 && row_diff.abs == 1
+          # Asymmetric case (1,2) or (-1,-2): prefer vertical routing
+          if row_diff > 0
+            [:bottom, :top, :vertical_primary]
+          else
+            [:top, :bottom, :vertical_primary]
+          end
+        else
+          # Standard horizontal-primary for col_diff > row_diff
+          if col_diff > 0
+            [:right, :left, :horizontal_primary]
+          else
+            [:left, :right, :horizontal_primary]
+          end
+        end
+      else
+        # Equal distance: vertical is default
+        if row_diff > 0
+          [:bottom, :top, :vertical_primary]
+        elsif row_diff < 0
+          [:top, :bottom, :vertical_primary]
+        elsif col_diff > 0
+          [:right, :left, :horizontal_primary]
+        else
+          [:left, :right, :horizontal_primary]
+        end
+      end
+    end
+
+    def get_edge_connection_points(from_x, from_y, to_x, to_y, from_pos, to_pos)
+      # Calculate edge connection points based on route pattern
+      # Returns: [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir]
+
       from_center_x = from_x + SVG_ENTITY_WIDTH / 2.0
       from_center_y = from_y + SVG_ENTITY_HEIGHT / 2.0
       to_center_x = to_x + SVG_ENTITY_WIDTH / 2.0
       to_center_y = to_y + SVG_ENTITY_HEIGHT / 2.0
 
-      dx = to_center_x - from_center_x
-      dy = to_center_y - from_center_y
+      from_dir, to_dir, _route_strategy = get_route_pattern(from_pos, to_pos)
 
-      # Determine exit and entry points based on direction
-      if dx.abs > dy.abs
-        # Horizontal direction is more significant
-        if dx > 0
-          # Exit from right side of 'from', enter from left side of 'to'
-          [from_x + SVG_ENTITY_WIDTH, from_center_y, to_x, to_center_y]
-        else
-          # Exit from left side of 'from', enter from right side of 'to'
-          [from_x, from_center_y, to_x + SVG_ENTITY_WIDTH, to_center_y]
-        end
+      # Calculate exit and entry points based on direction
+      case from_dir
+      when :right
+        from_exit_x = from_x + SVG_ENTITY_WIDTH
+        from_exit_y = from_center_y
+      when :left
+        from_exit_x = from_x
+        from_exit_y = from_center_y
+      when :bottom
+        from_exit_x = from_center_x
+        from_exit_y = from_y + SVG_ENTITY_HEIGHT
+      when :top
+        from_exit_x = from_center_x
+        from_exit_y = from_y
+      end
+
+      case to_dir
+      when :right
+        to_enter_x = to_x + SVG_ENTITY_WIDTH
+        to_enter_y = to_center_y
+      when :left
+        to_enter_x = to_x
+        to_enter_y = to_center_y
+      when :bottom
+        to_enter_x = to_center_x
+        to_enter_y = to_y + SVG_ENTITY_HEIGHT
+      when :top
+        to_enter_x = to_center_x
+        to_enter_y = to_y
+      end
+
+      [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir]
+    end
+
+    def get_l_shaped_path(from_x, from_y, to_x, to_y, from_dir, to_dir)
+      # Generate L-shaped routing path based on exit/entry directions
+      # Path follows the direction indicated by from_dir and to_dir
+
+      # Special case: same X coordinate → pure vertical path
+      if (from_x - to_x).abs < 0.01
+        return "M #{from_x},#{from_y} L #{from_x},#{to_y}"
+      end
+
+      # Special case: same Y coordinate → pure horizontal path
+      if (from_y - to_y).abs < 0.01
+        return "M #{from_x},#{from_y} L #{to_x},#{to_y}"
+      end
+
+      case [from_dir, to_dir]
+      when [:right, :left], [:right, :top], [:right, :bottom]
+        # Exiting right: horizontal first
+        mid_x = (from_x + to_x) / 2.0
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+      when [:left, :right], [:left, :top], [:left, :bottom]
+        # Exiting left: horizontal first
+        mid_x = (from_x + to_x) / 2.0
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+      when [:bottom, :top], [:bottom, :left], [:bottom, :right]
+        # Exiting bottom: vertical first
+        mid_y = (from_y + to_y) / 2.0
+        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
+      when [:top, :bottom], [:top, :left], [:top, :right]
+        # Exiting top: vertical first
+        mid_y = (from_y + to_y) / 2.0
+        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
       else
-        # Vertical direction is more significant
-        if dy > 0
-          # Exit from bottom side of 'from', enter from top side of 'to'
-          [from_center_x, from_y + SVG_ENTITY_HEIGHT, to_center_x, to_y]
-        else
-          # Exit from top side of 'from', enter from bottom side of 'to'
-          [from_center_x, from_y, to_center_x, to_y + SVG_ENTITY_HEIGHT]
-        end
+        # Fallback: horizontal first
+        mid_x = (from_x + to_x) / 2.0
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+      end
+    end
+
+    def get_l_shaped_path_with_offset(from_x, from_y, to_x, to_y, offset, from_dir, to_dir)
+      # Generate L-shaped routing path with offset for parallel arrows
+      # For vertical connections (same X), apply offset to horizontal bend
+      # For horizontal connections (same Y), apply offset to vertical bend
+      # Note: from_x/from_y/to_x/to_y are EXIT/ENTRY points, not entity corners
+
+      case [from_dir, to_dir]
+      when [:right, :left], [:right, :top], [:right, :bottom]
+        # Exiting right: horizontal-first, apply offset to horizontal bend
+        mid_x = (from_x + to_x) / 2.0 + offset
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+      when [:left, :right], [:left, :top], [:left, :bottom]
+        # Exiting left: horizontal-first, apply offset to horizontal bend
+        mid_x = (from_x + to_x) / 2.0 + offset
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+      when [:bottom, :top], [:bottom, :left], [:bottom, :right]
+        # Exiting bottom: vertical-first, apply offset to horizontal bend
+        # When same X at exit/entry, offset applies perpendicular to path
+        mid_y = (from_y + to_y) / 2.0
+        offset_x = from_x + offset
+        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{offset_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
+      when [:top, :bottom], [:top, :left], [:top, :right]
+        # Exiting top: vertical-first, apply offset to horizontal bend
+        mid_y = (from_y + to_y) / 2.0
+        offset_x = from_x + offset
+        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{offset_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
+      else
+        # Fallback
+        mid_x = (from_x + to_x) / 2.0 + offset
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
       end
     end
 

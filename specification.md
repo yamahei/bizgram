@@ -239,6 +239,108 @@ Entithを呼び出し元（from）としたArrowを生成する。
 流れを表す `Arrow` オブジェクト※
 ※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
 
+##### 矢印のルートパターン一覧（基本ルート）
+
+- Bizgramの3x3レイアウトを奇数行・列に、主体間の隙間を偶数行・列で表現している
+- Bizgramの3x3レイアウトは`<th/>`、主体間の隙間は`<td/>`で表現している
+- 主体は3x3レイアウト(`<th/>`)にしか配置できない
+- 矢印は主体間の隙間(`<td/>`)だけでなく、主体を配置する9マス(`<th/>`)上も通過できるが、主体が配置されているマスは通過できない
+- 2つの主体間の相対位置関係のため、本来の座標ではない点に注意する（このため、テーブルの行列サイズは必ずしも3x3レイアウトになっていない）
+- 矢印は基本的に水平方向と垂直方向の直線で構成されており、1回だけ直角に方向転換することが許されているが、主体の相対位置が「(1, 1) or (-1, -1)、(-1, 1) or (1, -1)」の右上/右下/左上/左下の位置の場合、例外的に斜め45度の矢印が許される（ただし、直線の矢印が引けない場合に限定される）
+
+<details>
+<summary>レイアウト（主体は〇、矢印のルートは罫線にて表現）</summary>
+
+<table>
+  <caption>相対位置：(1, 0) or (-1, 0)</caption>
+	<tr><th>〇</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(0, 1) or (0, -1)</caption>
+	<tr><th>〇</th></tr>
+	<tr><td>│</td></tr>
+	<tr><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(1, 1) or (-1, -1)</caption>
+	<tr><th>〇</th><td>─</td><th>┐</th></tr>
+	<tr><td>│</td><td>＼</td><td>│</td></tr>
+	<tr><th>└</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(-1, 1) or (1, -1)</caption>
+	<tr><th>┌</th><td>─</td><th>〇</th></tr>
+	<tr><td>│</td><td>／</td><td>│</td></tr>
+	<tr><th>〇</th><td>─</td><th>┘</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(0, 2) or (0, -2)</caption>
+	<tr><th>〇</th></tr>
+	<tr><td>│</td></tr>
+	<tr><th>│</th></tr>
+	<tr><td>│</td></tr>
+	<tr><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(2, 0) or (-2, 0)</caption>
+	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(2, 2) or (-2, -2)</caption>
+	<tr><th>〇</th><td>─</td><th>┐</th></tr>
+	<tr><td>│</td><td> </td><td>│</td></tr>
+	<tr><th>│</th><td> </td><th>│</th></tr>
+	<tr><td>│</td><td> </td><td>│</td></tr>
+	<tr><th>└</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(-1, 2) or (1, -2)</caption>
+	<tr><th>┌</th><td>─</td><th>〇</th></tr>
+	<tr><td>│</td><td> </td><td>│</td></tr>
+	<tr><th>│</th><td> </td><th>│</th></tr>
+	<tr><td>│</td><td> </td><td>│</td></tr>
+	<tr><th>〇</th><td>─</td><th>┘</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(2, 1) or (-2, -1)</caption>
+	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┐</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>└</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(-2, 1) or (2, -1)</caption>
+	<tr><th>┌</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┘</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(2, 2) or (-2, -2)</caption>
+	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┐</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>│</th><td> </td><th> </th><td> </td><th>│</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>└</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
+</table>
+
+<table>
+  <caption>相対位置：(-2, 2) or (2, -2)</caption>
+	<tr><th>┌</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>│</th><td> </td><th> </th><td> </td><th>│</th></tr>
+	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
+	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┘</th></tr>
+</table>
+</details>
 
 #### 体裁・装飾の参考資料
 
