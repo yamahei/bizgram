@@ -239,45 +239,69 @@ Entithを呼び出し元（from）としたArrowを生成する。
 流れを表す `Arrow` オブジェクト※
 ※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
 
-##### 矢印のルートパターン一覧（基本ルート）
+##### 矢印のルートパターン一覧
 
-- Bizgramの3x3レイアウトを奇数行・列に、主体間の隙間を偶数行・列で表現している
+###### 基本ルール
+
+- Bizgramの3x3レイアウトを奇数行・列に、主体間の隙間を偶数行・列で表現している（最大5x5のテーブル）
 - Bizgramの3x3レイアウトは`<th/>`、主体間の隙間は`<td/>`で表現している
 - 主体は3x3レイアウト(`<th/>`)にしか配置できない
 - 矢印は主体間の隙間(`<td/>`)だけでなく、主体を配置する9マス(`<th/>`)上も通過できるが、主体が配置されているマスは通過できない
 - 2つの主体間の相対位置関係のため、本来の座標ではない点に注意する（このため、テーブルの行列サイズは必ずしも3x3レイアウトになっていない）
 - 矢印は基本的に水平方向と垂直方向の直線で構成されており、1回だけ直角に方向転換することが許されているが、主体の相対位置が「(1, 1) or (-1, -1)、(-1, 1) or (1, -1)」の右上/右下/左上/左下の位置の場合、例外的に斜め45度の矢印が許される（ただし、直線の矢印が引けない場合に限定される）
+- 矢印は交差することはできないが、同じ主体間の往復など、全く同じルートに複数の矢印を配置することができる（描画の際には、座標をオフセットして、矢印が被ってしまうのを防ぐ）
+
+###### ルーティングの考え方（アルゴリズム）
+
+以下のルールにて、複数のテーブルを行列的に操作し、基本ルートを決定する
+
+1. 主体と主体間の隙間を表現した5x5テーブル（ベースと呼ぶ）を準備する
+2. ベースに全ての主体を配置する
+2. 矢印で結ばれた2主体の配置から、次項の「[ルート一覧](#ルート一覧)」を検索する（ルート候補と呼ぶ）
+   ※主体間の相対距離が遠い2主体から順にルートを決定する
+3. ルート候補をベースに合成して、以下を満たしているルートを採用する
+   ※ルート候補は2パターン以上あるので、以下を満たすどれかを採用する
+   - 配置済みの主体に被っていないこと
+   - 配置済みの矢印に被っていないこと
+     ただし、完全に一致するルートであれば許容する
+
+###### ルート一覧
+
+※ルート候補は複数あり、相対位置ごとにまとめて記載している
 
 <details>
+<style>
+  table.rt td { background-color: gray; }
+</style>
 <summary>レイアウト（主体は〇、矢印のルートは罫線にて表現）</summary>
 
-<table>
+<table class="rt">
   <caption>相対位置：(1, 0) or (-1, 0)</caption>
 	<tr><th>〇</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(0, 1) or (0, -1)</caption>
 	<tr><th>〇</th></tr>
 	<tr><td>│</td></tr>
 	<tr><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(1, 1) or (-1, -1)</caption>
 	<tr><th>〇</th><td>─</td><th>┐</th></tr>
-	<tr><td>│</td><td>＼</td><td>│</td></tr>
+	<tr><td>│</td><th>＼</th><td>│</td></tr>
 	<tr><th>└</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(-1, 1) or (1, -1)</caption>
 	<tr><th>┌</th><td>─</td><th>〇</th></tr>
-	<tr><td>│</td><td>／</td><td>│</td></tr>
+	<tr><td>│</td><th>／</th><td>│</td></tr>
 	<tr><th>〇</th><td>─</td><th>┘</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(0, 2) or (0, -2)</caption>
 	<tr><th>〇</th></tr>
 	<tr><td>│</td></tr>
@@ -286,12 +310,12 @@ Entithを呼び出し元（from）としたArrowを生成する。
 	<tr><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(2, 0) or (-2, 0)</caption>
 	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(2, 2) or (-2, -2)</caption>
 	<tr><th>〇</th><td>─</td><th>┐</th></tr>
 	<tr><td>│</td><td> </td><td>│</td></tr>
@@ -300,7 +324,7 @@ Entithを呼び出し元（from）としたArrowを生成する。
 	<tr><th>└</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(-1, 2) or (1, -2)</caption>
 	<tr><th>┌</th><td>─</td><th>〇</th></tr>
 	<tr><td>│</td><td> </td><td>│</td></tr>
@@ -309,21 +333,21 @@ Entithを呼び出し元（from）としたArrowを生成する。
 	<tr><th>〇</th><td>─</td><th>┘</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(2, 1) or (-2, -1)</caption>
 	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┐</th></tr>
 	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
 	<tr><th>└</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(-2, 1) or (2, -1)</caption>
 	<tr><th>┌</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
 	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
 	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┘</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(2, 2) or (-2, -2)</caption>
 	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┐</th></tr>
 	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
@@ -332,7 +356,7 @@ Entithを呼び出し元（from）としたArrowを生成する。
 	<tr><th>└</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
 </table>
 
-<table>
+<table class="rt">
   <caption>相対位置：(-2, 2) or (2, -2)</caption>
 	<tr><th>┌</th><td>─</td><th>─</th><td>─</td><th>〇</th></tr>
 	<tr><td>│</td><td> </td><td> </td><td> </td><td>│</td></tr>
