@@ -511,7 +511,7 @@ module Bizgram
 
           # Get edge connection points with direction info
           # Now passing entity positions for pattern-based routing
-          from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir =
+          from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir, route_strategy =
             get_edge_connection_points(from_x, from_y, to_x, to_y, from_entity.position, to_entity.position)
 
           # Calculate offset for multi-arrow case (10px spacing)
@@ -528,20 +528,43 @@ module Bizgram
                      (index - (arrows_in_group.length - 1) / 2.0) * 10.0
                    end
 
-          # Generate L-shaped path
-          # Use simple routing without offset adjustment unless specifically needed
-          path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
+          # Apply offset to entry/exit points based on routing strategy
+          # This ensures the entire arrow (both start and end) is offset perpendicular to routing direction
+          if offset != 0
+            case route_strategy
+            when :horizontal_primary
+              # Horizontal routing: apply offset to Y-axis for vertical separation
+              from_exit_y += offset
+              to_enter_y += offset
+            when :vertical_primary
+              # Vertical routing: apply offset to X-axis for horizontal separation
+              from_exit_x += offset
+              to_enter_x += offset
+            end
+          end
+
+          # Generate L-shaped path with offset applied
+          # Use offset-aware routing for parallel/bidirectional arrows
+          if offset == 0
+            # No offset needed: use simple routing
+            path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
+          else
+            # Offset already applied to exit/entry points, generate standard L-shaped path
+            path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
+          end
 
           color = ARROW_COLORS[arrow.type]
           marker_id = "marker_#{arrow.type}"
+
+          # Arrow label position (at midpoint of the offset-adjusted path)
+          label_x = (from_exit_x + to_enter_x) / 2.0
+          label_y = (from_exit_y + to_enter_y) / 2.0
 
           # Arrow with L-shaped routing using path element
           lines << "  <g id=\"arrow_#{arrow.id}\">"
           lines << "    <path d=\"#{path_data}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" marker-end=\"url(##{marker_id})\" />"
 
-          # Arrow label (at path midpoint)
-          label_x = (from_exit_x + to_enter_x) / 2.0
-          label_y = (from_exit_y + to_enter_y) / 2.0
+          # Arrow label (with offset-adjusted position)
           lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
           lines << "  </g>"
         end
@@ -695,7 +718,7 @@ module Bizgram
         to_enter_y = to_y
       end
 
-      [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir]
+      [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir, _route_strategy]
     end
 
     def get_l_shaped_path(from_x, from_y, to_x, to_y, from_dir, to_dir)
@@ -736,36 +759,31 @@ module Bizgram
       end
     end
 
-    def get_l_shaped_path_with_offset(from_x, from_y, to_x, to_y, offset, from_dir, to_dir)
+    def get_l_shaped_path_with_offset(from_x, from_y, to_x, to_y, offset, from_dir, to_dir, route_strategy)
       # Generate L-shaped routing path with offset for parallel arrows
-      # For vertical connections (same X), apply offset to horizontal bend
-      # For horizontal connections (same Y), apply offset to vertical bend
+      # Key principle: offset is perpendicular to routing direction
+      # - Horizontal-primary routing: offset Y-axis (vertical separation)
+      # - Vertical-primary routing: offset X-axis (horizontal separation)
       # Note: from_x/from_y/to_x/to_y are EXIT/ENTRY points, not entity corners
 
-      case [from_dir, to_dir]
-      when [:right, :left], [:right, :top], [:right, :bottom]
-        # Exiting right: horizontal-first, apply offset to horizontal bend
+      case route_strategy
+      when :horizontal_primary
+        # Horizontal-primary routing: horizontal then vertical
+        # Apply offset to vertical bend (perpendicular to horizontal flow)
+        mid_x = (from_x + to_x) / 2.0
+        mid_y = (from_y + to_y) / 2.0 + offset
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
+      when :vertical_primary
+        # Vertical-primary routing: vertical then horizontal
+        # Apply offset to horizontal bend (perpendicular to vertical flow)
         mid_x = (from_x + to_x) / 2.0 + offset
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
-      when [:left, :right], [:left, :top], [:left, :bottom]
-        # Exiting left: horizontal-first, apply offset to horizontal bend
-        mid_x = (from_x + to_x) / 2.0 + offset
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
-      when [:bottom, :top], [:bottom, :left], [:bottom, :right]
-        # Exiting bottom: vertical-first, apply offset to horizontal bend
-        # When same X at exit/entry, offset applies perpendicular to path
         mid_y = (from_y + to_y) / 2.0
-        offset_x = from_x + offset
-        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{offset_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      when [:top, :bottom], [:top, :left], [:top, :right]
-        # Exiting top: vertical-first, apply offset to horizontal bend
-        mid_y = (from_y + to_y) / 2.0
-        offset_x = from_x + offset
-        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{offset_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
+        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
       else
-        # Fallback
-        mid_x = (from_x + to_x) / 2.0 + offset
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
+        # Fallback: horizontal-primary assumed
+        mid_x = (from_x + to_x) / 2.0
+        mid_y = (from_y + to_y) / 2.0 + offset
+        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
       end
     end
 
