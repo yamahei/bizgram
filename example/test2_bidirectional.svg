@@ -33,12 +33,12 @@
   </g>
   <!-- Arrows -->
   <g id="arrow_2">
-    <path d="M 462.383405,132.75592 L 462.383405,384.08688500000005 L 973.298705,384.08688500000005 L 973.298705,635.41785" stroke="#FF0000" stroke-width="3" fill="none" marker-end="url(#marker_money)" />
-    <text x="717.841055" y="374.08688500000005" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">Payment A→B</text>
+    <path d="M 498.61960999999997,61.37796 L 590.92577,61.37796 L 719.4681350000001,61.37796 L 846.38342,61.37796 L 978.298705,61.37796 L 978.298705,241.510525 L 978.298705,416.64309000000003 L 978.298705,559.21945 L 978.298705,635.41785" stroke="#FF0000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_money)" />
+    <text x="978.298705" y="51.37796" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">Payment A→B</text>
   </g>
   <g id="arrow_3">
-    <path d="M 973.298705,635.41785 L 973.298705,384.08688500000005 L 462.383405,384.08688500000005 L 462.383405,132.75592" stroke="#FF0000" stroke-width="3" fill="none" marker-end="url(#marker_money)" />
-    <text x="717.841055" y="374.08688500000005" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">Refund B→A</text>
+    <path d="M 937.0625,706.7958100000001 L 846.38342,706.7958100000001 L 719.4681350000001,706.7958100000001 L 590.92577,706.7958100000001 L 457.383405,706.7958100000001 L 457.383405,559.21945 L 457.383405,416.64309000000003 L 457.383405,241.510525 L 457.383405,132.75592" stroke="#FF0000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_money)" />
+    <text x="457.383405" y="696.7958100000001" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#000000">Refund B→A</text>
   </g>
 
   </svg>

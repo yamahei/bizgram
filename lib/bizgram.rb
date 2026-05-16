@@ -235,9 +235,6 @@ module Bizgram
       comment_to(to, text)
     end
 
-    def to_dot(title)
-      DotGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
-    end
 
     def to_svg(title)
       SvgGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
@@ -280,84 +277,7 @@ module Bizgram
     end
   end
 
-  class DotGenerator
-    ENTITY_COLORS = {
-      person: "#FFE5CC", user: "#FFE5CC",
-      company: "#CCE5FF", business: "#CCE5FF",
-      money: "#FFCCCC",
-      object: "#E5E5E5", goods: "#E5E5E5",
-      information: "#E5CCFF", info: "#E5CCFF",
-      smartphone: "#FFCCFF", device: "#FFCCFF",
-      store: "#FFFFCC", shop: "#FFFFCC",
-      other: "#F0F0F0"
-    }.freeze
 
-    ARROW_STYLES = {
-      object: { color: "black", label: "モノ" },
-      money: { color: "red", label: "カネ" },
-      information: { color: "blue", label: "情報" },
-      other: { color: "black" }
-    }.freeze
-
-    def initialize(entities_by_id, arrows_by_id, comments)
-      @entities = entities_by_id
-      @arrows = arrows_by_id
-      @comments = comments
-      # ノードID用に位置をキーとするエンティティマップを作成
-      @entities_by_position = {}
-      @entities.each do |_id, entity|
-        @entities_by_position[entity.position] = entity
-      end
-    end
-
-    def generate(title)
-      lines = ["digraph Bizgram {"]
-      lines << "  graph [label=\"#{escape_dot(title)}\", labelloc=top];"
-      lines << "  rankdir=TB;"  # TB: Top to Bottom（上から下）
-      lines << ""
-
-      # ノードの定義（位置をベースにした node_pos で生成）
-      @entities_by_position.each do |pos, entity|
-        color = ENTITY_COLORS[entity.type]
-        lines << "  node_#{pos} [label=\"#{escape_dot(entity.name)}\", shape=box, style=filled, fillcolor=\"#{color}\"];"
-      end
-
-      # コメントノードの定義
-      @comments.each do |_id, comment|
-        comment_node_id = "comment_#{comment.id}"
-        lines << "  #{comment_node_id} [label=\"#{escape_dot(comment.text)}\", shape=box, style=\"filled,rounded\", fillcolor=\"#FFFFCC\"];"
-      end
-
-      lines << ""
-
-      # エッジの定義
-      @arrows.each do |_id, arrow|
-        style = ARROW_STYLES[arrow.type]
-        from_entity = @entities[arrow.from]
-        to_entity = @entities[arrow.to]
-        from_pos = from_entity.position
-        to_pos = to_entity.position
-        lines << "  node_#{from_pos} -> node_#{to_pos} [label=\"#{escape_dot(arrow.name)}\", color=#{style[:color]}];"
-      end
-
-      # コメント矢印の定義
-      @comments.each do |_id, comment|
-        target_entity = @entities[comment.to]
-        target_pos = target_entity.position
-        comment_node_id = "comment_#{comment.id}"
-        lines << "  #{comment_node_id} -> node_#{target_pos} [style=dashed, color=gray];"
-      end
-
-      lines << "}"
-      lines.join("\n")
-    end
-
-    private
-
-    def escape_dot(str)
-      str.gsub('"', '\\"')
-    end
-  end
 
   class SvgGenerator
     ENTITY_COLORS = {
@@ -475,102 +395,302 @@ module Bizgram
       lines.join("\n")
     end
 
-    def render_arrows
-      lines = []
-      lines << "  <!-- Arrows -->"
+class GridRouter
+  def initialize(entities_by_position)
+    @entities_by_position = entities_by_position
+    @routed_paths = [] 
+  end
 
-      # Group arrows by (from, to) pair for offset calculation
-      arrow_groups = {}
-      @arrows.each do |_id, arrow|
-        pair = [arrow.from, arrow.to]
-        arrow_groups[pair] ||= []
-        arrow_groups[pair] << arrow
-      end
-
-      # Also detect reverse pairs for bidirectional arrows
-      reverse_pairs = {}
-      arrow_groups.each do |pair, arrows|
-        reverse_pair = [pair[1], pair[0]]
-        if arrow_groups.key?(reverse_pair)
-          # Both directions exist - treat as bidirectional
-          reverse_pairs[pair] = true
-          reverse_pairs[reverse_pair] = true
-        end
-      end
-
-      # Render arrows with offset for parallel arrows
-      arrow_groups.each do |pair, arrows_in_group|
-        # Check if this is a bidirectional pair that needs offset
-        is_bidirectional = reverse_pairs[pair]
-
-        arrows_in_group.each_with_index do |arrow, index|
-          from_entity = @entities[arrow.from]
-          to_entity = @entities[arrow.to]
-          from_x, from_y = position_to_svg_coords(from_entity.position)
-          to_x, to_y = position_to_svg_coords(to_entity.position)
-
-          # Get edge connection points with direction info
-          # Now passing entity positions for pattern-based routing
-          from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir, route_strategy =
-            get_edge_connection_points(from_x, from_y, to_x, to_y, from_entity.position, to_entity.position)
-
-          # Calculate offset for multi-arrow case (10px spacing)
-          # For bidirectional arrows with same from_x and to_x, use alternating offsets
-          offset = if is_bidirectional && from_x == to_x
-                     # Bidirectional case: alternate left/right based on pair order
-                     if pair[0] < pair[1]
-                       -15.0  # First pair: left
-                     else
-                       15.0   # Reverse pair: right
-                     end
-                   else
-                     # Multi-arrow normal spacing
-                     (index - (arrows_in_group.length - 1) / 2.0) * 10.0
-                   end
-
-          # Apply offset to entry/exit points based on routing strategy
-          # This ensures the entire arrow (both start and end) is offset perpendicular to routing direction
-          if offset != 0
-            case route_strategy
-            when :horizontal_primary
-              # Horizontal routing: apply offset to Y-axis for vertical separation
-              from_exit_y += offset
-              to_enter_y += offset
-            when :vertical_primary
-              # Vertical routing: apply offset to X-axis for horizontal separation
-              from_exit_x += offset
-              to_enter_x += offset
-            end
-          end
-
-          # Generate L-shaped path with offset applied
-          # Use offset-aware routing for parallel/bidirectional arrows
-          if offset == 0
-            # No offset needed: use simple routing
-            path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
-          else
-            # Offset already applied to exit/entry points, generate standard L-shaped path
-            path_data = get_l_shaped_path(from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir)
-          end
-
-          color = ARROW_COLORS[arrow.type]
-          marker_id = "marker_#{arrow.type}"
-
-          # Arrow label position (at midpoint of the offset-adjusted path)
-          label_x = (from_exit_x + to_enter_x) / 2.0
-          label_y = (from_exit_y + to_enter_y) / 2.0
-
-          # Arrow with L-shaped routing using path element
-          lines << "  <g id=\"arrow_#{arrow.id}\">"
-          lines << "    <path d=\"#{path_data}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" marker-end=\"url(##{marker_id})\" />"
-
-          # Arrow label (with offset-adjusted position)
-          lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
-          lines << "  </g>"
-        end
-      end
-      lines.join("\n")
+  def route_all(arrows)
+    sorted_arrows = arrows.sort_by do |arr|
+      dx = (arr.to_pos % 3) - (arr.from_pos % 3)
+      dy = (arr.to_pos / 3) - (arr.from_pos / 3)
+      -(dx.abs + dy.abs)
     end
+
+    results = {}
+    sorted_arrows.each do |arr|
+      path = find_route(arr)
+      @routed_paths << {arrow: arr, path: path}
+      results[arr.id] = path
+    end
+    results
+  end
+
+  private
+
+  def find_route(arrow)
+    fx = arrow.from_pos % 3
+    fy = arrow.from_pos / 3
+    tx = arrow.to_pos % 3
+    ty = arrow.to_pos / 3
+
+    gx1, gy1 = fx * 2, fy * 2
+    gx2, gy2 = tx * 2, ty * 2
+
+    candidates = generate_candidates(gx1, gy1, gx2, gy2)
+    
+    valid_candidates = candidates.select { |path| valid_path?(path, arrow) }
+    
+    if valid_candidates.empty?
+      raise "Error: 仕様可能なルートがありません (from: #{arrow.from_pos}, to: #{arrow.to_pos})"
+    end
+    
+    valid_candidates.first
+  end
+
+  def generate_candidates(gx1, gy1, gx2, gy2)
+    dx = gx2 - gx1
+    dy = gy2 - gy1
+
+    return [generate_straight(gx1, gy1, gx2, gy2)] if dx == 0 || dy == 0
+
+    candidates = []
+    candidates << generate_l_shape(gx1, gy1, gx2, gy2, :horizontal)
+    candidates << generate_l_shape(gx1, gy1, gx2, gy2, :vertical)
+
+    if dx.abs == 2 && dy.abs == 2
+      candidates << [[gx1, gy1], [gx1 + dx/2, gy1 + dy/2], [gx2, gy2]]
+    end
+
+    candidates
+  end
+
+  def generate_straight(gx1, gy1, gx2, gy2)
+    path = []
+    if gx1 == gx2
+      step = gy2 > gy1 ? 1 : -1
+      gy1.step(gy2, step) { |y| path << [gx1, y] }
+    else
+      step = gx2 > gx1 ? 1 : -1
+      gx1.step(gx2, step) { |x| path << [x, gy1] }
+    end
+    path
+  end
+
+  def generate_l_shape(gx1, gy1, gx2, gy2, first_dir)
+    path = []
+    if first_dir == :horizontal
+      step_x = gx2 > gx1 ? 1 : -1
+      gx1.step(gx2, step_x) { |x| path << [x, gy1] }
+      step_y = gy2 > gy1 ? 1 : -1
+      y_start = gy1 + step_y
+      y_start.step(gy2, step_y) { |y| path << [gx2, y] }
+    else
+      step_y = gy2 > gy1 ? 1 : -1
+      gy1.step(gy2, step_y) { |y| path << [gx1, y] }
+      step_x = gx2 > gx1 ? 1 : -1
+      x_start = gx1 + step_x
+      x_start.step(gx2, step_x) { |x| path << [x, gy2] }
+    end
+    path
+  end
+
+  def valid_path?(path, arrow)
+    path[1...-1].each do |x, y|
+      if x.even? && y.even?
+        pos = (y / 2) * 3 + (x / 2)
+        return false if @entities_by_position.key?(pos)
+      end
+    end
+
+    require 'set'
+    pair = [arrow.from_pos, arrow.to_pos].sort
+    path_points = path.to_set
+
+    @routed_paths.each do |routed|
+      r_pair = [routed[:arrow].from_pos, routed[:arrow].to_pos].sort
+      next if pair == r_pair
+      
+      intersection = path_points & routed[:path].to_set
+      intersection.each do |x, y|
+        is_endpoint = (x == path.first[0] && y == path.first[1]) || (x == path.last[0] && y == path.last[1])
+        return false unless is_endpoint && x.even? && y.even?
+      end
+    end
+    true
+  end
+end
+
+class RouterArrow
+  attr_reader :id, :from_pos, :to_pos
+  def initialize(id, from_pos, to_pos)
+    @id = id
+    @from_pos = from_pos
+    @to_pos = to_pos
+  end
+end
+
+def render_arrows
+  lines = []
+  lines << "  <!-- Arrows -->"
+
+  router_arrows = @arrows.values.map do |arr|
+    from_entity = @entities[arr.from]
+    to_entity = @entities[arr.to]
+    RouterArrow.new(arr.id, from_entity.position, to_entity.position)
+  end
+
+  router = GridRouter.new(@entities_by_position)
+  routes = router.route_all(router_arrows)
+
+  # Group by pair to compute offset
+  arrow_groups = {}
+  @arrows.each do |_id, arrow|
+    from_pos = @entities[arrow.from].position
+    to_pos = @entities[arrow.to].position
+    pair = [from_pos, to_pos].sort
+    arrow_groups[pair] ||= []
+    arrow_groups[pair] << arrow
+  end
+
+  arrow_groups.each do |pair, arrows_in_group|
+    arrows_in_group.each_with_index do |arrow, index|
+      from_entity = @entities[arrow.from]
+      
+      # Is it reversed relative to pair?
+      is_reversed = (from_entity.position != pair[0])
+      
+      offset = (index - (arrows_in_group.length - 1) / 2.0) * 10.0
+      offset = -offset if is_reversed
+      
+      grid_path = routes[arrow.id]
+      
+      svg_points = grid_path.map { |pt| svg_coords_from_grid(pt[0], pt[1]) }
+      
+      # Adjust first and last point to entity edges
+      if svg_points.length >= 2
+        adjust_to_edge(svg_points[0], svg_points[1], true)
+        adjust_to_edge(svg_points[-1], svg_points[-2], false)
+      end
+      
+      # Apply offset to the whole path
+      shifted_points = apply_offset_to_path(svg_points, offset)
+
+      color = ARROW_COLORS[arrow.type]
+      marker_id = "marker_#{arrow.type}"
+
+      # Path string
+      path_data = "M #{shifted_points.first[0]},#{shifted_points.first[1]} "
+      shifted_points[1..-1].each do |pt|
+        path_data += "L #{pt[0]},#{pt[1]} "
+      end
+
+      # Midpoint for label
+      mid_idx = shifted_points.length / 2
+      if shifted_points.length.even?
+        p1 = shifted_points[mid_idx - 1]
+        p2 = shifted_points[mid_idx]
+        label_x = (p1[0] + p2[0]) / 2.0
+        label_y = (p1[1] + p2[1]) / 2.0
+      else
+        p1 = shifted_points[mid_idx]
+        label_x = p1[0]
+        label_y = p1[1]
+      end
+
+      lines << "  <g id=\"arrow_#{arrow.id}\">"
+      lines << "    <path d=\"#{path_data.strip}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" stroke-linejoin=\"round\" marker-end=\"url(##{marker_id})\" />"
+      lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
+      lines << "  </g>"
+    end
+  end
+  lines.join("\n")
+end
+
+def svg_coords_from_grid(gx, gy)
+  col = gx / 2
+  row = gy / 2
+  
+  if gx.even?
+    x = SVG_GRID_COLS[col] + SVG_ENTITY_WIDTH / 2.0
+  else
+    x = (SVG_GRID_COLS[col] + SVG_ENTITY_WIDTH + SVG_GRID_COLS[col + 1]) / 2.0
+  end
+  
+  if gy.even?
+    y = SVG_GRID_ROWS[row] + SVG_ENTITY_HEIGHT / 2.0
+  else
+    y = (SVG_GRID_ROWS[row] + SVG_ENTITY_HEIGHT + SVG_GRID_ROWS[row + 1]) / 2.0
+  end
+  [x, y]
+end
+
+def adjust_to_edge(pt, neighbor, is_start)
+  dx = neighbor[0] - pt[0]
+  dy = neighbor[1] - pt[1]
+  
+  if dx.abs > dy.abs
+    # Horizontal exiting/entering
+    if dx > 0
+      pt[0] += SVG_ENTITY_WIDTH / 2.0
+    else
+      pt[0] -= SVG_ENTITY_WIDTH / 2.0
+    end
+  else
+    # Vertical exiting/entering
+    if dy > 0
+      pt[1] += SVG_ENTITY_HEIGHT / 2.0
+    else
+      pt[1] -= SVG_ENTITY_HEIGHT / 2.0
+    end
+  end
+end
+
+def apply_offset_to_path(points, offset)
+  return points if offset == 0
+  shifted = []
+  
+  (0...points.length).each do |i|
+    p = points[i]
+    
+    if i == 0
+      p_next = points[i+1]
+      dx = p_next[0] - p[0]
+      dy = p_next[1] - p[1]
+      if dx.abs > dy.abs
+        shifted << [p[0], p[1] + (dx > 0 ? 1 : -1) * offset]
+      else
+        shifted << [p[0] + (dy > 0 ? -1 : 1) * offset, p[1]]
+      end
+    elsif i == points.length - 1
+      p_prev = points[i-1]
+      dx = p[0] - p_prev[0]
+      dy = p[1] - p_prev[1]
+      if dx.abs > dy.abs
+        shifted << [p[0], p[1] + (dx > 0 ? 1 : -1) * offset]
+      else
+        shifted << [p[0] + (dy > 0 ? -1 : 1) * offset, p[1]]
+      end
+    else
+      p_prev = points[i-1]
+      p_next = points[i+1]
+      
+      dx1 = p[0] - p_prev[0]
+      dy1 = p[1] - p_prev[1]
+      dx2 = p_next[0] - p[0]
+      dy2 = p_next[1] - p[1]
+      
+      shift_x = 0
+      shift_y = 0
+      
+      if dx1.abs > dy1.abs
+        shift_y = (dx1 > 0 ? 1 : -1) * offset
+      else
+        shift_x = (dy1 > 0 ? -1 : 1) * offset
+      end
+      
+      if dx2.abs > dy2.abs
+        shift_y = (dx2 > 0 ? 1 : -1) * offset
+      else
+        shift_x = (dy2 > 0 ? -1 : 1) * offset
+      end
+      
+      shifted << [p[0] + shift_x, p[1] + shift_y]
+    end
+  end
+  shifted
+end
 
     def render_comments
       lines = []
@@ -613,178 +733,6 @@ module Bizgram
       x = SVG_GRID_COLS[col]
       y = SVG_GRID_ROWS[row]
       [x, y]
-    end
-
-    def get_route_pattern(from_pos, to_pos)
-      # Calculate relative position pattern (row_diff, col_diff)
-      # Position layout: 0 1 2 / 3 4 5 / 6 7 8
-      from_row = from_pos / 3
-      from_col = from_pos % 3
-      to_row = to_pos / 3
-      to_col = to_pos % 3
-
-      row_diff = to_row - from_row
-      col_diff = to_col - from_col
-
-      # Route pattern lookup based on specification
-      # (矢印のルートパターン一覧（基本ルート）参照)
-      #
-      # Strategy for L-shaped routing:
-      # - Prioritize the larger absolute difference as primary direction
-      # - But for asymmetric cases (|row_diff|=1, |col_diff|=2 or vice versa),
-      #   consider vertical-first to avoid entity blocking
-      #
-      # Returns: [from_dir, to_dir, route_strategy]
-
-      if row_diff.abs > col_diff.abs
-        # Vertical is primary direction
-        if row_diff > 0
-          [:bottom, :top, :vertical_primary]
-        else
-          [:top, :bottom, :vertical_primary]
-        end
-      elsif col_diff.abs > row_diff.abs
-        # Horizontal is primary direction
-        # Exception: if col_diff=±2 and row_diff=±1, use vertical-primary
-        # to avoid routing through intermediate column
-        if col_diff.abs == 2 && row_diff.abs == 1
-          # Asymmetric case (1,2) or (-1,-2): prefer vertical routing
-          if row_diff > 0
-            [:bottom, :top, :vertical_primary]
-          else
-            [:top, :bottom, :vertical_primary]
-          end
-        else
-          # Standard horizontal-primary for col_diff > row_diff
-          if col_diff > 0
-            [:right, :left, :horizontal_primary]
-          else
-            [:left, :right, :horizontal_primary]
-          end
-        end
-      else
-        # Equal distance: vertical is default
-        if row_diff > 0
-          [:bottom, :top, :vertical_primary]
-        elsif row_diff < 0
-          [:top, :bottom, :vertical_primary]
-        elsif col_diff > 0
-          [:right, :left, :horizontal_primary]
-        else
-          [:left, :right, :horizontal_primary]
-        end
-      end
-    end
-
-    def get_edge_connection_points(from_x, from_y, to_x, to_y, from_pos, to_pos)
-      # Calculate edge connection points based on route pattern
-      # Returns: [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir]
-
-      from_center_x = from_x + SVG_ENTITY_WIDTH / 2.0
-      from_center_y = from_y + SVG_ENTITY_HEIGHT / 2.0
-      to_center_x = to_x + SVG_ENTITY_WIDTH / 2.0
-      to_center_y = to_y + SVG_ENTITY_HEIGHT / 2.0
-
-      from_dir, to_dir, _route_strategy = get_route_pattern(from_pos, to_pos)
-
-      # Calculate exit and entry points based on direction
-      case from_dir
-      when :right
-        from_exit_x = from_x + SVG_ENTITY_WIDTH
-        from_exit_y = from_center_y
-      when :left
-        from_exit_x = from_x
-        from_exit_y = from_center_y
-      when :bottom
-        from_exit_x = from_center_x
-        from_exit_y = from_y + SVG_ENTITY_HEIGHT
-      when :top
-        from_exit_x = from_center_x
-        from_exit_y = from_y
-      end
-
-      case to_dir
-      when :right
-        to_enter_x = to_x + SVG_ENTITY_WIDTH
-        to_enter_y = to_center_y
-      when :left
-        to_enter_x = to_x
-        to_enter_y = to_center_y
-      when :bottom
-        to_enter_x = to_center_x
-        to_enter_y = to_y + SVG_ENTITY_HEIGHT
-      when :top
-        to_enter_x = to_center_x
-        to_enter_y = to_y
-      end
-
-      [from_exit_x, from_exit_y, to_enter_x, to_enter_y, from_dir, to_dir, _route_strategy]
-    end
-
-    def get_l_shaped_path(from_x, from_y, to_x, to_y, from_dir, to_dir)
-      # Generate L-shaped routing path based on exit/entry directions
-      # Path follows the direction indicated by from_dir and to_dir
-
-      # Special case: same X coordinate → pure vertical path
-      if (from_x - to_x).abs < 0.01
-        return "M #{from_x},#{from_y} L #{from_x},#{to_y}"
-      end
-
-      # Special case: same Y coordinate → pure horizontal path
-      if (from_y - to_y).abs < 0.01
-        return "M #{from_x},#{from_y} L #{to_x},#{to_y}"
-      end
-
-      case [from_dir, to_dir]
-      when [:right, :left], [:right, :top], [:right, :bottom]
-        # Exiting right: horizontal first
-        mid_x = (from_x + to_x) / 2.0
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
-      when [:left, :right], [:left, :top], [:left, :bottom]
-        # Exiting left: horizontal first
-        mid_x = (from_x + to_x) / 2.0
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
-      when [:bottom, :top], [:bottom, :left], [:bottom, :right]
-        # Exiting bottom: vertical first
-        mid_y = (from_y + to_y) / 2.0
-        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      when [:top, :bottom], [:top, :left], [:top, :right]
-        # Exiting top: vertical first
-        mid_y = (from_y + to_y) / 2.0
-        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      else
-        # Fallback: horizontal first
-        mid_x = (from_x + to_x) / 2.0
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{to_y} L #{to_x},#{to_y}"
-      end
-    end
-
-    def get_l_shaped_path_with_offset(from_x, from_y, to_x, to_y, offset, from_dir, to_dir, route_strategy)
-      # Generate L-shaped routing path with offset for parallel arrows
-      # Key principle: offset is perpendicular to routing direction
-      # - Horizontal-primary routing: offset Y-axis (vertical separation)
-      # - Vertical-primary routing: offset X-axis (horizontal separation)
-      # Note: from_x/from_y/to_x/to_y are EXIT/ENTRY points, not entity corners
-
-      case route_strategy
-      when :horizontal_primary
-        # Horizontal-primary routing: horizontal then vertical
-        # Apply offset to vertical bend (perpendicular to horizontal flow)
-        mid_x = (from_x + to_x) / 2.0
-        mid_y = (from_y + to_y) / 2.0 + offset
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      when :vertical_primary
-        # Vertical-primary routing: vertical then horizontal
-        # Apply offset to horizontal bend (perpendicular to vertical flow)
-        mid_x = (from_x + to_x) / 2.0 + offset
-        mid_y = (from_y + to_y) / 2.0
-        "M #{from_x},#{from_y} L #{from_x},#{mid_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      else
-        # Fallback: horizontal-primary assumed
-        mid_x = (from_x + to_x) / 2.0
-        mid_y = (from_y + to_y) / 2.0 + offset
-        "M #{from_x},#{from_y} L #{mid_x},#{from_y} L #{mid_x},#{mid_y} L #{to_x},#{mid_y} L #{to_x},#{to_y}"
-      end
     end
 
     def load_entity_svg_as_data_uri(entity_type)

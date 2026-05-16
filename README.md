@@ -2,7 +2,7 @@ bizgram
 =======
 
 Bizgram（ビジネスモデル図解）をRubyコードで書くためのDSLライブラリです。
-このライブラリで定義したビジネスモデルは、[DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)コードとして出力され、[Graphviz](https://graphviz.org/)を通すことで、Bizgram（ビジネスモデル図解）として描画できます。
+このライブラリで定義したビジネスモデルは、Bizgram（ビジネスモデル図解）を表す SVG ドキュメントとして直接出力されます。
 
 - 資料：[ビジネスモデル図解ツールキット配布版](./reference/ビジネスモデル図解ツールキット配布版.pdf)
 
@@ -33,7 +33,7 @@ bundle install
 ```ruby
 require "bizgram"
 
-dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
+svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   # 主体の定義
   user = user("ゲーム利用者", :ct)
   device = smartphone("利用者のデバイス", :cm)
@@ -49,7 +49,7 @@ dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
   comment_to(site, "Google Play的な")
 end
 
-puts dot
+puts svg
 ```
 
 このコードは以下のような SVGドキュメントを出力します：
@@ -163,5 +163,3 @@ bundle exec rspec spec/bizgram_spec.rb
 
 - [Bizgram（ビジネスモデル図解）](https://bizgram.zukai.co/)
 - [図解の説明書](https://bizgram.zukai.co/howto)
-- [Graphviz](https://graphviz.org/)
-- [DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)

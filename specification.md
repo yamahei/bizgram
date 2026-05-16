@@ -11,7 +11,7 @@ Specification 仕様書
 ----
 
 - [Bizgram](https://bizgram.zukai.co/)（ビズグラム）をコードで書くためのDSLをRubyで作成する
-  - [DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)コードを生成して、[Graphiz](https://graphviz.org/)で描画する
+  - Bizgram（ビジネスモデル図解）を表す SVG ドキュメントを直接生成する
 - [Mermaid](https://mermaid.js.org/)や[PlantUML](https://mermaid.js.org/)のような独自の言語にはしない
   - 独自の文法&パーサーを作る労力が大きいこと、Ruby製DDLの使い勝手は悪くないことから、現時点ではDDLで十分と判断する
 - 書き方の自由度や実行方法の柔軟性は意識したい
@@ -111,7 +111,7 @@ end
 
 - 戻値
 
-[Graphiz](https://graphviz.org/)で描画可能な[DOT言語](https://ja.wikipedia.org/wiki/DOT%E8%A8%80%E8%AA%9E)コード文字列
+Bizgramを描画するための SVG ドキュメント文字列
 
 
 #### 主体を定義するメソッド
@@ -393,15 +393,16 @@ Bizgram
   │   ├── entity / person(user) / company(business) / money / object(goods) / information(info) / smartphone(device) / store(shop) / other（主体定義）
   │   ├── arrow（流れ定義）
   │   ├── comment_to(comment)（コメント定義）
-  │   └── to_dot（DOT言語生成へ）
+  │   └── to_svg（SVG生成へ）
   ├── PositionResolver（位置指定の解決）
   │   ├── 数値指定（0-8）
   │   ├── シンボル指定（:lt, :ct等）
   │   └── 座標指定（[x,y]）
-  ├── DotGenerator（DOT言語コード生成）
-  │   ├── ノード定義（Entity → node）
-  │   ├── エッジ定義（Arrow → edge）
-  │   └── コメント定義（Comment → node）
+  ├── SvgGenerator（SVGコード生成）
+  │   ├── SVGヘッダー/フッター出力
+  │   ├── Entity出力（SVG画像埋め込み）
+  │   ├── Arrow出力（5x5グリッド・ルーティングおよびオフセット処理）
+  │   └── Comment出力
   ├── Entity（主体の内部表現）
   ├── Arrow（流れの内部表現）
   └── Comment（コメントの内部表現）
@@ -554,32 +555,37 @@ end
   4. Comment を作成し、マップに登録
   5. IDを返す
 
-- `to_dot(title)` → `DotGenerator`に委譲
+- `to_svg(title)` → `SvgGenerator`に委譲
 
-#### `DotGenerator`クラス
+#### `SvgGenerator`クラス
 
-Entity と Arrow から DOT言語コードを生成する。また、Comment も処理する。
+Entity と Arrow、Comment から直接 SVG ドキュメントを生成する。
 
-**配色**
-- `:user` → "#FFE5CC"（オレンジ系）
-- `:business` → "#CCE5FF"（青系）
-- `:operator` → "#E5FFCC"（緑系）
-- Comment → "#FFFFCC"（黄系）
-
-**エッジスタイル**
-- `:object` → color: black
-- `:money` → color: red
-- `:information` → color: blue
+**配色とスタイル**
+- Arrowスタイル
+  - `:object` → "#000000" (黒)
+  - `:money` → "#FF0000" (赤)
+  - `:information` → "#0000FF" (青)
+  - `:other` → "#000000" (黒)
+- Comment背景色: "#FFFC41" (黄系)
 
 **生成ロジック**
 
-1. `digraph Bizgram { ... }` の枠組みを作成
-2. graph属性でタイトルを指定
-3. ノード定義：`node_{id} [label="name", shape=box, style=filled, fillcolor="color"];` の形式で全Entity を出力
-4. コメントノード定義：`comment_{id} [label="text", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];` の形式で全Comment を出力
-5. エッジ定義：`node_{from} -> node_{to} [label="name", color=color];` の形式で全Arrow を出力
-6. コメントエッジ定義：`comment_{id} -> node_{target} [style=dashed, color=gray];` の形式で全Comment を出力
-7. 文字列をDOT言語の特殊文字（"など）をエスケープ
+1. SVGキャンバス（1440x900）の枠組みを作成
+2. `reference/image/` 配下にある各主体のSVGファイルをBase64エンコードし、`<image>`タグとして指定座標に埋め込む
+3. 各Entityの下部に名称テキストを配置
+4. Arrowのルーティングと描画（後述）
+5. コメントボックスを描画し、対象のEntityまで点線をつなぐ
+
+**Arrowルーティングアルゴリズム（5x5グリッド方式）**
+
+Arrow（矢印）は単なる直線ではなく、仕様書上部で定義された「ルート定義一覧」に基づき、他の主体と被らないように迂回・直角で描画される。
+また、全く同じ経路を通る矢印が複数存在する場合は、重ならないように一定のピクセル数分オフセット（平行移動）させる。
+
+1. **基本経路選択**: Entity同士の相対位置関係（行の差・列の差）から、ルートパターンの候補を決定する
+2. **ルート検証と確定**: 複数のルート候補がある場合、主体が配置されている座標や既存の矢印と被らない経路を採用する
+3. **オフセット適用**: 複数の矢印が完全に同じ経路を通る（または双方向に通る）場合、経路の垂直方向に平行にずらす（例：1本あたり10pxのオフセット）
+4. **SVGパスの生成**: 確定した経路（基本経路＋オフセット）をもとに、`M (x1),(y1) L (x2),(y2) ...` の形式で、直角を基本とするL字型などのSVGパスデータ（`d`属性）を出力する
 
 #### `Bizgram.draw`メソッド
 
@@ -589,8 +595,8 @@ Entity と Arrow から DOT言語コードを生成する。また、Comment も
 1. Builder インスタンスを作成
 2. ブロックを`instance_eval`で Builder上で実行
    - ブロック内のメソッド呼び出しは、全てBuilder のメソッドへ委譲される
-3. `to_dot(title)`で DOT言語コードを生成
-4. 生成されたDOT言語文字列を返す
+3. `to_svg(title)`で SVG ドキュメントを生成
+4. 生成された SVG ドキュメント文字列を返す
 
 ### バリデーション
 
@@ -627,27 +633,9 @@ Entity と Arrow から DOT言語コードを生成する。また、Comment も
 9. **コメント対象のバリデーション**
    - to で指定されたEntity が存在しないNG → `ArgumentError`
 
-### DOT言語の生成例
+### SVG生成の仕組みと特徴
 
-```
-digraph Bizgram {
-  graph [label="タイトル", labelloc=top];
-  rankdir=TB;
-
-  node_0 [label="太郎", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_1 [label="次郎", shape=box, style=filled, fillcolor="#FFE5CC"];
-  node_3 [label="HOGEビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_4 [label="FUGAビジネス", shape=box, style=filled, fillcolor="#CCE5FF"];
-  node_6 [label="社員", shape=box, style=filled, fillcolor="#E5FFCC"];
-  node_7 [label="販売員", shape=box, style=filled, fillcolor="#E5FFCC"];
-  comment_0 [label="太郎君", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-  comment_1 [label="次郎君", shape=box, style="filled,rounded", fillcolor="#FFFFCC"];
-
-  node_4 -> node_0 [label="商品", color=black];
-  node_0 -> node_3 [label="代金", color=red];
-  node_7 -> node_0 [label="広告", color=blue];
-  comment_0 -> node_0 [style=dashed, color=gray];
-  comment_1 -> node_1 [style=dashed, color=gray];
-}
-```
+- **画像ファイルの埋め込み**: 各Entityに割り当てられた `reference/image/*.svg` ファイルを Base64エンコードのData URIスキーマ（`data:image/svg+xml;base64,...`）として直接SVGファイルに埋め込んでいます。これにより、出力された1つのSVGファイルを共有するだけで、全ての画像要素が欠落せずに表示されます。
+- **マーカー定義**: 矢印の終点（三角）は、`<defs><marker>` 要素として定義されており、各パスから `marker-end` 属性で参照されています。
+- **5x5グリッドルーティングの実現**: 指定された相対位置に対して、直進・L字曲がり・迂回などのルートを動的に計算し、中間地点となる座標をつなぐ直線（`<path d="M... L... L...">`）として描画されます。
 
