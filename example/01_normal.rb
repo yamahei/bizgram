@@ -16,4 +16,5 @@ dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
   comment_to(site, "Google Play的な")
 end
 
-puts dot
+File.write("example/01_normal.svg", dot)
+puts "Generated example/01_normal.svg"

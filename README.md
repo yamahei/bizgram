@@ -55,10 +55,24 @@ puts svg
 このコードは以下のような SVGドキュメントを出力します：
 
 ```sh
-ruby example/game.rb > example/game.svg
+ruby example/01_normal.rb
 ```
 
-![](./example/game.svg)
+![](./example/01_normal.svg)
+
+他にも複雑な配置や多重矢印を試すためのサンプルコードを用意しています。
+以下のコマンドをコピペして実行することで、それぞれのSVGを生成できます。
+
+```sh
+# ①ごく普通のBizgramコード
+ruby example/01_normal.rb
+
+# ②複雑なBizgramコード
+ruby example/02_complex.rb
+
+# ③意地悪な（多重・双方向など）Bizgramコード
+ruby example/03_edge_case.rb
+```
 
 <details>
 <summary>SVGコード</summary>
