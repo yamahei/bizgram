@@ -3,28 +3,30 @@
 require 'base64'
 
 module Bizgram
-  # SVG Layout Constants - from reference materials
-  SVG_CANVAS_WIDTH = 1440.0
-  SVG_CANVAS_HEIGHT = 900.0
+  # SVG Layout Constants - Compact and centered
+  SVG_ENTITY_WIDTH = 120.0
+  SVG_ENTITY_HEIGHT = 120.0
+  SVG_GRID_SPACING_X = 240.0
+  SVG_GRID_SPACING_Y = 240.0
+  SVG_PADDING_X = 200.0
+  SVG_PADDING_Y = 200.0
 
-  # Grid row Y positions
+  SVG_CANVAS_WIDTH = SVG_PADDING_X * 2 + SVG_GRID_SPACING_X * 2
+  SVG_CANVAS_HEIGHT = SVG_PADDING_Y * 2 + SVG_GRID_SPACING_Y * 2
+
+  # Grid row Y positions (Centers)
   SVG_GRID_ROWS = [
-    0,
-    350.26513,
-    635.41785,
-    900.0
+    SVG_PADDING_Y,
+    SVG_PADDING_Y + SVG_GRID_SPACING_Y,
+    SVG_PADDING_Y + SVG_GRID_SPACING_Y * 2
   ].freeze
 
-  # Grid column X positions (approximate from reference materials)
+  # Grid column X positions (Centers)
   SVG_GRID_COLS = [
-    426.1472,
-    683.23193,
-    937.0625
+    SVG_PADDING_X,
+    SVG_PADDING_X + SVG_GRID_SPACING_X,
+    SVG_PADDING_X + SVG_GRID_SPACING_X * 2
   ].freeze
-
-  # Entity box dimensions
-  SVG_ENTITY_WIDTH = 72.47241
-  SVG_ENTITY_HEIGHT = 132.75592
 
   # Styling constants
   SVG_ENTITY_STROKE_WIDTH = 4
@@ -364,6 +366,11 @@ module Bizgram
               <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
             </marker>
           </defs>
+          <!-- Background Grid Lines -->
+          <g id="background_grid" stroke="#cccccc" stroke-width="2" stroke-dasharray="8,8">
+            <line x1="#{SVG_PADDING_X - 40}" y1="#{(SVG_GRID_ROWS[0] + SVG_GRID_ROWS[1]) / 2.0}" x2="#{SVG_CANVAS_WIDTH - SVG_PADDING_X + 40}" y2="#{(SVG_GRID_ROWS[0] + SVG_GRID_ROWS[1]) / 2.0}" />
+            <line x1="#{SVG_PADDING_X - 40}" y1="#{(SVG_GRID_ROWS[1] + SVG_GRID_ROWS[2]) / 2.0}" x2="#{SVG_CANVAS_WIDTH - SVG_PADDING_X + 40}" y2="#{(SVG_GRID_ROWS[1] + SVG_GRID_ROWS[2]) / 2.0}" />
+          </g>
       SVG
     end
 
@@ -377,19 +384,25 @@ module Bizgram
       @entities_by_position.each do |pos, entity|
         x, y = position_to_svg_coords(pos)
 
+        # x, y are the center coordinates
+        left_x = x - SVG_ENTITY_WIDTH / 2.0
+        top_y = y - SVG_ENTITY_HEIGHT / 2.0
+
         # Entity group
         lines << "  <g id=\"entity_#{entity.id}\">"
 
-        # Embedded entity SVG image as data URI
-        data_uri = load_entity_svg_as_data_uri(entity.type)
-        if data_uri
-          lines << "    <image x=\"#{x}\" y=\"#{y}\" width=\"#{SVG_ENTITY_WIDTH}\" height=\"#{SVG_ENTITY_HEIGHT}\" href=\"#{data_uri}\"/>"
+        # Embedded entity SVG content directly
+        svg_content = load_entity_svg_with_transform(entity.type, left_x, top_y)
+        if svg_content
+          lines << svg_content
+        else
+          # Fallback if svg loading fails
+          lines << "    <rect x=\"#{left_x}\" y=\"#{top_y}\" width=\"#{SVG_ENTITY_WIDTH}\" height=\"#{SVG_ENTITY_HEIGHT}\" fill=\"#eeeeee\" stroke=\"#000000\" stroke-width=\"2\" />"
         end
 
         # Entity text label (below image)
-        label_y = y + SVG_ENTITY_HEIGHT + 8  # 8px margin below image
-        text_x = x + SVG_ENTITY_WIDTH / 2.0
-        lines << "    <text x=\"#{text_x}\" y=\"#{label_y}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"text-before-edge\" fill=\"#000000\" word-spacing=\"0\" letter-spacing=\"0\" style=\"white-space: pre-wrap; word-wrap: break-word;\">#{escape_xml(entity.name)}</text>"
+        label_y = top_y + SVG_ENTITY_HEIGHT + 8  # 8px margin below image
+        lines << "    <text x=\"#{x}\" y=\"#{label_y}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"text-before-edge\" fill=\"#000000\" word-spacing=\"0\" letter-spacing=\"0\" style=\"white-space: pre-wrap; word-wrap: break-word;\">#{escape_xml(entity.name)}</text>"
         lines << "  </g>"
       end
       lines.join("\n")
@@ -551,7 +564,8 @@ def render_arrows
       # Is it reversed relative to pair?
       is_reversed = (from_entity.position != pair[0])
       
-      offset = (index - (arrows_in_group.length - 1) / 2.0) * 10.0
+      # Increased offset multiplier from 10.0 to 25.0 to avoid text overlap between parallel arrows
+      offset = (index - (arrows_in_group.length - 1) / 2.0) * 25.0
       offset = -offset if is_reversed
       
       grid_path = routes[arrow.id]
@@ -576,22 +590,50 @@ def render_arrows
         path_data += "L #{pt[0]},#{pt[1]} "
       end
 
-      # Midpoint for label
-      mid_idx = shifted_points.length / 2
-      if shifted_points.length.even?
-        p1 = shifted_points[mid_idx - 1]
-        p2 = shifted_points[mid_idx]
-        label_x = (p1[0] + p2[0]) / 2.0
-        label_y = (p1[1] + p2[1]) / 2.0
+      # Find longest segment for label
+      max_len = -1
+      best_p1 = nil
+      best_p2 = nil
+      (0...shifted_points.length - 1).each do |i|
+        p_curr = shifted_points[i]
+        p_next = shifted_points[i+1]
+        len = Math.sqrt((p_next[0] - p_curr[0])**2 + (p_next[1] - p_curr[1])**2)
+        if len > max_len
+          max_len = len
+          best_p1 = p_curr
+          best_p2 = p_next
+        end
+      end
+
+      label_x = (best_p1[0] + best_p2[0]) / 2.0
+      label_y = (best_p1[1] + best_p2[1]) / 2.0
+      is_vertical_segment = (best_p1[0] - best_p2[0]).abs < (best_p1[1] - best_p2[1]).abs
+
+      text_anchor = "middle"
+      if is_vertical_segment
+        dy = best_p2[1] - best_p1[1]
+        actual_shift_x = (dy > 0 ? -1 : 1) * offset
+        if actual_shift_x < 0
+          label_x -= 8
+          text_anchor = "end"
+        else
+          label_x += 8
+          text_anchor = "start"
+        end
+        label_y += 5
       else
-        p1 = shifted_points[mid_idx]
-        label_x = p1[0]
-        label_y = p1[1]
+        dx = best_p2[0] - best_p1[0]
+        actual_shift_y = (dx > 0 ? 1 : -1) * offset
+        if actual_shift_y > 0
+          label_y += 18 # below
+        else
+          label_y -= 8  # above
+        end
       end
 
       lines << "  <g id=\"arrow_#{arrow.id}\">"
       lines << "    <path d=\"#{path_data.strip}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" stroke-linejoin=\"round\" marker-end=\"url(##{marker_id})\" />"
-      lines << "    <text x=\"#{label_x}\" y=\"#{label_y - 10}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
+      lines << "    <text x=\"#{label_x}\" y=\"#{label_y}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"#{text_anchor}\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
       lines << "  </g>"
     end
   end
@@ -603,15 +645,15 @@ def svg_coords_from_grid(gx, gy)
   row = gy / 2
   
   if gx.even?
-    x = SVG_GRID_COLS[col] + SVG_ENTITY_WIDTH / 2.0
+    x = SVG_GRID_COLS[col]
   else
-    x = (SVG_GRID_COLS[col] + SVG_ENTITY_WIDTH + SVG_GRID_COLS[col + 1]) / 2.0
+    x = (SVG_GRID_COLS[col] + SVG_GRID_COLS[col + 1]) / 2.0
   end
   
   if gy.even?
-    y = SVG_GRID_ROWS[row] + SVG_ENTITY_HEIGHT / 2.0
+    y = SVG_GRID_ROWS[row]
   else
-    y = (SVG_GRID_ROWS[row] + SVG_ENTITY_HEIGHT + SVG_GRID_ROWS[row + 1]) / 2.0
+    y = (SVG_GRID_ROWS[row] + SVG_GRID_ROWS[row + 1]) / 2.0
   end
   [x, y]
 end
@@ -630,7 +672,8 @@ def adjust_to_edge(pt, neighbor, is_start)
   else
     # Vertical exiting/entering
     if dy > 0
-      pt[1] += SVG_ENTITY_HEIGHT / 2.0
+      # Offset more on the bottom edge to avoid text label (height/2 + 8 margin + 20 text height + padding)
+      pt[1] += SVG_ENTITY_HEIGHT / 2.0 + 35.0
     else
       pt[1] -= SVG_ENTITY_HEIGHT / 2.0
     end
@@ -699,29 +742,43 @@ end
       lines << "  <!-- Comments -->"
       @comments.each do |_id, comment|
         target_entity = @entities[comment.to]
-        target_x, target_y = position_to_svg_coords(target_entity.position)
-        target_center_x = target_x + SVG_ENTITY_WIDTH / 2.0
-        target_center_y = target_y + SVG_ENTITY_HEIGHT / 2.0
+        target_center_x, target_center_y = position_to_svg_coords(target_entity.position)
+        target_top_y = target_center_y - SVG_ENTITY_HEIGHT / 2.0
 
-        # Simple comment box positioned above the target entity
-        comment_x = target_center_x - 40
-        comment_y = target_center_y - 80
-        comment_width = 80
+        # Dynamic width based on text length (approx 14px per char + 20px padding)
+        comment_width = [comment.text.length * 14 + 20, 80].max
         comment_height = 40
+
+        # Position comment offset to the top-right to avoid vertical arrows
+        comment_x = target_center_x + 10
+        comment_y = target_top_y - 70
         comment_box_center_x = comment_x + comment_width / 2.0
         comment_box_center_y = comment_y + comment_height / 2.0
 
-        # Connection from comment box to target entity (from bottom of box to top of entity)
-        from_exit_x = comment_box_center_x
-        from_exit_y = comment_y + comment_height
-        to_enter_x = target_center_x
-        to_enter_y = target_y
+        # Connection from comment box to target entity
+        # We replace the dashed line with a speech bubble tail
+        tail_width = 16
+        tail_height = 16
+        cx = comment_box_center_x
+        cy = comment_y + comment_height
+        
+        # Original style speech bubble
+        path_d = "M #{comment_x + 5},#{comment_y} " +
+                 "H #{comment_x + comment_width - 5} " +
+                 "Q #{comment_x + comment_width},#{comment_y} #{comment_x + comment_width},#{comment_y + 5} " +
+                 "V #{cy - 5} " +
+                 "Q #{comment_x + comment_width},#{cy} #{comment_x + comment_width - 5},#{cy} " +
+                 "H #{comment_x + 20 + tail_width} " +
+                 "L #{comment_x + 10},#{cy + tail_height + 5} " +
+                 "L #{comment_x + 20},#{cy} " +
+                 "H #{comment_x + 5} " +
+                 "Q #{comment_x},#{cy} #{comment_x},#{cy - 5} " +
+                 "V #{comment_y + 5} " +
+                 "Q #{comment_x},#{comment_y} #{comment_x + 5},#{comment_y} Z"
 
         lines << "  <g id=\"comment_#{comment.id}\">"
-        lines << "    <rect x=\"#{comment_x}\" y=\"#{comment_y}\" width=\"#{comment_width}\" height=\"#{comment_height}\" fill=\"#{SVG_COMMENT_BG_COLOR}\" stroke=\"#000000\" stroke-width=\"#{SVG_COMMENT_STROKE_WIDTH}\" rx=\"5\" />"
+        lines << "    <path d=\"#{path_d}\" fill=\"#dddddd\" stroke=\"none\" />"
         lines << "    <text x=\"#{comment_box_center_x}\" y=\"#{comment_box_center_y}\" font-size=\"14\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"middle\" dominant-baseline=\"middle\" fill=\"#000000\">#{escape_xml(comment.text)}</text>"
-        # Connection line (dashed)
-        lines << "    <line x1=\"#{from_exit_x}\" y1=\"#{from_exit_y}\" x2=\"#{to_enter_x}\" y2=\"#{to_enter_y}\" stroke=\"#999999\" stroke-width=\"2\" stroke-dasharray=\"5,5\" />"
         lines << "  </g>"
       end
       lines.join("\n")
@@ -810,35 +867,42 @@ end
 
     def scale_svg_content(content, layer_transform = nil)
       # The reference images have viewBox="0 0 20.236225 36.561409"
-      # We need to scale them to SVG_ENTITY_WIDTH x SVG_ENTITY_HEIGHT
       ref_width = 20.236225
       ref_height = 36.561409
-      scale_x = SVG_ENTITY_WIDTH / ref_width
-      scale_y = SVG_ENTITY_HEIGHT / ref_height
+      
+      # Preserve aspect ratio by using the minimum scale
+      scale_val = [SVG_ENTITY_WIDTH / ref_width, SVG_ENTITY_HEIGHT / ref_height].min
+      
+      # Calculate centering offsets
+      offset_x = (SVG_ENTITY_WIDTH - ref_width * scale_val) / 2.0
+      offset_y = (SVG_ENTITY_HEIGHT - ref_height * scale_val) / 2.0
 
       # Build nested g elements for explicit transform order
-      # Nested transforms are ALWAYS evaluated outer→inner, which is what we want
       lines = []
 
-      if layer_transform
-        # Outermost: layer1's transform (coordinate normalization)
-        lines << "<g transform=\"#{layer_transform}\">"
-      end
+      # Outermost: Center within the entity box
+      lines << "<g transform=\"translate(#{offset_x}, #{offset_y})\">"
 
-      # Middle: scale transformation
-      lines << "  <g transform=\"scale(#{scale_x}, #{scale_y})\">"
+      # Middle: scale transformation (uniform)
+      lines << "  <g transform=\"scale(#{scale_val}, #{scale_val})\">"
+
+      if layer_transform
+        # Innermost: layer1's transform (coordinate normalization back to 0,0)
+        lines << "    <g transform=\"#{layer_transform}\">"
+      end
 
       # Innermost: content
       content_lines = content.split("\n")
       content_lines.each do |line|
-        lines << "    #{line}" if line.strip.length > 0
+        lines << "      #{line}" if line.strip.length > 0
+      end
+
+      if layer_transform
+        lines << "    </g>"
       end
 
       lines << "  </g>"
-
-      if layer_transform
-        lines << "</g>"
-      end
+      lines << "</g>"
 
       lines.join("\n")
     end
