@@ -39,11 +39,41 @@ module Bizgram
   class Entity
     attr_reader :id, :name, :type, :position
 
-    def initialize(id, name, type, position)
+    def initialize(id, name, type, position, builder = nil)
       @id = id
       @name = name
       @type = type
       @position = position
+      @builder = builder
+    end
+
+    def -(other)
+      if other.is_a?(PendingArrow)
+        HalfArrow.new(@builder, self, other)
+      else
+        raise ArgumentError, "Expected PendingArrow after '-', got #{other.class}"
+      end
+    end
+  end
+
+  class PendingArrow
+    attr_reader :type, :name
+    def initialize(type, name)
+      @type = type
+      @name = name
+    end
+  end
+
+  class HalfArrow
+    def initialize(builder, from, pending_arrow)
+      @builder = builder
+      @from = from
+      @pending_arrow = pending_arrow
+    end
+
+    def >(to_entity)
+      raise ArgumentError, "Expected Entity after '>', got #{to_entity.class}" unless to_entity.is_a?(Entity)
+      @builder.arrow(@pending_arrow.type, @pending_arrow.name, @from, to_entity)
     end
   end
 
@@ -138,7 +168,7 @@ module Bizgram
       raise "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
 
       id = next_id
-      ent = Entity.new(id, name, type, pos)
+      ent = Entity.new(id, name, type, pos, self)
       @entities[name] = ent
       @entities_by_id[id] = ent
       @occupied_positions.add(pos)
@@ -162,24 +192,24 @@ module Bizgram
       entity(:business, name, position)
     end
 
-    def money(name, position = nil)
-      entity(:money, name, position)
+    def money(name)
+      PendingArrow.new(:money, name)
     end
 
-    def object(name, position = nil)
-      entity(:object, name, position)
+    def object(name)
+      PendingArrow.new(:object, name)
     end
 
-    def goods(name, position = nil)
-      entity(:goods, name, position)
+    def goods(name)
+      PendingArrow.new(:goods, name)
     end
 
-    def information(name, position = nil)
-      entity(:information, name, position)
+    def information(name)
+      PendingArrow.new(:information, name)
     end
 
-    def info(name, position = nil)
-      entity(:info, name, position)
+    def info(name)
+      PendingArrow.new(:info, name)
     end
 
     def smartphone(name, position = nil)
@@ -204,7 +234,7 @@ module Bizgram
 
     def arrow(type, name, from, to)
       validate_arrow_type(type)
-      validate_name(name)
+      raise ArgumentError, "Name must be a string" unless name.is_a?(String)
 
       from_id = resolve_entity_reference(from)
       to_id = resolve_entity_reference(to)
@@ -250,7 +280,7 @@ module Bizgram
     end
 
     def validate_arrow_type(type)
-      raise ArgumentError, "Invalid arrow type: #{type}" unless [:object, :money, :information, :other].include?(type)
+      raise ArgumentError, "Invalid arrow type: #{type}" unless [:object, :goods, :money, :information, :info, :other].include?(type)
     end
 
     def validate_name(name)
@@ -294,10 +324,12 @@ module Bizgram
     }.freeze
 
     ARROW_COLORS = {
-      object: "#000000",
-      money: "#FF0000",
-      information: "#0000FF",
-      other: "#000000"
+      object: '#000000',
+      goods: '#000000',
+      money: '#000000',
+      information: '#000000',
+      info: '#000000',
+      other: '#000000'
     }.freeze
 
     # Entity type to SVG image file mapping
@@ -351,16 +383,21 @@ module Bizgram
           height="#{SVG_CANVAS_HEIGHT.to_i}"
           xmlns="http://www.w3.org/2000/svg">
           <title>#{escape_xml(title)}</title>
+          
+          <!-- Title Text and Underline -->
+          <text x="#{SVG_CANVAS_WIDTH / 2.0}" y="40" font-size="28" font-family="#{SVG_FONT_FAMILY}" font-weight="bold" fill="#000000" text-anchor="middle" dominant-baseline="hanging">#{escape_xml(title)}</text>
+          <line x1="0" y1="80" x2="#{SVG_CANVAS_WIDTH}" y2="80" stroke="#000000" stroke-width="1" />
+
           <defs>
             <!-- Arrow head markers for different arrow types -->
             <marker id="marker_object" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
               <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
             </marker>
             <marker id="marker_money" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#FF0000"/>
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
             </marker>
             <marker id="marker_information" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#0000FF"/>
+              <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
             </marker>
             <marker id="marker_other" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
               <path d="M 0,0 L 10,3 L 0,6 Z" fill="#000000"/>
@@ -607,6 +644,8 @@ def render_arrows
 
       label_x = (best_p1[0] + best_p2[0]) / 2.0
       label_y = (best_p1[1] + best_p2[1]) / 2.0
+      marker_x = label_x
+      marker_y = label_y
       is_vertical_segment = (best_p1[0] - best_p2[0]).abs < (best_p1[1] - best_p2[1]).abs
 
       text_anchor = "middle"
@@ -614,10 +653,10 @@ def render_arrows
         dy = best_p2[1] - best_p1[1]
         actual_shift_x = (dy > 0 ? -1 : 1) * offset
         if actual_shift_x < 0
-          label_x -= 8
+          label_x -= 16
           text_anchor = "end"
         else
-          label_x += 8
+          label_x += 16
           text_anchor = "start"
         end
         label_y += 5
@@ -625,15 +664,29 @@ def render_arrows
         dx = best_p2[0] - best_p1[0]
         actual_shift_y = (dx > 0 ? 1 : -1) * offset
         if actual_shift_y > 0
-          label_y += 18 # below
+          label_y += 26 # below
         else
-          label_y -= 8  # above
+          label_y -= 16  # above
         end
       end
 
       lines << "  <g id=\"arrow_#{arrow.id}\">"
       lines << "    <path d=\"#{path_data.strip}\" stroke=\"#{color}\" stroke-width=\"#{SVG_ARROW_STROKE_WIDTH}\" fill=\"none\" stroke-linejoin=\"round\" marker-end=\"url(##{marker_id})\" />"
-      lines << "    <text x=\"#{label_x}\" y=\"#{label_y}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" text-anchor=\"#{text_anchor}\" fill=\"#000000\">#{escape_xml(arrow.name)}</text>"
+      if arrow.name && !arrow.name.empty?
+        lines << "    <text x=\"#{label_x}\" y=\"#{label_y}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" fill=\"#000000\" text-anchor=\"#{text_anchor}\" style=\"white-space: pre-wrap; word-wrap: break-word;\">#{escape_xml(arrow.name)}</text>"
+      end
+      
+      # Draw Marker
+      case arrow.type
+      when :money
+        lines << "    <rect x=\"#{marker_x - 14}\" y=\"#{marker_y - 14}\" rx=\"6\" ry=\"6\" width=\"28\" height=\"28\" fill=\"#fffc41\" stroke=\"#000000\" stroke-width=\"2\" />"
+        lines << "    <text x=\"#{marker_x}\" y=\"#{marker_y + 5}\" font-size=\"16\" font-family=\"#{SVG_FONT_FAMILY}\" font-weight=\"bold\" fill=\"#000000\" text-anchor=\"middle\">￥</text>"
+      when :object, :goods
+        lines << "    <circle cx=\"#{marker_x}\" cy=\"#{marker_y}\" r=\"14\" fill=\"#d4fca9\" stroke=\"#000000\" stroke-width=\"2\" />"
+      when :information, :info
+        lines << "    <rect x=\"#{marker_x - 13}\" y=\"#{marker_y - 13}\" width=\"26\" height=\"26\" fill=\"#cbecfa\" stroke=\"#000000\" stroke-width=\"2\" />"
+      end
+
       lines << "  </g>"
     end
   end

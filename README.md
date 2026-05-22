@@ -40,11 +40,14 @@ svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   site = other("ゲーム配布サイト", 5)
   company = company("(株)HOGEゲームズ", 7)
   # モノ・カネ・情報の定義
-  arrow(:money, "ゲーム購入", user, site)
-  arrow(:object, "インストール", site, device)
-  arrow(:other, "プレイ", user, device)
+  
+  # 従来の記法（メソッド呼び出し）
   arrow(:object, "作品アップロード", company, site)
-  arrow(:money, "売上", site, company)
+  
+  # 直感的なDSL記法（- ... >）
+  user -money("ゲーム購入")> site
+  site -object("インストール")> device
+  
   # コメントの定義
   comment_to(site, "Google Play的な")
 end
@@ -72,6 +75,9 @@ ruby example/02_complex.rb
 
 # ③意地悪な（多重・双方向など）Bizgramコード
 ruby example/03_edge_case.rb
+
+# ④新しい直感的なDSL記法のBizgramコード
+ruby example/04_test_dsl.rb
 ```
 
 <details>

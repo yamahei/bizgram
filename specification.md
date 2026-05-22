@@ -79,12 +79,12 @@ Bizgram.draw "タイトル" do
   clerk = operator "販売員", [1, 2] # 事業者のショートカット
 
   # モノ・カネ・情報の流れの定義
-  arrow :object, "商品", business("FUGAビジネス"), user("太郎") # モノの流れ
-  arrow :money, "代金", user("太郎"), business("HOGEビジネス") # カネの流れ
-  arrow :information, "広告", operator("販売員"), to: user("太郎") # 情報の流れ
-  arrow :object, "商品", fuga, jiro # モノの流れ
-  arrow :money, "代金", jiro, fuga # カネの流れ
-  arrow :information, "広告", clerk, jiro # 情報の流れ
+  arrow :object, "商品", business("FUGAビジネス"), user("太郎") # 従来の記法
+  
+  # 直感的なDSL記法
+  user("太郎") -money("代金")> business("HOGEビジネス")
+  operator("販売員") -info("広告")> user("太郎")
+  jiro -money("代金")> fuga
 
   # その他の補足情報（コメント）の定義
   comment_to user("太郎"), "太郎君"
@@ -166,6 +166,26 @@ Bizgramを描画するための SVG ドキュメント文字列
 
 流れを表す `Arrow` オブジェクト
 
+##### 直感的なDSL記法 (`- ... >`)
+
+矢印を直感的な記号を使って定義することができます。
+
+```rb
+# userからcompanyへの情報の流れを定義する
+user("太郎") -info("情報")> company("会社")
+```
+
+1. **`-` メソッド** (主体に対するメソッド)
+   - 引数: `PendingArrow` オブジェクト (`info("情報")` など)
+   - 戻値: 流れの始点が決定された `HalfArrow` オブジェクト
+
+2. **`>` メソッド** (`HalfArrow` に対するメソッド)
+   - 引数: 矢印の先の主体 (`Entity` オブジェクト)
+   - 戻値: 生成された `Arrow` オブジェクト
+
+※`info`, `money`, `object`, `goods`, `information` メソッドは、このDSL内で呼ばれた場合は `PendingArrow` オブジェクトを返します。
+
+
 
 #### その他の補足情報（コメント）を定義するメソッド
 
@@ -185,53 +205,7 @@ Bizgramを描画するための SVG ドキュメント文字列
 補足を表す `Comment` オブジェクト
 
 
-#### 主体と流れを視覚的に表現するためのメソッド
 
-以下の文法を実現するためのメソッド
-
-```rb
-# ※`entity.position`未指定については検討が必要
-other("サイト") --info("情報")--> user("太郎")
-```
-
-##### `Entity.--`メソッド
-
-Entithを呼び出し元（from）としたArrowを生成する。
-（toはnil）
-
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|type| * |symbol|流れの種類 `:object`: モノ `:money`: お金 `:information`: 情報 `:other`: その他|
-|name|  |string|流れの名称|
-
-- 戻値
-
-流れを表す `Arrow` オブジェクト※
-※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
-
-**`--`のショートカットメソッド**
-
-`--object`, `--money`(`--yen`), `--information`(`--info`), `--other` メソッドは、`--` メソッドの便利なショートカットメソッド。
-
-- 引数：※`--`メソッドの`type`なし
-- 戻値：※`--`メソッドと同じ
-
-##### `Arrow.-->`メソッド
-
-※`Array.from != nil`かつ`Array.to == nil`でないArrayで呼び出した場合エラー
-
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|to| * |Entity, number, or string|矢印の先の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
-
-- 戻値
-
-流れを表す `Arrow` オブジェクト※
-※`Array.from`は呼び出し元の`Entity`オブジェクトが設定済み、`Array.to`は未設定の状態
 
 ##### 矢印のルートパターン一覧
 
@@ -414,7 +388,7 @@ Bizgram
 - `type` : 主体の種類（:user, :business, :operator）
 - `position` : 3×3マスでの配置位置（0-8のnumber）
 **メソッド**
-- `--` : TODO
+- `-` : 引数に `PendingArrow` オブジェクトを取り、矢印の起点を設定した `HalfArrow` オブジェクトを返す
 
 #### `Arrow`クラス
 
@@ -426,8 +400,24 @@ Bizgram
 - `type` : 流れの種類（:object, :money, :information, :other）
 - `from` : 流れの開始主体ID（number）
 - `to` : 流れの終了主体ID（number）
+
+#### `PendingArrow`クラス
+
+DSL内で `info(...)` などのメソッドによって一時的に生成される矢印の属性を保持するクラス。
+
+**属性**
+- `type` : 流れの種類（:object, :money, :information, :other）
+- `name` : 流れの名称（string）
+
+#### `HalfArrow`クラス
+
+DSLで矢印の始点と属性（`PendingArrow`）が設定され、終点が未設定の半端な矢印状態を管理するクラス。
+
+**属性**
+- `from` : 流れの開始主体 (`Entity` オブジェクト)
+- `pending_arrow` : 矢印の属性 (`PendingArrow` オブジェクト)
 **メソッド**
-- `-->` : TODO
+- `>` : 引数に矢印の終点となる `Entity` オブジェクトを取り、最終的な `Arrow` オブジェクトを生成して Builder に登録する
 
 
 #### `Comment`クラス
@@ -557,19 +547,18 @@ Entity と Arrow、Comment から直接 SVG ドキュメントを生成する。
 
 **配色とスタイル**
 - Arrowスタイル
-  - `:object` → "#000000" (黒)
-  - `:money` → "#FF0000" (赤)
-  - `:information` → "#0000FF" (青)
-  - `:other` → "#000000" (黒)
-- Comment背景色: "#FFFC41" (黄系)
+  - すべての矢印は基本色 "#000000" (黒) で描画される
+  - 先端のマーカーの形状で種類を表現する（`:money` は ￥, `:object` は 〇, `:information` は □, `:other` は装飾なし）
+- Comment背景色: "#DDDDDD" (ライトグレー)
 
 **生成ロジック**
 
-1. SVGキャンバス（1440x900）の枠組みを作成
-2. `reference/image/` 配下にある各主体のSVGファイルをBase64エンコードし、`<image>`タグとして指定座標に埋め込む
-3. 各Entityの下部に名称テキストを配置
-4. Arrowのルーティングと描画（後述）
-5. コメントボックスを描画し、対象のEntityまで点線をつなぐ
+1. SVGキャンバス（3x3グリッドに基づくコンパクトなサイズ、現在は概ね720x720前後＋パディング）の枠組みを作成
+2. 背景にBizgramの3x3構造を示すガイドライン（破線）を描画
+3. `reference/image/` 配下にある各主体のSVGファイルからパスデータ（`<path>`等）を直接抽出し、`transform` 属性を用いて指定座標にネイティブなSVG要素として埋め込む
+4. 各Entityの下部に名称テキストを配置（自動折り返し対応）
+5. Arrowのルーティングと描画（後述）
+6. しっぽ付きの吹き出し型コメントボックスを描画し、対象のEntityまで点線をつなぐ
 
 **Arrowルーティングアルゴリズム（5x5グリッド方式）**
 
@@ -629,7 +618,7 @@ Arrow（矢印）は単なる直線ではなく、仕様書上部で定義され
 
 ### SVG生成の仕組みと特徴
 
-- **画像ファイルの埋め込み**: 各Entityに割り当てられた `reference/image/*.svg` ファイルを Base64エンコードのData URIスキーマ（`data:image/svg+xml;base64,...`）として直接SVGファイルに埋め込んでいます。これにより、出力された1つのSVGファイルを共有するだけで、全ての画像要素が欠落せずに表示されます。
-- **マーカー定義**: 矢印の終点（三角）は、`<defs><marker>` 要素として定義されており、各パスから `marker-end` 属性で参照されています。
-- **5x5グリッドルーティングの実現**: 指定された相対位置に対して、直進・L字曲がり・迂回などのルートを動的に計算し、中間地点となる座標をつなぐ直線（`<path d="M... L... L...">`）として描画されます。
+- **画像ファイルの埋め込み**: 各Entityに割り当てられた `reference/image/*.svg` ファイルのソースから `<path>` などのベクター要素をプログラム内で直接抽出し、最終的なSVGの中に `<g transform="...">` として埋め込んでいます。これにより、Base64エンコード特有のエラーを防ぎつつ、1つのSVGファイルを共有するだけで全てのアイコンが欠落せずに美しく表示されます。
+- **マーカー定義**: 矢印の終点（三角、￥、〇、□などの装飾）は、`<defs><marker>` 要素として定義されており、各パスから `marker-end` 属性で参照されています。
+- **5x5グリッドルーティングの実現**: 指定された相対位置に対して、直進・L字曲がり・迂回などのルートを動的に計算し、中間地点となる座標をつなぐ直線（`<path d="M... L... L...">`）として描画されます。またラベルや他の主体との重なりを回避するための賢いオフセットアルゴリズムも備えています。
 

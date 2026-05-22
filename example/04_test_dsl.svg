@@ -5,10 +5,10 @@
   width="880"
   height="880"
   xmlns="http://www.w3.org/2000/svg">
-  <title>03_edge_case: 意地悪な配置と多重矢印</title>
+  <title>DSL拡張テスト</title>
   
   <!-- Title Text and Underline -->
-  <text x="440.0" y="40" font-size="28" font-family="sans-serif" font-weight="bold" fill="#000000" text-anchor="middle" dominant-baseline="hanging">03_edge_case: 意地悪な配置と多重矢印</text>
+  <text x="440.0" y="40" font-size="28" font-family="sans-serif" font-weight="bold" fill="#000000" text-anchor="middle" dominant-baseline="hanging">DSL拡張テスト</text>
   <line x1="0" y1="80" x2="880.0" y2="80" stroke="#000000" stroke-width="1" />
 
   <defs>
@@ -83,149 +83,9 @@
         </g>
       </g>
     </g>
-    <text x="200.0" y="268.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">A</text>
+    <text x="200.0" y="268.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">ユーザー</text>
   </g>
   <g id="entity_1">
-    <g transform="translate(380.0, 380.0)">
-      <g transform="translate(26.790844958956583, 0.0)">
-        <g transform="scale(3.282149219139777, 3.282149219139777)">
-          <g transform="translate(-94.881887,-130.21929)">
-            <path
-                   style="fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round"
-                   d="M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z"
-                   id="path1111" />
-                <g
-                   id="g2207"
-                   transform="translate(88.332917,-53.070036)">
-                  <path
-                     fill="#ffffff"
-                     d="M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z"
-                     fill-rule="evenodd"
-                     id="path413"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="1.05833"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z"
-                     fill-rule="evenodd"
-                     id="path415"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path417"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path419"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path421"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path423"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path425"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path427"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path429"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path431"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path433"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z"
-                     fill-rule="evenodd"
-                     id="path435"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#ffffff"
-                     d="m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path437"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z"
-                     fill-rule="evenodd"
-                     id="path439"
-                     style="fill:#ffffff;stroke:#000000" />
-                  <path
-                     fill="#000000"
-                     fill-opacity="0"
-                     d="M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z"
-                     fill-rule="evenodd"
-                     id="path441"
-                     style="fill:#ffffff;stroke:#000000;stroke-width:0.264583" />
-                  <path
-                     stroke="#000000"
-                     stroke-width="0.529167"
-                     stroke-miterlimit="400"
-                     stroke-linecap="butt"
-                     d="M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z"
-                     fill-rule="evenodd"
-                     id="path443"
-                     style="fill:#ffffff;stroke:#000000" />
-                </g>
-          </g>
-        </g>
-      </g>
-    </g>
-    <text x="440.0" y="508.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">B</text>
-  </g>
-  <g id="entity_2">
     <g transform="translate(620.0, 140.0)">
       <g transform="translate(26.790844958956583, 0.0)">
         <g transform="scale(3.282149219139777, 3.282149219139777)">
@@ -363,95 +223,124 @@
         </g>
       </g>
     </g>
-    <text x="680.0" y="268.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">C</text>
+    <text x="680.0" y="268.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">会社</text>
   </g>
-  <g id="entity_3">
+  <g id="entity_2">
     <g transform="translate(140.0, 620.0)">
       <g transform="translate(26.790844958956583, 0.0)">
         <g transform="scale(3.282149219139777, 3.282149219139777)">
           <g transform="translate(-94.881887,-130.21929)">
-            <path
-                   style="fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round"
-                   d="M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z"
-                   id="path1111" />
-                <g
-                   id="g27996"
-                   transform="translate(30.762363,-5.9084355)">
+            <g
+                   id="g28378"
+                   transform="translate(38.918123,2.5097395)">
                   <path
                      stroke="#000000"
                      stroke-width="1.05833"
                      stroke-miterlimit="400"
                      stroke-linecap="butt"
-                     d="m 64.820576,138.43423 c 0,-0.88072 0.713976,-1.59469 1.594686,-1.59469 h 15.644749 c 0.422939,0 0.828551,0.16801 1.127612,0.46707 0.299061,0.29906 0.467074,0.70468 0.467074,1.12762 v 31.9484 c 0,0.88072 -0.713973,1.59469 -1.594686,1.59469 H 66.415262 c -0.88071,0 -1.594686,-0.71397 -1.594686,-1.59469 z"
+                     d="m 56.26778,128.51363 h 19.628194 v 34.95325 H 56.26778 Z"
                      fill-rule="evenodd"
-                     id="path97" />
+                     id="path563" />
                   <path
                      fill="#ffffff"
-                     d="m 64.820576,138.43423 c 0,-0.88072 0.713976,-1.59469 1.594686,-1.59469 h 15.644749 c 0.422939,0 0.828551,0.16801 1.127612,0.46707 0.299061,0.29906 0.467074,0.70468 0.467074,1.12762 v 31.9484 c 0,0.88072 -0.713973,1.59469 -1.594686,1.59469 H 66.415262 c -0.88071,0 -1.594686,-0.71397 -1.594686,-1.59469 z"
+                     d="m 56.26778,128.51363 h 19.628194 v 34.95325 H 56.26778 Z"
                      fill-rule="evenodd"
-                     id="path95"
+                     id="path561"
                      style="stroke-width:0.264583" />
                   <path
                      stroke="#000000"
                      stroke-width="0.529167"
                      stroke-miterlimit="400"
                      stroke-linecap="butt"
-                     d="m 66.976049,139.46192 h 14.811775 v 25.3869 H 66.976049 Z"
+                     d="m 56.26778,128.51363 h 19.628194 v 9.57623 H 56.26778 Z"
                      fill-rule="evenodd"
-                     id="path101" />
+                     id="path567"
+                     style="fill:#ffffff;stroke:#000000" />
                   <path
-                     fill="#ffffff"
-                     d="m 66.976049,139.46192 h 14.811775 v 25.3869 H 66.976049 Z"
+                     fill="#000000"
+                     fill-opacity="0"
+                     d="m 56.26778,128.51363 h 19.628194 v 9.57623 H 56.26778 Z"
                      fill-rule="evenodd"
-                     id="path99"
+                     id="path565"
+                     style="stroke-width:0.264583" />
+                  <path
+                     fill="#000000"
+                     fill-opacity="0"
+                     d="m 61.965476,154.12281 h 8.233066 v 9.28086 h -8.233066 z"
+                     fill-rule="evenodd"
+                     id="path569"
+                     style="stroke-width:0.264583" />
+                  <path
+                     fill="#000000"
+                     fill-opacity="0"
+                     d="m 61.400855,128.11525 v 10.2074"
+                     fill-rule="evenodd"
+                     id="path573"
                      style="stroke-width:0.264583" />
                   <path
                      stroke="#000000"
                      stroke-width="0.529167"
                      stroke-miterlimit="400"
                      stroke-linecap="butt"
-                     d="m 72.538869,168.26383 c 0,-1.05612 0.832167,-1.91227 1.858687,-1.91227 0.492945,0 0.965721,0.20147 1.314294,0.56009 0.348557,0.35862 0.544396,0.84501 0.544396,1.35218 0,1.0561 -0.83217,1.91225 -1.85869,1.91225 -1.02652,0 -1.858687,-0.85615 -1.858687,-1.91225 z"
+                     d="m 61.400855,128.11525 v 10.2074"
                      fill-rule="evenodd"
-                     id="path105" />
+                     id="path575" />
                   <path
-                     fill="#ffffff"
-                     d="m 72.538869,168.26383 c 0,-1.05612 0.832167,-1.91227 1.858687,-1.91227 0.492945,0 0.965721,0.20147 1.314294,0.56009 0.348557,0.35862 0.544396,0.84501 0.544396,1.35218 0,1.0561 -0.83217,1.91225 -1.85869,1.91225 -1.02652,0 -1.858687,-0.85615 -1.858687,-1.91225 z"
+                     fill="#000000"
+                     fill-opacity="0"
+                     d="m 66.130811,128.11525 v 10.2074"
                      fill-rule="evenodd"
-                     id="path103"
+                     id="path577"
                      style="stroke-width:0.264583" />
+                  <path
+                     stroke="#000000"
+                     stroke-width="0.529167"
+                     stroke-miterlimit="400"
+                     stroke-linecap="butt"
+                     d="m 66.130811,128.11525 v 10.2074"
+                     fill-rule="evenodd"
+                     id="path579" />
+                  <path
+                     fill="#000000"
+                     fill-opacity="0"
+                     d="m 70.737551,128.11525 v 10.2074"
+                     fill-rule="evenodd"
+                     id="path581"
+                     style="stroke-width:0.264583" />
+                  <path
+                     stroke="#000000"
+                     stroke-width="0.529167"
+                     stroke-miterlimit="400"
+                     stroke-linecap="butt"
+                     d="m 70.737551,128.11525 v 10.2074"
+                     fill-rule="evenodd"
+                     id="path583" />
+                  <path
+                     stroke="#000000"
+                     stroke-width="0.529167"
+                     stroke-miterlimit="400"
+                     stroke-linecap="butt"
+                     d="m 61.965476,154.12281 h 8.233066 v 9.28086 h -8.233066 z"
+                     fill-rule="evenodd"
+                     id="path571"
+                     style="fill:#ffffff" />
                 </g>
           </g>
         </g>
       </g>
     </g>
-    <text x="200.0" y="748.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">D</text>
+    <text x="200.0" y="748.0" font-size="14" font-family="sans-serif" text-anchor="middle" dominant-baseline="text-before-edge" fill="#000000" word-spacing="0" letter-spacing="0" style="white-space: pre-wrap; word-wrap: break-word;">店舗</text>
   </g>
   <!-- Arrows -->
+  <g id="arrow_3">
+    <path d="M 260.0,187.5 L 320.0,187.5 L 440.0,187.5 L 560.0,187.5 L 620.0,187.5" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_information)" />
+    <text x="380.0" y="171.5" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="middle" style="white-space: pre-wrap; word-wrap: break-word;">旧記法の情報</text>
+    <rect x="367.0" y="174.5" width="26" height="26" fill="#cbecfa" stroke="#000000" stroke-width="2" />
+  </g>
   <g id="arrow_4">
-    <path d="M 260.0,187.5 L 320.0,187.5 L 452.5,187.5 L 452.5,320.0 L 452.5,380.0" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_object)" />
-    <text x="386.25" y="171.5" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="middle" style="white-space: pre-wrap; word-wrap: break-word;">Data 1</text>
-    <circle cx="386.25" cy="187.5" r="14" fill="#d4fca9" stroke="#000000" stroke-width="2" />
-  </g>
-  <g id="arrow_5">
-    <path d="M 260.0,212.5 L 320.0,212.5 L 427.5,212.5 L 427.5,320.0 L 427.5,380.0" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_information)" />
-    <text x="373.75" y="238.5" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="middle" style="white-space: pre-wrap; word-wrap: break-word;">Data 2</text>
-    <rect x="360.75" y="199.5" width="26" height="26" fill="#cbecfa" stroke="#000000" stroke-width="2" />
-  </g>
-  <g id="arrow_6">
-    <path d="M 500.0,452.5 L 560.0,452.5 L 692.5,452.5 L 692.5,320.0 L 692.5,295.0" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_money)" />
-    <text x="626.25" y="478.5" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="middle" style="white-space: pre-wrap; word-wrap: break-word;">Payment B→C</text>
-    <rect x="612.25" y="438.5" rx="6" ry="6" width="28" height="28" fill="#fffc41" stroke="#000000" stroke-width="2" />
-    <text x="626.25" y="457.5" font-size="16" font-family="sans-serif" font-weight="bold" fill="#000000" text-anchor="middle">￥</text>
-  </g>
-  <g id="arrow_7">
-    <path d="M 667.5,295.0 L 667.5,320.0 L 667.5,427.5 L 560.0,427.5 L 500.0,427.5" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_money)" />
-    <text x="651.5" y="378.75" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="end" style="white-space: pre-wrap; word-wrap: break-word;">Commission C→B</text>
-    <rect x="653.5" y="359.75" rx="6" ry="6" width="28" height="28" fill="#fffc41" stroke="#000000" stroke-width="2" />
-    <text x="667.5" y="378.75" font-size="16" font-family="sans-serif" font-weight="bold" fill="#000000" text-anchor="middle">￥</text>
-  </g>
-  <g id="arrow_8">
-    <path d="M 200.0,620.0 L 200.0,560.0 L 200.0,440.0 L 200.0,320.0 L 200.0,295.0" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_other)" />
-    <text x="216.0" y="505.0" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="start" style="white-space: pre-wrap; word-wrap: break-word;">Feedback</text>
+    <path d="M 260.0,212.5 L 320.0,212.5 L 440.0,212.5 L 560.0,212.5 L 620.0,212.5" stroke="#000000" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#marker_info)" />
+    <text x="380.0" y="238.5" font-size="16" font-family="sans-serif" fill="#000000" text-anchor="middle" style="white-space: pre-wrap; word-wrap: break-word;">ログイン情報</text>
+    <rect x="367.0" y="199.5" width="26" height="26" fill="#cbecfa" stroke="#000000" stroke-width="2" />
   </g>
 
   </svg>
