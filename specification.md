@@ -80,7 +80,7 @@ Bizgram.draw "タイトル" do
 
   # モノ・カネ・情報の流れの定義
   arrow :object, "商品", business("FUGAビジネス"), user("太郎") # 従来の記法
-  
+
   # 直感的なDSL記法
   user("太郎") -money("代金")> business("HOGEビジネス")
   operator("販売員") -info("広告")> user("太郎")
@@ -548,7 +548,7 @@ Entity と Arrow、Comment から直接 SVG ドキュメントを生成する。
 **配色とスタイル**
 - Arrowスタイル
   - すべての矢印は基本色 "#000000" (黒) で描画される
-  - 先端のマーカーの形状で種類を表現する（`:money` は ￥, `:object` は 〇, `:information` は □, `:other` は装飾なし）
+  - 矢印線上のマーカーの形状で種類を表現する（`:money` は ￥, `:object` は 〇, `:information` は □, `:other` は装飾なし）
 - Comment背景色: "#DDDDDD" (ライトグレー)
 
 **生成ロジック**
