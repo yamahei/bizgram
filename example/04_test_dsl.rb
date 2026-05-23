@@ -16,5 +16,5 @@ svg = Bizgram.draw("DSL拡張テスト") do
 
 end
 
-File.write("example/test_dsl.svg", svg)
-puts "Generated example/test_dsl.svg"
+File.write("example/04_test_dsl.svg", svg)
+puts "Generated example/04_test_dsl.svg"
