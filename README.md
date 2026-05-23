@@ -81,6 +81,18 @@ ruby example/03_edge_case.rb
 
 # ④新しい直感的なDSL記法のBizgramコード
 ruby example/04_test_dsl.rb
+
+# ⑤〜⑧ 実際のギャラリーに基づく複雑なBizgramコード（手動配置ベースライン）
+ruby example/05_innoqua.rb
+ruby example/06_bemyeyes.rb
+ruby example/07_washplus.rb
+ruby example/08_koto.rb
+
+# ⑤〜⑧ の自動配置版Bizgramコード
+ruby example/05_innoqua_autolayout.rb
+ruby example/06_bemyeyes_autolayout.rb
+ruby example/07_washplus_autolayout.rb
+ruby example/08_koto_autolayout.rb
 ```
 
 

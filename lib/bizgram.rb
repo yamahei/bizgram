@@ -3,6 +3,8 @@
 require 'base64'
 
 module Bizgram
+  class LayoutError < StandardError; end
+
   # SVG Layout Constants - Compact and centered
   SVG_ENTITY_WIDTH = 120.0
   SVG_ENTITY_HEIGHT = 120.0
@@ -37,7 +39,8 @@ module Bizgram
   SVG_COMMENT_STROKE_WIDTH = 3
 
   class Entity
-    attr_reader :id, :name, :type, :position
+    attr_reader :id, :name, :type
+    attr_accessor :position
 
     def initialize(id, name, type, position, builder = nil)
       @id = id
@@ -122,7 +125,8 @@ module Bizgram
       when Array
         resolve_from_array(position)
       when nil
-        raise ArgumentError, "Position must be explicitly specified (Integer, Symbol, or Array)"
+        # Skip resolution, it will be assigned later
+        nil
       else
         raise ArgumentError, "Invalid position: #{position.inspect}"
       end
@@ -145,6 +149,62 @@ module Bizgram
       raise ArgumentError, "Position coordinates must be 0-2, got [#{x}, #{y}]" unless (0..2).include?(x) && (0..2).include?(y)
       y * 3 + x
     end
+
+    def self.auto_assign(entities, occupied_positions, arrows = [])
+      unassigned = entities.select { |e| e.position.nil? }
+      return if unassigned.empty?
+
+      connections = Hash.new(0)
+      arrows.each do |arrow|
+        connections[arrow.from] += 1
+        connections[arrow.to] += 1
+      end
+
+      business_types = [:company, :business, :operator, :store]
+      unassigned.sort_by! do |e|
+        deg = connections[e.id]
+        is_biz = business_types.include?(e.type) ? 1 : 0
+        [-deg, -is_biz, e.id]
+      end
+
+      if !occupied_positions.include?(4) && !unassigned.empty?
+        center_entity = unassigned.shift
+        center_entity.position = 4
+        occupied_positions.add(4)
+      end
+
+      empty_positions = (0..8).to_a - occupied_positions.to_a
+      
+      unassigned.each do |e|
+        related_placed_ids = arrows.select { |a| a.from == e.id || a.to == e.id }
+                                   .map { |a| a.from == e.id ? a.to : a.from }
+                                   .uniq
+                                   .select { |id| entities.find { |ent| ent.id == id }&.position }
+        
+        best_pos = nil
+        if related_placed_ids.empty?
+          preferred = [1, 7, 3, 5, 0, 2, 6, 8]
+          best_pos = preferred.find { |p| empty_positions.include?(p) }
+        else
+          best_pos = empty_positions.min_by do |p|
+            px, py = p % 3, p / 3
+            sum_dist = 0
+            related_placed_ids.each do |r_id|
+              r_ent = entities.find { |ent| ent.id == r_id }
+              rx, ry = r_ent.position % 3, r_ent.position / 3
+              sum_dist += (px - rx).abs + (py - ry).abs
+            end
+            sum_dist
+          end
+        end
+        
+        raise LayoutError, "エンティティの数が9個を超過しているため、自動配置できません。" unless best_pos
+        
+        e.position = best_pos
+        occupied_positions.add(best_pos)
+        empty_positions.delete(best_pos)
+      end
+    end
   end
 
   class Builder
@@ -164,14 +224,18 @@ module Bizgram
 
       return @entities[name] if @entities.key?(name)
 
-      pos = PositionResolver.resolve(position, type, @occupied_positions)
-      raise "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
+      if position
+        pos = PositionResolver.resolve(position, type, @occupied_positions)
+        raise LayoutError, "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
+        @occupied_positions.add(pos)
+      else
+        pos = nil
+      end
 
       id = next_id
       ent = Entity.new(id, name, type, pos, self)
       @entities[name] = ent
       @entities_by_id[id] = ent
-      @occupied_positions.add(pos)
 
       ent
     end
@@ -192,24 +256,24 @@ module Bizgram
       entity(:business, name, position)
     end
 
-    def money(name)
-      PendingArrow.new(:money, name)
+    def money(name, position = nil)
+      entity(:money, name, position)
     end
 
-    def object(name)
-      PendingArrow.new(:object, name)
+    def object(name, position = nil)
+      entity(:object, name, position)
     end
 
-    def goods(name)
-      PendingArrow.new(:goods, name)
+    def goods(name, position = nil)
+      entity(:goods, name, position)
     end
 
-    def information(name)
-      PendingArrow.new(:information, name)
+    def information(name, position = nil)
+      entity(:information, name, position)
     end
 
-    def info(name)
-      PendingArrow.new(:info, name)
+    def info(name, position = nil)
+      entity(:info, name, position)
     end
 
     def smartphone(name, position = nil)
@@ -269,6 +333,7 @@ module Bizgram
 
 
     def to_svg(title)
+      PositionResolver.auto_assign(@entities_by_id.values, @occupied_positions, @arrows_by_id.values)
       SvgGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
     end
 
@@ -538,84 +603,66 @@ class SvgGenerator
       gx1, gy1 = fx * 2, fy * 2
       gx2, gy2 = tx * 2, ty * 2
 
-      candidates = generate_candidates(gx1, gy1, gx2, gy2)
-      valid_candidates = candidates.select { |path| valid_path?(path, arrow) }
+      path = bfs_route(arrow, gx1, gy1, gx2, gy2, true)
+      path = bfs_route(arrow, gx1, gy1, gx2, gy2, false) if path.nil?
       
-      if valid_candidates.empty?
-        raise "Error: 仕様可能なルートがありません (from: #{arrow.from_pos}, to: #{arrow.to_pos})"
-      end
-      valid_candidates.first
-    end
-
-    def generate_candidates(gx1, gy1, gx2, gy2)
-      dx = gx2 - gx1
-      dy = gy2 - gy1
-
-      return [generate_straight(gx1, gy1, gx2, gy2)] if dx == 0 || dy == 0
-
-      candidates = []
-      candidates << generate_l_shape(gx1, gy1, gx2, gy2, :horizontal)
-      candidates << generate_l_shape(gx1, gy1, gx2, gy2, :vertical)
-
-      if dx.abs == 2 && dy.abs == 2
-        candidates << [[gx1, gy1], [gx1 + dx/2, gy1 + dy/2], [gx2, gy2]]
-      end
-      candidates
-    end
-
-    def generate_straight(gx1, gy1, gx2, gy2)
-      path = []
-      if gx1 == gx2
-        step = gy2 > gy1 ? 1 : -1
-        gy1.step(gy2, step) { |y| path << [gx1, y] }
-      else
-        step = gx2 > gx1 ? 1 : -1
-        gx1.step(gx2, step) { |x| path << [x, gy1] }
-      end
+      raise "Error: 仕様可能なルートがありません (from: #{arrow.from_pos}, to: #{arrow.to_pos})" if path.nil?
       path
     end
 
-    def generate_l_shape(gx1, gy1, gx2, gy2, first_dir)
-      path = []
-      if first_dir == :horizontal
-        step_x = gx2 > gx1 ? 1 : -1
-        gx1.step(gx2, step_x) { |x| path << [x, gy1] }
-        step_y = gy2 > gy1 ? 1 : -1
-        y_start = gy1 + step_y
-        y_start.step(gy2, step_y) { |y| path << [gx2, y] }
-      else
-        step_y = gy2 > gy1 ? 1 : -1
-        gy1.step(gy2, step_y) { |y| path << [gx1, y] }
-        step_x = gx2 > gx1 ? 1 : -1
-        x_start = gx1 + step_x
-        x_start.step(gx2, step_x) { |x| path << [x, gy2] }
-      end
-      path
-    end
-
-    def valid_path?(path, arrow)
-      path[1...-1].each do |x, y|
-        if x.even? && y.even?
-          pos = (y / 2) * 3 + (x / 2)
-          return false if @entities_by_position.key?(pos)
-        end
-      end
-
+    def bfs_route(arrow, gx1, gy1, gx2, gy2, avoid_intersection)
       require 'set'
-      pair = [arrow.from_pos, arrow.to_pos].sort
-      path_points = path.to_set
-
-      @routed_paths.each do |routed|
-        r_pair = [routed[:arrow].from_pos, routed[:arrow].to_pos].sort
-        next if pair == r_pair
+      queue = [ [[gx1, gy1]] ]
+      visited = Set.new([[gx1, gy1]])
+      
+      while !queue.empty?
+        path = queue.shift
+        curr_x, curr_y = path.last
         
-        intersection = path_points & routed[:path].to_set
-        intersection.each do |x, y|
-          is_endpoint = (x == path.first[0] && y == path.first[1]) || (x == path.last[0] && y == path.last[1])
-          return false unless is_endpoint && x.even? && y.even?
+        return path if curr_x == gx2 && curr_y == gy2
+        
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        if path.length > 1
+          prev_dx = curr_x - path[-2][0]
+          prev_dy = curr_y - path[-2][1]
+          dirs.sort_by! { |d| d == [prev_dx, prev_dy] ? 0 : 1 }
+        end
+        
+        dirs.each do |dx, dy|
+          nx, ny = curr_x + dx, curr_y + dy
+          next if nx < 0 || nx > 4 || ny < 0 || ny > 4
+          next if visited.include?([nx, ny])
+          
+          if nx.even? && ny.even?
+            is_target = (nx == gx2 && ny == gy2)
+            if !is_target
+              pos = (ny / 2) * 3 + (nx / 2)
+              next if @entities_by_position.key?(pos)
+            end
+          end
+          
+          if avoid_intersection
+            intersect = false
+            @routed_paths.each do |routed|
+              r_pair = [routed[:arrow].from_pos, routed[:arrow].to_pos].sort
+              my_pair = [arrow.from_pos, arrow.to_pos].sort
+              next if my_pair == r_pair
+              
+              if routed[:path].include?([nx, ny])
+                unless (nx == gx1 && ny == gy1) || (nx == gx2 && ny == gy2)
+                  intersect = true
+                  break
+                end
+              end
+            end
+            next if intersect
+          end
+          
+          visited.add([nx, ny])
+          queue << (path + [[nx, ny]])
         end
       end
-      true
+      nil
     end
   end
 

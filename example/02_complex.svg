@@ -112,10 +112,10 @@
   </g>
   <g id='arrows'>
     <g id='arrow_4'>
-      <path d='M 260.0,200.0 L 320.0,200.0 L 440.0,200.0 L 560.0,200.0 L 680.0,200.0 L 680.0,320.0 L 680.0,380.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='380.0' y='184.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>ゲーム購入</text>
-      <rect x='366.0' y='186.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='380.0' y='205.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 200.0,295.0 L 200.0,320.0 L 320.0,320.0 L 440.0,320.0 L 560.0,320.0 L 680.0,320.0 L 680.0,380.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='260.0' y='304.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>ゲーム購入</text>
+      <rect x='246.0' y='306.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='260.0' y='325.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_5'>
       <path d='M 620.0,440.0 L 560.0,440.0 L 500.0,440.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
