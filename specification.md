@@ -1,247 +1,218 @@
 Specification 仕様書
 ====================
 
-概要
-----
+本書はRuby製Bizgram DSLライブラリの仕様をまとめたものである。
 
-- [Bizgram](https://bizgram.zukai.co/)（ビズグラム）をコードで書くためのDSLをRubyで作成する
-  - Bizgram（ビジネスモデル図解）を表す SVG ドキュメントを直接生成する
-- [Mermaid](https://mermaid.js.org/)や[PlantUML](https://mermaid.js.org/)のような独自の言語にはしない
-  - 独自の文法&パーサーを作る労力が大きいこと、Ruby製DDLの使い勝手は悪くないことから、現時点ではDDLで十分と判断する
-- 書き方の自由度や実行方法の柔軟性は意識したい
-  - [外部仕様](#外部仕様)で整理する
+コンセプト・背景
+----------------
 
-### Bizgram（ビズグラム）
+### Bizgram（ビズグラム）とは
 
-- [図解の説明書](https://bizgram.zukai.co/howto)
+- [Bizgram公式サイト](https://bizgram.zukai.co/) / [図解の説明書](https://bizgram.zukai.co/howto)
 
-> ビジネスモデル図解とは、**「そのビジネスは誰（何）が関係してるの？ どんな関係なの？ を知るためのツール」** である。そして、ビジネスモデル図解は、よりシンプルでわかりやすく相手にそのビジネスについての情報を伝えるために、いくつかのルールがある。
+> ビジネスモデル図解とは、**「そのビジネスは誰（何）が関係してるの？ どんな関係なの？ を知るためのツール」** である。よりシンプルでわかりやすく相手に伝えるために、いくつかのルールがある。
 > - `ルール1` 主体を３×３で構成する
 > - `ルール2` モノ・カネ・情報の流れを矢印で説明する
 > - `ルール3` 説明しきれない部分はふきだしの補足で説明する
 
-- [ビズグラム(ビジネスモデル図解)](https://zukai.co/pages/bizgram)
+ビズグラムを使うことで、自社のビジネスを可視化するだけでなく、自社の経営資源や強みを把握したり、投資家や経営陣に対する説明資料としても活用することができる。
 
-> **ビズグラム(ビジネスモデル図解)とはなにか？**
-> ビズグラム(ビジネスモデル図解)とは、ある企業のサービスの事業者や利用者がどう関わりお金が循環するのかを表現している図です。そのビジネスがどのように経済合理性を実現しているのか、そのビジネスの特徴は何かが一目で分かります。
->
-> ビズグラムを使うことで、自社のビジネスを可視化するだけでなく、自社の経営資源や強みを把握したり、投資家や経営陣に対する説明資料としても活用することができます。
+### なぜRubyの内部DSLか
 
-> **ビズグラムの説明書**
-> - 主体（ビジネスにおける重要な関係者・物）が、3×3マスに配置される。
-> - 上段は利用者、中段は事業、下段は事業者になる。
-> - まずは、中央の縦列をみて、①誰のために事業が行われているのか？②何が事業として行われるのか？③誰がどの事業を行なっているのか？を確認する。
-> - 次に、中央の横列を見て、④利用者は何にお金を出しているのか？⑤事業者はどうお金を回しているのか？を確認する。
-> - そして、4隅をみて、⑥提携している起業や、重要な関係会社はあるのか？を確認する。
-> - 最後に、矢印や補足を見て、モノ・カネ・情報の流れがどうなっているか？を確認する。
+[Mermaid](https://mermaid.js.org/)や[PlantUML](https://plantuml.com/)のような独自の言語にはせず、Rubyの内部DSLを採用した。
 
-本も出ている模様。
+- 独自の文法や専用パーサーを作る労力が削減できる
+- 既存のRubyの構文（演算子オーバーロードやブロック等）を活用し、表現力豊かな記述が可能
+- 開発者が慣れ親しんだエディタやツールチェインをそのまま利用可能
 
-- [ビジネスモデル3.0図鑑](https://www.amazon.co.jp/dp/4046075724)
+外部仕様（ユーザー向けAPI）
+--------------------------
 
-### DSL
-
-#### DSLとは
-
-- [ドメイン固有言語](https://ja.wikipedia.org/wiki/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E5%9B%BA%E6%9C%89%E8%A8%80%E8%AA%9E)
-
-> ドメイン特化言語（ドメインとっかげんご、英語: domain-specific language、DSL）は、特定のタスク向けに設計されたコンピュータ言語[1]である。汎用プログラミング言語の対義語として用いられる。
-
-> 例えば、ハードウェア記述言語のVerilog HDLやVHDL、データベースへの問い合わせ言語（SQLなど）、文脈自由文法を記述するBNFや正規文法を記述する正規表現、図を作成する言語を構築する Generic Eclipse Modeling System（英語版）、音響や音楽の合成用のCsound、グラフ（ネットワーク）描画システムGraphvizのDOT言語、ファイルの最終変更時刻と依存関係記述にもとづいたタスクランナーであるmakeなどがある。
-
-#### RubyでDSL
-
-- [RubyでDSLが書きやすい理由を整理する](https://qiita.com/getty104/items/b3fcc1f86846fb86f168)
-- [Rubyによる内部DSLを用いた設定ファイルの作り方](https://www.key-p.com/blog/staff/archives/43226)
-- [Rubyで簡単DSL](https://tyfkda.github.io/blog/2008/03/21/easy-dsl.html)
-- [Rubyで自然なDSLを作るコツ：値を設定するときはグループ化して代入](https://www.clear-code.com/blog/2014/2/13.html)
-- [Rubyの魔法：instance_evalとinstance_execを使いこなす](https://techracho.bpsinc.jp/kazz/2025_11_04/154120)
-
-
-仕様
-----
-
-### 外部仕様
-
-#### コードサンプル
+### コードサンプルと出力例
 
 ```ruby
 require "bizgram"
 
 Bizgram.draw "タイトル" do
-
   # 主体の定義
   entity :user, "太郎", :ct # 利用者
   entity :business, "HOGEビジネス", :cm # 事業
   entity :operator, "社員", :cb # 事業者
-  jiro = user "次郎", [1, 0] # 利用者のショートカット
-  fuga = business "FUGAビジネス", [1, 1] # 事業のショートカット
-  clerk = operator "販売員", [1, 2] # 事業者のショートカット
 
-  # モノ・カネ・情報の流れの定義
-  arrow :object, "商品", business("FUGAビジネス"), user("太郎") # 従来の記法
+  # ショートカットでの主体定義
+  jiro = user "次郎", [1, 0]
+  fuga = business "FUGAビジネス", [1, 1]
+  clerk = operator "販売員", [1, 2]
 
-  # 直感的なDSL記法
+  # モノ・カネ・情報の流れの定義（従来の記法）
+  arrow :object, "商品", business("FUGAビジネス"), user("太郎")
+
+  # モノ・カネ・情報の流れの定義（直感的なDSL記法）
   user("太郎") -money("代金")> business("HOGEビジネス")
   operator("販売員") -info("広告")> user("太郎")
   jiro -money("代金")> fuga
 
   # その他の補足情報（コメント）の定義
   comment_to user("太郎"), "太郎君"
-  comment_to jiro, "次郎君" # IDで対象を指定する
   comment clerk, "広告" # 3文字だけ短く書けるショートカット
-
 end
 ```
 
-#### 図そのものを定義するメソッド
+生成されるSVG画像のイメージ（`example/04_test_dsl.rb` の実行結果）：
 
-##### `draw`メソッド
-- 引数
+![](./example/04_test_dsl.svg)
 
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|title| * |string|この図を端的に表す名称|
+### 主体の定義（Entity）
 
-- 戻値
+主体を定義する基本メソッドとそのショートカット。
 
-Bizgramを描画するための SVG ドキュメント文字列
+#### `entity` メソッド
+
+| 仮引数 | 必須 | 型 | 説明 |
+| ------ | ---- | --- | ---- |
+| `type` | * | `Symbol` | 主体の種類。`:person`(`:user`), `:company`(`:business`), `:money`, `:object`(`:goods`), `:information`(`:info`), `:smartphone`(`:device`), `:store`(`:shop`), `:other` |
+| `name` | * | `String` | 主体の名称 |
+| `position` | * | `Integer` \| `Symbol` \| `Array` | 配置位置。数値（`0`-`8`）、シンボル（`:lt`, `:cm`等）、または座標（`[x, y]`） |
+
+**戻り値**: 主体を表す `Entity` オブジェクト
+
+#### ショートカットメソッド
+
+`person`(`user`), `company`(`business`), `money`, `object`(`goods`), `information`(`info`), `smartphone`(`device`), `store`(`shop`), `other` を用いることで、型（`type`）の指定を省略可能。
 
 
-#### 主体を定義するメソッド
+### 流れの定義（Arrow）
 
-##### `entity`メソッド
+#### 直感的なDSL記法 (`- ... >`)
 
-主体を定義する基本メソッド。
-次項のショートカットメソッドは、`entity` メソッドを便利に呼び出すための仕組み。
+Rubyのメソッドチェーンを応用し、矢印を直感的な記号を使って定義できる。
 
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|type| * |symbol|主体の種類。以下の値を指定可能：`:person`(`:user`), `:company`(`:business`), `:money`, `:object`(`:goods`), `:information`(`:info`), `:smartphone`(`:device`), `:store`(`:shop`), `:other`|
-|name| * |string|主体の名称|
-|position| * |number\|symbol\|array|主体の配置位置。number: 3x3マスの左上から右下に向けて`0`～`8`を指定する。 symbol: 横方向（l,c,r）と縦方向（t, m, b）の組み合わせ（例：`:ct` は中央上段）。 array: `[x, y]`の座標指定(`0`～`2`) |
-
-- 戻値
-
-主体を表す `Entity` オブジェクト
-
-##### `entity`のショートカットメソッド
-
-`person`(`user`), `company`(`business`), `money`, `object`(`goods`), `information`(`info`), `smartphone`(`device`), `store`(`shop`), `other` メソッドは、`entity` メソッドの便利なショートカットメソッド。
-
-- 引数：※`entity`メソッドの`type`なし
-- 戻値：※`entity`メソッドと同じ
-
-**ショートカットメソッド一覧**
-
-|メソッド名|entity type|説明|図形|
-|----------|-----------|----|----|
-|`person`(`user`)|`:person`(`:user`)|ヒト（利用者、人物）|![](./reference/image/entity_person.svg)|
-|`company`(`business`)|`:company`(`:business`)|会社（事業者）|![](./reference/image/entity_company.svg)|
-|`money`|`:money`|カネ（金銭）|![](./reference/image/entity_money.svg)|
-|`object`(`goods`)|`:object`(`:goods`)|モノ（商品、物資）|![](./reference/image/entity_object.svg)|
-|`information`(`info`)|`:information`(`:info`)|情報、知識|![](./reference/image/entity_information.svg)|
-|`smartphone`(`device`)|`:smartphone`(`:device`)|スマートフォン(デバイス)|![](./reference/image/entity_smartphone.svg)|
-|`store`(`shop`)|`:store`(`:shop`)|店舗|![](./reference/image/entity_store.svg)|
-|`other`|`:other`|その他の要素|![](./reference/image/entity_other.svg)|
-
-#### モノ・カネ・情報の流れを定義するメソッド
-
-##### `arrow`メソッド
-
-流れを定義するメソッド。
-
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|type| * |symbol|流れの種類 `:object`: モノ `:money`: お金 `:information`: 情報 `:other`: その他|
-|name| * |string|流れの名称|
-|from| * |Entity, number, or string|矢印の元の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
-|to| * |Entity, number, or string|矢印の先の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
-
-- 戻値
-
-流れを表す `Arrow` オブジェクト
-
-##### 直感的なDSL記法 (`- ... >`)
-
-矢印を直感的な記号を使って定義することができます。
-
-```rb
-# userからcompanyへの情報の流れを定義する
+```ruby
 user("太郎") -info("情報")> company("会社")
 ```
 
 1. **`-` メソッド** (主体に対するメソッド)
    - 引数: `PendingArrow` オブジェクト (`info("情報")` など)
    - 戻値: 流れの始点が決定された `HalfArrow` オブジェクト
-
 2. **`>` メソッド** (`HalfArrow` に対するメソッド)
    - 引数: 矢印の先の主体 (`Entity` オブジェクト)
    - 戻値: 生成された `Arrow` オブジェクト
 
-※`info`, `money`, `object`, `goods`, `information` メソッドは、このDSL内で呼ばれた場合は `PendingArrow` オブジェクトを返します。
+※ `info`, `money`, `object`, `goods`, `information` メソッドは、この構文の内部で一時的な `PendingArrow` を生成するために用いる。
+
+#### `arrow` メソッド（従来記法）
+
+| 仮引数 | 必須 | 型 | 説明 |
+| ------ | ---- | --- | ---- |
+| `type` | * | `Symbol` | 流れの種類 `:object`, `:money`, `:information`, `:other` |
+| `name` | * | `String` | 流れの名称 |
+| `from` | * | `Entity` \| `Integer` \| `String` | 矢印の元の主体 |
+| `to` | * | `Entity` \| `Integer` \| `String` | 矢印の先の主体 |
+
+**戻り値**: 流れを表す `Arrow` オブジェクト
 
 
+### 補足の定義（Comment）
 
-#### その他の補足情報（コメント）を定義するメソッド
+#### `comment_to`（エイリアス: `comment`）メソッド
 
-##### `comment_to`（`comment`）メソッド
+| 仮引数 | 必須 | 型 | 説明 |
+| ------ | ---- | --- | ---- |
+| `to` | * | `Entity` \| `Integer` \| `String` | コメントを付与する対象の主体 |
+| `text` | * | `String` | コメント内容の文字列 |
 
-`comment`は`comment_to`のエイリアスであり、挙動は全く同じ。
-
-- 引数
-
-|仮引数|必須|型|説明|
-|------|----|--|----|
-|to| * |Entity, number, or string|コメントを付与する対象の主体。Entity オブジェクト、主体の ID（number）、または主体の名称（string）|
-|text| * |string|コメント内容の文字列|
-
-- 戻値
-
-補足を表す `Comment` オブジェクト
+**戻り値**: 補足を表す `Comment` オブジェクト
 
 
+### 描画実行
+
+#### `Bizgram.draw` メソッド
+
+ブロック内で主体や流れを定義し、最終的なSVG文字列を生成するエントリーポイント。
+
+| 仮引数 | 必須 | 型 | 説明 |
+| ------ | ---- | --- | ---- |
+| `title` | * | `String` | この図を端的に表す名称 |
+
+**戻り値**: Bizgramを描画するための SVG ドキュメント文字列
 
 
-##### 矢印のルートパターン一覧
+内部アーキテクチャと設計
+------------------------
 
-###### 基本ルール
+### システム構造（Builderパターン）
 
-- 2つの主体を結ぶ矢印のルートは、あらかじめ定義された中から選択する（定義は[ルート定義一覧](#ルート定義一覧)参照）
-- 矢印は交差することはできないが、同じ主体間の往復など、全く同じルートに複数の矢印を配置することができる（描画の際には、座標をオフセットして、矢印が被ってしまうのを防ぐ）
-- 矢印は基本的に水平方向と垂直方向の直線で構成されており、1回だけ直角に方向転換することが許されているが、主体の相対位置が「(1, 1) or (-1, -1)、(-1, 1) or (1, -1)」の右上/右下/左上/左下の位置の場合、例外的に斜め45度の直線の矢印が許される
+```
+Bizgram
+  ├── Builder（DSLコンテキスト）
+  │   ├── 主体定義 (entity, user, company...)
+  │   ├── 流れ定義 (arrow)
+  │   ├── 補足定義 (comment_to)
+  │   └── SVG生成トリガー (to_svg)
+  ├── PositionResolver（位置指定のパース）
+  ├── SvgGenerator（SVGコード生成・ルーティング）
+  └── 内部モデル
+      ├── Entity（主体）
+      ├── Arrow / PendingArrow / HalfArrow（流れ・DSL状態管理）
+      └── Comment（補足）
+```
 
-###### ルーティングの考え方（アルゴリズム）
+### 主要クラスと責務
 
-以下のルールにて、複数のテーブルを行列的に操作（合成）し、基本ルートを決定する
+- **`Builder`** : DSLのブロック内での操作を受け取り、内部状態（エンティティ、矢印、コメント）を各マップ（ID/名前参照）で統合管理する。
+- **`PositionResolver`** : ユーザーからの多様な位置指定（`0`-`8` の数値、`:cm` などのシンボル、`[x,y]` の配列）をパースし、単一の座標インデックスに正規化する。
+- **`SvgGenerator`** : 収集されたオブジェクト群をもとに、キャンバスの準備、画像の埋め込み、テキスト配置、矢印のルーティングなどを行い、最終的なSVGを出力する。
+- **`Entity` / `Arrow` / `Comment`** : それぞれのドメイン知識と属性（ID、種類、接続元・先など）を保持する。`Entity` はDSL構文のために `-` メソッドを持ち、`HalfArrow` オブジェクトを生成する。
 
-1. 主体と主体間の隙間を表現した5x5テーブル（ベースと呼ぶ）を準備する
-2. ベースに全ての主体を配置する
-2. 矢印で結ばれた2主体の配置から、次項の「[ルート定義一覧](#ルート定義一覧)」を検索する（ルート候補と呼ぶ）
-   ※主体間の相対距離が遠い2主体から順にルートを決定する
-3. ルート候補をベースに合成して、以下を満たしているルートを採用する
-   ※ルート候補は2パターン以上あるので、以下を満たすどれかを採用する
-   - 配置済みの主体に被っていないこと
-   - 配置済みの矢印に被っていないこと
-     ただし、完全に一致するルートであれば許容する
+### SVG生成とルーティングエンジン
 
-###### ルート定義一覧
+#### SVGレンダリング
+
+- **パスの直接埋め込み**: Base64エンコードを用いず、各主体アイコン（`reference/image/*.svg`）から `<path>` 等のベクター要素を直接抽出し、`<g transform="...">` としてネイティブに埋め込むことで、美しさと描画の安定性を両立。
+- **スタイルと配色**: 全ての矢印は基本色 "#000000" (黒) で統一し、矢印の先端マーカーの形状（`￥`, `〇`, `□` など）で種類を視覚的に表現する。
+- **コメント**: "#DDDDDD" (ライトグレー) のしっぽ付き吹き出しとして描画し、対象主体と点線で接続する。
+
+#### Arrowルーティングアルゴリズム（5x5グリッド方式）
+
+矢印は主体と被らないよう、L字や迂回ルートを動的に計算して描画される。
+
+1. **基本経路選択**: 2つの主体間の相対位置関係（行・列の差）をもとに、あらかじめ定義されたルートパターン（後述の「ルート定義一覧」）から候補を決定する。
+2. **ルート検証と確定**: 経路上のマスに他の主体が配置されていないか、また他の矢印と不当に交差しないかを検証し、最適な経路を採用する。
+3. **オフセット適用**: 全く同じ経路を通る複数の矢印が存在する場合、ラベルや矢印線が重ならないよう、経路の垂直方向に平行移動（オフセット）させる。
+4. **SVGパスの生成**: 確定した経路（基本経路＋オフセット）を `M (x1),(y1) L (x2),(y2) ...` の形式で出力する。
+
+### 実行時バリデーション
+
+堅牢性を高めるため、以下の厳密な実行時チェックを行なっている。
+
+1. **Entityのバリデーション** : 名称の空チェック、型の妥当性（`:user`, `:business`等）
+2. **位置指定のバリデーション** : 範囲外の数値、無効なシンボル、配列要素数の不正検知
+3. **流れ（Arrow）のバリデーション** : 型の妥当性、`from`/`to` に指定された主体が存在するかの参照チェック
+4. **構造的バリデーション** : 同じ位置への複数主体の配置禁止、自動配置行の空き枠チェック（※自動配置は現在廃止）
+5. **コメントのバリデーション** : 空テキストの禁止、対象主体の存在チェック
+
+
+付録
+----
+
+### アイコンアセット一覧
+
+各エンティティのSVG画像（`reference/image/` 配下）
+
+| ヒト (`:person`) | 会社 (`:company`) | カネ (`:money`) | モノ (`:object`) | 情報 (`:information`) | スマートフォン (`:smartphone`) | 店舗 (`:store`) | その他 (`:other`) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ![](./reference/image/entity_person.svg) | ![](./reference/image/entity_company.svg) | ![](./reference/image/entity_money.svg) | ![](./reference/image/entity_object.svg) | ![](./reference/image/entity_information.svg) | ![](./reference/image/entity_smartphone.svg) | ![](./reference/image/entity_store.svg) | ![](./reference/image/entity_other.svg) |
+
+### ルート定義一覧
 
 - Bizgramの3x3レイアウトを奇数行・列に、主体間の隙間を偶数行・列で表現している（最大5x5のテーブル）
-- Bizgramの3x3レイアウトは`<th/>`、主体間の隙間は`<td/>`で表現している
-- 主体は3x3レイアウト(`<th/>`)にしか配置できない
-- 矢印は主体間の隙間(`<td/>`)だけでなく、主体を配置する9マス(`<th/>`)上も通過できるが、主体が配置されているマスは通過できない
-- ルート一覧上の主体は、2つの主体間の相対位置関係を示しており、本来の主体の座標ではない点に注意する（このため、テーブルの行列サイズは必ずしも3x3レイアウトになっていない）
-- ルート候補は複数あり、相対位置ごとにまとめて記載している
-  （他の主体上を通過しない、かつ他の矢印と交差しないルートを選定すること）
+- 矢印は主体間の隙間だけでなく、主体を配置する9マス上も通過できるが、主体が配置されているマス自体は通過できない
+- 以下の表は2つの主体間の相対位置関係を示しており、実際の座標ではない。
 
 <details>
 <style>
   table.rt td { background-color: gray; }
+  table.rt th, table.rt td { text-align: center; }
 </style>
 <summary>レイアウト（主体は〇、矢印のルートは罫線にて表現）</summary>
 
@@ -260,14 +231,14 @@ user("太郎") -info("情報")> company("会社")
 <table class="rt">
   <caption>相対位置：(1, 1) or (-1, -1)</caption>
 	<tr><th>〇</th><td>─</td><th>┐</th></tr>
-	<tr><td>│</td><th>＼</th><td>│</td></tr>
+	<tr><td>│</td><td>＼</td><td>│</td></tr>
 	<tr><th>└</th><td>─</td><th>〇</th></tr>
 </table>
 
 <table class="rt">
   <caption>相対位置：(-1, 1) or (1, -1)</caption>
 	<tr><th>┌</th><td>─</td><th>〇</th></tr>
-	<tr><td>│</td><th>／</th><td>│</td></tr>
+	<tr><td>│</td><td>／</td><td>│</td></tr>
 	<tr><th>〇</th><td>─</td><th>┘</th></tr>
 </table>
 
@@ -335,290 +306,3 @@ user("太郎") -info("情報")> company("会社")
 	<tr><th>〇</th><td>─</td><th>─</th><td>─</td><th>┘</th></tr>
 </table>
 </details>
-
-#### 体裁・装飾の参考資料
-
-（AIに読んでもらうために一部分割、編集している）
-
-- ビジネスモデル図解ツールキット配布版P3描画要素
-  - [主体](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_主体.svg), [矢印](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_矢印.svg), [補足](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_補足.svg), [全体](./reference/ビジネスモデル図解ツールキット配布版P3描画要素/ビジネスモデル図解ツールキット配布版P3描画要素_部分抽出_全体.svg)
-
-各エンティティSVG（個別に切り出し）
-
-|ヒト|会社|カネ|モノ|情報|スマートフォン|店舗|その他|
-|-|-|-|-|-|-|-|-|
-| ![](./reference/image/entity_person.svg) | ![](./reference/image/entity_company.svg) | ![](./reference/image/entity_money.svg) | ![](./reference/image/entity_object.svg) | ![](./reference/image/entity_information.svg) | ![](./reference/image/entity_smartphone.svg) | ![](./reference/image/entity_store.svg) | ![](./reference/image/entity_other.svg) |
-
-
-内部仕様
---------
-
-### アーキテクチャ
-
-```
-Bizgram
-  ├── Builder（ブロック内での操作を受け取る）
-  │   ├── entity / person(user) / company(business) / money / object(goods) / information(info) / smartphone(device) / store(shop) / other（主体定義）
-  │   ├── arrow（流れ定義）
-  │   ├── comment_to(comment)（コメント定義）
-  │   └── to_svg（SVG生成へ）
-  ├── PositionResolver（位置指定の解決）
-  │   ├── 数値指定（0-8）
-  │   ├── シンボル指定（:lt, :ct等）
-  │   └── 座標指定（[x,y]）
-  ├── SvgGenerator（SVGコード生成）
-  │   ├── SVGヘッダー/フッター出力
-  │   ├── Entity出力（SVG画像埋め込み）
-  │   ├── Arrow出力（5x5グリッド・ルーティングおよびオフセット処理）
-  │   └── Comment出力
-  ├── Entity（主体の内部表現）
-  ├── Arrow（流れの内部表現）
-  └── Comment（コメントの内部表現）
-```
-
-### クラス と責務
-
-#### `Entity`クラス
-
-主体（利用者、事業、事業者）の内部表現。
-
-**属性**
-- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
-- `name` : 主体の名称（string）
-- `type` : 主体の種類（:user, :business, :operator）
-- `position` : 3×3マスでの配置位置（0-8のnumber）
-**メソッド**
-- `-` : 引数に `PendingArrow` オブジェクトを取り、矢印の起点を設定した `HalfArrow` オブジェクトを返す
-
-#### `Arrow`クラス
-
-流れ（モノ・カネ・情報）の内部表現。
-
-**属性**
-- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
-- `name` : 流れの名称（string）
-- `type` : 流れの種類（:object, :money, :information, :other）
-- `from` : 流れの開始主体ID（number）
-- `to` : 流れの終了主体ID（number）
-
-#### `PendingArrow`クラス
-
-DSL内で `info(...)` などのメソッドによって一時的に生成される矢印の属性を保持するクラス。
-
-**属性**
-- `type` : 流れの種類（:object, :money, :information, :other）
-- `name` : 流れの名称（string）
-
-#### `HalfArrow`クラス
-
-DSLで矢印の始点と属性（`PendingArrow`）が設定され、終点が未設定の半端な矢印状態を管理するクラス。
-
-**属性**
-- `from` : 流れの開始主体 (`Entity` オブジェクト)
-- `pending_arrow` : 矢印の属性 (`PendingArrow` オブジェクト)
-**メソッド**
-- `>` : 引数に矢印の終点となる `Entity` オブジェクトを取り、最終的な `Arrow` オブジェクトを生成して Builder に登録する
-
-
-#### `Comment`クラス
-
-補足情報（コメント）の内部表現。
-
-**属性**
-- `id` : 一意の識別子（number）。全オブジェクト（Entity, Arrow, Comment）間で一意。
-- `to` : コメント対象の主体ID（number）
-- `text` : コメント内容（string）
-
-#### `PositionResolver`クラス
-
-主体の配置位置を解決する責務を持つ。
-
-**処理**
-
-1. **数値指定の解決**
-   - 0～8の範囲内であることを検証
-        ```
-        0 1 2   (上段：利用者)
-        3 4 5   (中段：事業)
-        6 7 8   (下段：事業者)
-        ```
-   - 範囲外ならば`ArgumentError`を発生
-
-2. **シンボル指定の解決**
-   - 横軸：l（左）, c（中央）, r（右）
-   - 縦軸：t（上）, m（中）, b（下）
-   - 組み合わせ：:lt, :ct, :rt, :lm, :cm, :rm, :lb, :cb, :rb
-   - 無効なシンボルならば`ArgumentError`を発生
-
-3. **座標指定の解決**
-   - [x, y]形式、x: 0～2, y: 0～2
-   - 配列がない、要素数が不正、範囲外ならば`ArgumentError`を発生
-   - 変換式：`position = y * 3 + x`
-
-#### `Builder`クラス
-
-DSLのブロック内での操作を受け取り、Entity と Arrow 、Comment を管理する。
-
-##### 内部状態
-- `@entities` : {name => Entity} マップ（名前による参照）
-- `@entities_by_id` : {id => Entity} マップ（IDによる参照）
-- `@arrows` : {name => Arrow} マップ（名前による参照）
-- `@arrows_by_id` : {id => Arrow} マップ（IDによる参照）
-- `@comments` : {id => Comment} マップ（IDによる参照）
-- `@next_global_id` : 次のグローバルID（Entity, Arrow, Commentで共有）
-- `@occupied_positions` : 占有済みの位置（Set）
-
-##### 主要メソッド
-
-
-###### `user` / `business` / `operator` / `entity`メソッド
-
-```ruby
-Bizgram.draw("Example") do
-  user "ユーザー名"
-  user "ユーザー名", :ct          # シンボル位置指定
-  user "ユーザー名", [0, 0]       # 座標指定
-  user "ユーザー名", 1            # 数値位置指定
-
-  business "事業名"
-  business "事業名", :cm          # 中央
-
-  operator "事業者名"
-  operator "事業者名", :cb        # 中央下
-end
-```
-```ruby
-Bizgram.draw("Example") do
-  entity :user, "ユーザー"
-  entity :business, "事業"
-  entity :operator, "事業者"
-end
-```
-
-- `entity(type, name, position)` / `user/business/operator(name, position)`
-  1. nameが既に登録済みか確認 → Yes: 既存のIDを返す
-  2. 位置指定を`PositionResolver`で解決
-  3. 位置が占有されていないか確認 → 占有済み: エラー
-  4. Entity を作成し、各マップに登録
-  5. 位置を占有として記録
-  6. IDを返す
-
-###### `arrow`メソッド
-
-```ruby
-Bizgram.draw("Example") do
-  user "Customer", 1
-  business "Shop", 4
-
-  arrow :object "商品", user("Customer"), business("Shop")
-  arrow :money "代金", user("Customer"), business("Shop")
-  arrow :information "広告", operator("Staff"), user("Customer")
-end
-```
-
-- `arrow(type, name, from, to)`
-  1. from, to の Entity参照を解決（ID または名前）
-  2. 両Entity が存在するか確認 → 存在しない: エラー
-  3. Arrow を作成し、各マップに登録
-  4. IDを返す
-
-###### `comment_to` / `comment`メソッド
-
-```ruby
-Bizgram.draw("Example") do
-  user "Alice", 0
-  comment_to user("Alice"), "コメント内容"
-  comment alice_id, "短い書き方"  # comment_to のエイリアス
-end
-```
-
-- `comment_to(to, text)` / `comment(to, text)`
-  1. text をバリデーション
-  2. to の Entity参照を解決（ID または名前）
-  3. Entity が存在するか確認 → 存在しない: エラー
-  4. Comment を作成し、マップに登録
-  5. IDを返す
-
-- `to_svg(title)` → `SvgGenerator`に委譲
-
-#### `SvgGenerator`クラス
-
-Entity と Arrow、Comment から直接 SVG ドキュメントを生成する。
-
-**配色とスタイル**
-- Arrowスタイル
-  - すべての矢印は基本色 "#000000" (黒) で描画される
-  - 矢印線上のマーカーの形状で種類を表現する（`:money` は ￥, `:object` は 〇, `:information` は □, `:other` は装飾なし）
-- Comment背景色: "#DDDDDD" (ライトグレー)
-
-**生成ロジック**
-
-1. SVGキャンバス（3x3グリッドに基づくコンパクトなサイズ、現在は概ね720x720前後＋パディング）の枠組みを作成
-2. 背景にBizgramの3x3構造を示すガイドライン（破線）を描画
-3. `reference/image/` 配下にある各主体のSVGファイルからパスデータ（`<path>`等）を直接抽出し、`transform` 属性を用いて指定座標にネイティブなSVG要素として埋め込む
-4. 各Entityの下部に名称テキストを配置（自動折り返し対応）
-5. Arrowのルーティングと描画（後述）
-6. しっぽ付きの吹き出し型コメントボックスを描画し、対象のEntityまで点線をつなぐ
-
-**Arrowルーティングアルゴリズム（5x5グリッド方式）**
-
-Arrow（矢印）は単なる直線ではなく、仕様書上部で定義された「ルート定義一覧」に基づき、他の主体と被らないように迂回・直角で描画される。
-また、全く同じ経路を通る矢印が複数存在する場合は、重ならないように一定のピクセル数分オフセット（平行移動）させる。
-
-1. **基本経路選択**: Entity同士の相対位置関係（行の差・列の差）から、ルートパターンの候補を決定する
-2. **ルート検証と確定**: 複数のルート候補がある場合、主体が配置されている座標や既存の矢印と被らない経路を採用する
-3. **オフセット適用**: 複数の矢印が完全に同じ経路を通る（または双方向に通る）場合、経路の垂直方向に平行にずらす（例：1本あたり10pxのオフセット）
-4. **SVGパスの生成**: 確定した経路（基本経路＋オフセット）をもとに、`M (x1),(y1) L (x2),(y2) ...` の形式で、直角を基本とするL字型などのSVGパスデータ（`d`属性）を出力する
-
-#### `Bizgram.draw`メソッド
-
-ユーザーからの呼び出しエントリーポイント。
-
-**処理**
-1. Builder インスタンスを作成
-2. ブロックを`instance_eval`で Builder上で実行
-   - ブロック内のメソッド呼び出しは、全てBuilder のメソッドへ委譲される
-3. `to_svg(title)`で SVG ドキュメントを生成
-4. 生成された SVG ドキュメント文字列を返す
-
-### バリデーション
-
-実装されているバリデーション：
-
-1. **Entity名のバリデーション**
-   - 空文字列NG → `ArgumentError`
-   - 非文字列NG → `ArgumentError`
-
-2. **位置指定のバリデーション**
-   - 数値：0～8の範囲外NG → `ArgumentError`
-   - シンボル：未知のシンボルNG → `ArgumentError`
-   - 配列：要素数不正、座標範囲外NG → `ArgumentError`
-
-3. **Entity型のバリデーション**
-   - :user, :business, :operator 以外NG → `ArgumentError`
-
-4. **流れ型のバリデーション**
-   - :object, :money, :information 以外NG → `ArgumentError`
-
-5. **流れの参照チェック**
-   - from/to で指定されたEntity が存在しないNG → `ArgumentError`
-
-6. **位置の競合チェック**
-   - 同じ位置に複数のEntity を配置NG → `RuntimeError`
-
-7. **自動配置の限界チェック**
-   - 該当行（利用者行/事業行/事業者行）に空き位置がないNG → `RuntimeError`
-
-8. **コメント内容のバリデーション**
-   - 空文字列NG → `ArgumentError`
-   - 非文字列NG → `ArgumentError`
-
-9. **コメント対象のバリデーション**
-   - to で指定されたEntity が存在しないNG → `ArgumentError`
-
-### SVG生成の仕組みと特徴
-
-- **画像ファイルの埋め込み**: 各Entityに割り当てられた `reference/image/*.svg` ファイルのソースから `<path>` などのベクター要素をプログラム内で直接抽出し、最終的なSVGの中に `<g transform="...">` として埋め込んでいます。これにより、Base64エンコード特有のエラーを防ぎつつ、1つのSVGファイルを共有するだけで全てのアイコンが欠落せずに美しく表示されます。
-- **マーカー定義**: 矢印の終点（三角、￥、〇、□などの装飾）は、`<defs><marker>` 要素として定義されており、各パスから `marker-end` 属性で参照されています。
-- **5x5グリッドルーティングの実現**: 指定された相対位置に対して、直進・L字曲がり・迂回などのルートを動的に計算し、中間地点となる座標をつなぐ直線（`<path d="M... L... L...">`）として描画されます。またラベルや他の主体との重なりを回避するための賢いオフセットアルゴリズムも備えています。
-
