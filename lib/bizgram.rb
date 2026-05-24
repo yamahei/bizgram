@@ -1408,32 +1408,44 @@ class SvgGenerator
         by1 = comment_y + comment_height - 15
         bx2 = comment_x + 15
         by2 = comment_y + comment_height
-        tx = bx1 + (target_center_x - bx1) * 0.5
-        ty = by2 + (target_center_y - by2) * 0.5
+        bc_x, bc_y = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+        dx, dy = target_center_x - bc_x, target_center_y - bc_y
+        dist = Math.sqrt(dx**2 + dy**2)
+        tx = bc_x + (dx / dist) * 15.0
+        ty = bc_y + (dy / dist) * 15.0
         pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
       elsif dir == :top_left
         bx1 = comment_x + comment_width - 15
         by1 = comment_y + comment_height
         bx2 = comment_x + comment_width
         by2 = comment_y + comment_height - 15
-        tx = bx2 + (target_center_x - bx2) * 0.5
-        ty = by1 + (target_center_y - by1) * 0.5
+        bc_x, bc_y = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+        dx, dy = target_center_x - bc_x, target_center_y - bc_y
+        dist = Math.sqrt(dx**2 + dy**2)
+        tx = bc_x + (dx / dist) * 15.0
+        ty = bc_y + (dy / dist) * 15.0
         pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
       elsif dir == :bottom_right
         bx1 = comment_x
         by1 = comment_y + 15
         bx2 = comment_x + 15
         by2 = comment_y
-        tx = bx1 + (target_center_x - bx1) * 0.5
-        ty = by2 + (target_center_y - by2) * 0.5
+        bc_x, bc_y = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+        dx, dy = target_center_x - bc_x, target_center_y - bc_y
+        dist = Math.sqrt(dx**2 + dy**2)
+        tx = bc_x + (dx / dist) * 15.0
+        ty = bc_y + (dy / dist) * 15.0
         pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
       elsif dir == :bottom_left
         bx1 = comment_x + comment_width - 15
         by1 = comment_y
         bx2 = comment_x + comment_width
         by2 = comment_y + 15
-        tx = bx2 + (target_center_x - bx2) * 0.5
-        ty = by1 + (target_center_y - by1) * 0.5
+        bc_x, bc_y = (bx1 + bx2) / 2.0, (by1 + by2) / 2.0
+        dx, dy = target_center_x - bc_x, target_center_y - bc_y
+        dist = Math.sqrt(dx**2 + dy**2)
+        tx = bc_x + (dx / dist) * 15.0
+        ty = bc_y + (dy / dist) * 15.0
         pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
       end
       tail_el.add_attributes("points" => pts, "fill" => "#dddddd")

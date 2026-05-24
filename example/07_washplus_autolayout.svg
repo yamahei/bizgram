@@ -337,7 +337,7 @@
     </g>
     <g id='comment_3'>
       <rect x='292.0' y='575.0' width='118' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='395.0,575.0 445.0,527.5 410.0,590.0' fill='#dddddd'/>
+      <polygon points='395.0,575.0 411.5466241230762,570.5351100307702 410.0,590.0' fill='#dddddd'/>
       <text x='351.0' y='595.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
         <tspan x='351.0' dy='0'>山本製作所製機</tspan>
         <tspan x='351.0' dy='20'>器と接続でき、</tspan>
