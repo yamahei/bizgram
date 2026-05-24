@@ -33,34 +33,41 @@ Specification 仕様書
 ```ruby
 require "bizgram"
 
-Bizgram.draw "タイトル" do
+svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   # 主体の定義
-  entity :user, "太郎", :ct # 利用者
-  entity :business, "HOGEビジネス", :cm # 事業
-  entity :operator, "社員", :cb # 事業者
+  user = user("ゲーム利用者")
+  device = smartphone("利用者のデバイス", :cm)# 明示的な配置指定
+  site = other("ゲーム配布サイト")
 
-  # ショートカットでの主体定義
-  jiro = user "次郎", [1, 0]
-  fuga = business "FUGAビジネス", [1, 1]
-  clerk = operator "販売員", [1, 2]
+  # モノ・カネ・情報の流れを定義
+  user -money("ゲーム購入")> site
+  site -object("インストール")> device
+  arrow(:other, "プレイ", user, device)# 旧来の記法
 
-  # モノ・カネ・情報の流れの定義（従来の記法）
-  arrow :object, "商品", business("FUGAビジネス"), user("太郎")
+  ## 主体は直接書くこともできる
+  company("(株)HOGEゲームズ", :cb) -object("作品アップロード")> device# 明示的な配置指定
+  site -money("売上")> company("(株)HOGEゲームズ")
 
-  # モノ・カネ・情報の流れの定義（直感的なDSL記法）
-  user("太郎") -money("代金")> business("HOGEビジネス")
-  operator("販売員") -info("広告")> user("太郎")
-  jiro -money("代金")> fuga
+  # コメントの定義
+  comment_to(site, "Google Play的な")
 
-  # その他の補足情報（コメント）の定義
-  comment_to user("太郎"), "太郎君"
-  comment clerk, "広告" # 3文字だけ短く書けるショートカット
 end
+
+puts svg
 ```
 
-生成されるSVG画像のイメージ（`example/04_test_dsl.rb` の実行結果）：
+生成されるSVG画像のイメージ（`example/00_basic_sample.rb` の実行結果）：
 
-![](./example/04_test_dsl.svg)
+![](./example/00_basic_sample.svg)
+
+#### DSLメソッドの概要
+
+| メソッド | 説明 | 参照 |
+| ------ | ---- | --- |
+| `Bizgram.draw` | Bizgramのタイトルとコードブロックを受け取ってSVGドキュメントを返す | [`Bizgram.draw` メソッド](#bizgramdraw-メソッド) |
+| `user`, `smartphone`, `other`, `company` | 主体の定義 | [`entity` メソッド](#entity-メソッド) |
+| `-money>`, `-object>`, `arrow` | 矢印の定義 | [直感的なDSL記法 (`- ... >`)](#直感的なdsl記法----) |
+| `comment_to` | コメントの定義 | [`comment_to`（エイリアス: `comment`）メソッド](#comment_toエイリアス-commentメソッド) |
 
 ### 主体の定義（Entity）
 
