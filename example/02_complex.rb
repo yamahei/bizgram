@@ -1,6 +1,6 @@
 require_relative "../lib/bizgram"
 
-dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
+svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   # 主体の定義
   user = user("ゲーム利用者", :lt)
   device = smartphone("利用者のデバイス", :cm)
@@ -16,5 +16,5 @@ dot = Bizgram.draw("例）買い切り型のスマホゲーム") do
   comment_to(site, "Google Play的な")
 end
 
-File.write("example/02_complex.svg", dot)
+File.write("example/02_complex.svg", svg)
 puts "Generated example/02_complex.svg"

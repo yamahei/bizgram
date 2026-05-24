@@ -1,29 +1,29 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<svg version='1.1' viewBox='0.0 0.0 880.0 880.0' width='880' height='880' xmlns='http://www.w3.org/2000/svg'>
+<svg version='1.1' viewBox='0.0 0.0 960.0 960.0' width='960' height='960' xmlns='http://www.w3.org/2000/svg'>
   <title>例）買い切り型のスマホゲーム</title>
-  <text x='440.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>例）買い切り型のスマホゲーム</text>
-  <line x1='0' y1='80' x2='880.0' y2='80' stroke='#000000' stroke-width='1'/>
+  <text x='480.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>例）買い切り型のスマホゲーム</text>
+  <line x1='0' y1='80' x2='960.0' y2='80' stroke='#000000' stroke-width='1'/>
   <defs>
-    <marker id='marker_object' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_object' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_money' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_money' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_information' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_information' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_other' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_other' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
   </defs>
-  <g id='background_grid' stroke='#cccccc' stroke-width='2' stroke-dasharray='8,8'>
-    <line x1='160.0' y1='320.0' x2='720.0' y2='320.0'/>
-    <line x1='160.0' y1='560.0' x2='720.0' y2='560.0'/>
+  <g id='grid_lines'>
+    <line x1='0' y1='360.0' x2='960.0' y2='360.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
+    <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
     <g id='entity_0'>
-      <g transform='translate(380.0, 140.0)'>
+      <g transform='translate(420.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -40,10 +40,12 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>ゲーム利用者</text>
+      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>ゲーム利用者</tspan>
+      </text>
     </g>
     <g id='entity_1'>
-      <g transform='translate(380.0, 380.0)'>
+      <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -60,10 +62,12 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='508.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>利用者のデバイス</text>
+      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>利用者のデバイス</tspan>
+      </text>
     </g>
     <g id='entity_2'>
-      <g transform='translate(620.0, 380.0)'>
+      <g transform='translate(660.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -77,10 +81,12 @@
           </g>
         </g>
       </g>
-      <text x='680.0' y='508.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>ゲーム配布サイト</text>
+      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>ゲーム配布サイト</tspan>
+      </text>
     </g>
     <g id='entity_3'>
-      <g transform='translate(380.0, 620.0)'>
+      <g transform='translate(420.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -107,41 +113,57 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='748.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>(株)HOGEゲームズ</text>
+      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>(株)HOGEゲームズ</tspan>
+      </text>
     </g>
   </g>
   <g id='arrows'>
     <g id='arrow_4'>
-      <path d='M 440.0,295.0 L 440.0,320.0 L 560.0,320.0 L 680.0,320.0 L 680.0,380.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='500.0' y='304.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>ゲーム購入</text>
-      <rect x='486.0' y='306.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='500.0' y='325.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 540.0,240.0 L 720.0,240.0 L 720.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='630.0' y='224.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='630.0' dy='0'>ゲーム購入</tspan>
+      </text>
+      <rect x='616.0' y='226.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='630.0' y='245.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_5'>
-      <path d='M 620.0,440.0 L 560.0,440.0 L 500.0,440.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
-      <text x='590.0' y='424.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>インストール</text>
-      <circle cx='590.0' cy='440.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
+      <path d='M 660.0,480.0 L 540.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
+      <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='600.0' dy='0'>インストール</tspan>
+      </text>
+      <circle cx='600.0' cy='480.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
     <g id='arrow_6'>
-      <path d='M 380.0,200.0 L 320.0,200.0 L 320.0,320.0 L 320.0,440.0 L 380.0,440.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
-      <text x='336.0' y='265.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start' style='white-space: pre-wrap; word-wrap: break-word;'>プレイ</text>
+      <path d='M 480.0,335.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='496.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='496.0' dy='0'>プレイ</tspan>
+      </text>
     </g>
     <g id='arrow_7'>
-      <path d='M 452.5,620.0 L 452.5,572.5 L 560.0,572.5 L 692.5,572.5 L 692.5,535.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
-      <text x='626.25' y='598.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>作品アップロード</text>
-      <circle cx='626.25' cy='572.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
+      <path d='M 540.0,702.5 L 702.5,702.5 L 702.5,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
+      <text x='621.25' y='686.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='621.25' dy='0'>作品アップロード</tspan>
+      </text>
+      <circle cx='621.25' cy='702.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
     <g id='arrow_8'>
-      <path d='M 667.5,535.0 L 667.5,560.0 L 667.5,667.5 L 560.0,667.5 L 500.0,667.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='651.5' y='618.75' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='end' style='white-space: pre-wrap; word-wrap: break-word;'>売上</text>
-      <rect x='653.5' y='599.75' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='667.5' y='618.75' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 737.5,575.0 L 737.5,737.5 L 540.0,737.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='638.75' y='763.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='638.75' dy='0'>売上</tspan>
+      </text>
+      <rect x='624.75' y='723.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='638.75' y='742.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
   </g>
   <g id='comments'>
     <g id='comment_9'>
-      <path d='M 695.0,310.0 H 887.0 Q 892.0,310.0 892.0,315.0 V 345.0 Q 892.0,350.0 887.0,350.0 H 726.0 L 700.0,371.0 L 710.0,350.0 H 695.0 Q 690.0,350.0 690.0,345.0 V 315.0 Q 690.0,310.0 695.0,310.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='791.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>Google Play的な</text>
+      <rect x='790.0' y='450.0' width='160' height='60' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='790.0,460.0 780.0,470.0 790.0,480.0' fill='#dddddd'/>
+      <text x='870.0' y='470.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='870.0' dy='0'>Google Pla</tspan>
+        <tspan x='870.0' dy='20'>y的な</tspan>
+      </text>
     </g>
   </g>
 </svg>

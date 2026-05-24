@@ -67,7 +67,7 @@
       </text>
     </g>
     <g id='entity_2'>
-      <g transform='translate(660.0, 420.0)'>
+      <g transform='translate(180.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -81,12 +81,12 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
-        <tspan x='720.0' dy='0'>ゲーム配布サイト</tspan>
+      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>ゲーム配布サイト</tspan>
       </text>
     </g>
-    <g id='entity_3'>
-      <g transform='translate(660.0, 660.0)'>
+    <g id='entity_9'>
+      <g transform='translate(420.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -113,56 +113,57 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
-        <tspan x='720.0' dy='0'>(株)HOGEゲームズ</tspan>
+      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>(株)HOGEゲームズ</tspan>
       </text>
     </g>
   </g>
   <g id='arrows'>
     <g id='arrow_4'>
-      <path d='M 240.0,180.0 L 240.0,120.0 L 720.0,120.0 L 720.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='480.0' y='104.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
-        <tspan x='480.0' dy='0'>ゲーム購入</tspan>
+      <path d='M 240.0,335.0 L 240.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='256.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='256.0' dy='0'>ゲーム購入</tspan>
       </text>
-      <rect x='466.0' y='106.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='480.0' y='125.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
-    </g>
-    <g id='arrow_5'>
-      <path d='M 660.0,480.0 L 540.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
-      <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
-        <tspan x='600.0' dy='0'>インストール</tspan>
-      </text>
-      <circle cx='600.0' cy='480.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
+      <rect x='226.0' y='363.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='240.0' y='382.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_6'>
-      <path d='M 300.0,240.0 L 480.0,240.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <path d='M 300.0,480.0 L 420.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
+      <text x='360.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>インストール</tspan>
+      </text>
+      <circle cx='360.0' cy='480.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
+    </g>
+    <g id='arrow_8'>
+      <path d='M 300.0,240.0 L 480.0,240.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
       <text x='390.0' y='224.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='390.0' dy='0'>プレイ</tspan>
       </text>
+      <circle cx='390.0' cy='240.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_7'>
-      <path d='M 702.5,660.0 L 702.5,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
-      <text x='686.5' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='end'>
-        <tspan x='686.5' dy='0'>作品アップロード</tspan>
+    <g id='arrow_11'>
+      <path d='M 480.0,660.0 L 480.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
+      <text x='496.0' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='496.0' dy='0'>作品アップロード</tspan>
       </text>
-      <circle cx='702.5' cy='617.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
+      <circle cx='480.0' cy='617.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_8'>
-      <path d='M 737.5,575.0 L 737.5,660.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='753.5' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
-        <tspan x='753.5' dy='0'>売上</tspan>
+    <g id='arrow_13'>
+      <path d='M 240.0,575.0 L 240.0,720.0 L 420.0,720.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='330.0' y='704.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='330.0' dy='0'>売上</tspan>
       </text>
-      <rect x='723.5' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='737.5' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <rect x='316.0' y='706.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='330.0' y='725.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
   </g>
   <g id='comments'>
-    <g id='comment_9'>
-      <rect x='790.0' y='450.0' width='160' height='60' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='790.0,460.0 780.0,470.0 790.0,480.0' fill='#dddddd'/>
-      <text x='870.0' y='470.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='870.0' dy='0'>Google Pla</tspan>
-        <tspan x='870.0' dy='20'>y的な</tspan>
+    <g id='comment_14'>
+      <rect x='10.0' y='450.0' width='160' height='60' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='170.0,460.0 180.0,470.0 170.0,480.0' fill='#dddddd'/>
+      <text x='90.0' y='470.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='90.0' dy='0'>Google Pla</tspan>
+        <tspan x='90.0' dy='20'>y的な</tspan>
       </text>
     </g>
   </g>

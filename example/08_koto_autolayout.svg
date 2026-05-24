@@ -1,29 +1,29 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<svg version='1.1' viewBox='0.0 0.0 880.0 880.0' width='880' height='880' xmlns='http://www.w3.org/2000/svg'>
+<svg version='1.1' viewBox='0.0 0.0 960.0 960.0' width='960' height='960' xmlns='http://www.w3.org/2000/svg'>
   <title>KOTOのビジネスモデル</title>
-  <text x='440.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>KOTOのビジネスモデル</text>
-  <line x1='0' y1='80' x2='880.0' y2='80' stroke='#000000' stroke-width='1'/>
+  <text x='480.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>KOTOのビジネスモデル</text>
+  <line x1='0' y1='80' x2='960.0' y2='80' stroke='#000000' stroke-width='1'/>
   <defs>
-    <marker id='marker_object' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_object' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_money' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_money' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_information' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_information' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_other' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_other' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
   </defs>
-  <g id='background_grid' stroke='#cccccc' stroke-width='2' stroke-dasharray='8,8'>
-    <line x1='160.0' y1='320.0' x2='720.0' y2='320.0'/>
-    <line x1='160.0' y1='560.0' x2='720.0' y2='560.0'/>
+  <g id='grid_lines'>
+    <line x1='0' y1='360.0' x2='960.0' y2='360.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
+    <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
     <g id='entity_0'>
-      <g transform='translate(380.0, 620.0)'>
+      <g transform='translate(180.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -40,10 +40,12 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='748.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>地元の人や 旅行客</text>
+      <text x='240.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>地元の人や旅行客</tspan>
+      </text>
     </g>
     <g id='entity_2'>
-      <g transform='translate(620.0, 140.0)'>
+      <g transform='translate(420.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -60,10 +62,12 @@
           </g>
         </g>
       </g>
-      <text x='680.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>恵まれない境遇 にある若者たち</text>
+      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>恵まれない境遇にある若者たち</tspan>
+      </text>
     </g>
     <g id='entity_4'>
-      <g transform='translate(620.0, 620.0)'>
+      <g transform='translate(660.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -90,10 +94,12 @@
           </g>
         </g>
       </g>
-      <text x='680.0' y='748.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>個人・企業 および財団</text>
+      <text x='720.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>個人・企業および財団</tspan>
+      </text>
     </g>
     <g id='entity_6'>
-      <g transform='translate(380.0, 140.0)'>
+      <g transform='translate(180.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -115,10 +121,12 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>直営レストラン</text>
+      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>直営レストラン</tspan>
+      </text>
     </g>
     <g id='entity_8'>
-      <g transform='translate(140.0, 140.0)'>
+      <g transform='translate(180.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -132,10 +140,12 @@
           </g>
         </g>
       </g>
-      <text x='200.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>職業訓練 プログラム</text>
+      <text x='240.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>職業訓練プログラム</tspan>
+      </text>
     </g>
     <g id='entity_10'>
-      <g transform='translate(620.0, 380.0)'>
+      <g transform='translate(660.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -155,10 +165,12 @@
           </g>
         </g>
       </g>
-      <text x='680.0' y='508.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>寄付や助成</text>
+      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>寄付や助成</tspan>
+      </text>
     </g>
     <g id='entity_11'>
-      <g transform='translate(380.0, 380.0)'>
+      <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -185,10 +197,12 @@
           </g>
         </g>
       </g>
-      <text x='440.0' y='508.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>Know One, Teach One</text>
+      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>Know One,Teach One</tspan>
+      </text>
     </g>
     <g id='entity_14'>
-      <g transform='translate(140.0, 380.0)'>
+      <g transform='translate(660.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -215,112 +229,195 @@
           </g>
         </g>
       </g>
-      <text x='200.0' y='508.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>KOTO International Ltd.</text>
+      <text x='720.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>KOTOInternational Ltd.</tspan>
+      </text>
     </g>
   </g>
   <g id='arrows'>
     <g id='arrow_16'>
-      <path d='M 440.0,620.0 L 440.0,560.0 L 560.0,560.0 L 560.0,440.0 L 560.0,320.0 L 560.0,200.0 L 500.0,200.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='500.0' y='544.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>利用</text>
-      <rect x='486.0' y='546.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='500.0' y='565.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 240.0,660.0 L 240.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='256.0' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='256.0' dy='0'>利用</tspan>
+      </text>
+      <rect x='226.0' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='240.0' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_17'>
-      <path d='M 380.0,187.5 L 320.0,187.5 L 260.0,187.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
-      <text x='350.0' y='171.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>場の提供</text>
+      <path d='M 222.5,420.0 L 222.5,335.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='206.5' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='end'>
+        <tspan x='206.5' dy='0'>場の提供</tspan>
+      </text>
     </g>
     <g id='arrow_18'>
-      <path d='M 260.0,212.5 L 320.0,212.5 L 380.0,212.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
-      <text x='290.0' y='238.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>実践機会</text>
+      <path d='M 257.5,335.0 L 257.5,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='273.5' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='273.5' dy='0'>実践機会</tspan>
+      </text>
     </g>
     <g id='arrow_19'>
-      <path d='M 667.5,295.0 L 667.5,307.5 L 560.0,307.5 L 440.0,307.5 L 320.0,307.5 L 212.5,307.5 L 212.5,295.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
-      <text x='500.0' y='291.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>職業 スキル</text>
+      <path d='M 420.0,257.5 L 300.0,257.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='360.0' y='283.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>職業スキル</tspan>
+      </text>
     </g>
     <g id='arrow_20'>
-      <path d='M 187.5,295.0 L 187.5,332.5 L 320.0,332.5 L 440.0,332.5 L 560.0,332.5 L 692.5,332.5 L 692.5,295.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
-      <text x='253.75' y='358.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>全寮制教育・ 生活支援の無償提供</text>
+      <path d='M 300.0,222.5 L 420.0,222.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='360.0' y='206.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>全寮制教育・生活支援の無償提供</tspan>
+      </text>
     </g>
     <g id='arrow_21'>
-      <path d='M 680.0,620.0 L 680.0,560.0 L 680.0,535.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='696.0' y='595.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start' style='white-space: pre-wrap; word-wrap: break-word;'>寄付</text>
-      <rect x='666.0' y='576.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='680.0' y='595.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 720.0,660.0 L 720.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='736.0' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='736.0' dy='0'>寄付</tspan>
+      </text>
+      <rect x='706.0' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='720.0' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_22'>
-      <path d='M 680.0,535.0 L 680.0,560.0 L 560.0,560.0 L 440.0,560.0 L 320.0,560.0 L 200.0,560.0 L 200.0,535.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='620.0' y='544.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>集める</text>
-      <rect x='606.0' y='546.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='620.0' y='565.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 720.0,420.0 L 720.0,335.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='736.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='736.0' dy='0'>集める</tspan>
+      </text>
+      <rect x='706.0' y='363.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='720.0' y='382.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_23'>
-      <path d='M 452.5,380.0 L 452.5,320.0 L 452.5,295.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='468.5' y='355.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start' style='white-space: pre-wrap; word-wrap: break-word;'>運営</text>
-      <rect x='438.5' y='336.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='452.5' y='355.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 420.0,497.5 L 300.0,497.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='360.0' y='523.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>運営</tspan>
+      </text>
+      <rect x='346.0' y='483.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='360.0' y='502.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_24'>
-      <path d='M 427.5,295.0 L 427.5,320.0 L 427.5,380.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='411.5' y='355.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='end' style='white-space: pre-wrap; word-wrap: break-word;'>売上</text>
-      <rect x='413.5' y='336.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='427.5' y='355.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 300.0,462.5 L 420.0,462.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='360.0' y='446.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>売上</tspan>
+      </text>
+      <rect x='346.0' y='448.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='360.0' y='467.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_25'>
-      <path d='M 440.0,380.0 L 440.0,320.0 L 320.0,320.0 L 200.0,320.0 L 200.0,295.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='380.0' y='304.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>運営</text>
-      <rect x='366.0' y='306.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='380.0' y='325.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 420.0,420.0 L 300.0,300.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='380.0' y='380.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='380.0' dy='0'>運営</tspan>
+      </text>
+      <rect x='346.0' y='346.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='360.0' y='365.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_26'>
-      <path d='M 260.0,427.5 L 320.0,427.5 L 380.0,427.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='290.0' y='411.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>支援資金</text>
-      <rect x='276.0' y='413.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='290.0' y='432.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 672.3743686707646,312.37436867076457 L 552.3743686707646,432.37436867076457' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='632.3743686707646' y='352.37436867076457' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='632.3743686707646' dy='0'>支援資金</tspan>
+      </text>
+      <rect x='598.3743686707646' y='358.37436867076457' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='612.3743686707646' y='377.37436867076457' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
     <g id='arrow_27'>
-      <path d='M 380.0,452.5 L 320.0,452.5 L 260.0,452.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
-      <text x='350.0' y='478.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>成果報告</text>
-      <rect x='337.0' y='439.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
+      <path d='M 527.6256313292354,407.62563132923543 L 647.6256313292354,287.62563132923543' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
+      <text x='567.6256313292354' y='367.62563132923543' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='567.6256313292354' dy='0'>成果報告</tspan>
+      </text>
+      <rect x='574.6256313292354' y='334.62563132923543' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
     <g id='arrow_28'>
-      <path d='M 620.0,440.0 L 560.0,440.0 L 500.0,440.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
-      <text x='590.0' y='424.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>支援 資金</text>
-      <rect x='576.0' y='426.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
-      <text x='590.0' y='445.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+      <path d='M 660.0,480.0 L 540.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='600.0' dy='0'>支援資金</tspan>
+      </text>
+      <rect x='586.0' y='466.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='600.0' y='485.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
   </g>
   <g id='comments'>
-    <g id='comment_1'>
-      <path d='M 455.0,550.0 H 1081.0 Q 1086.0,550.0 1086.0,555.0 V 585.0 Q 1086.0,590.0 1081.0,590.0 H 486.0 L 460.0,611.0 L 470.0,590.0 H 455.0 Q 450.0,590.0 450.0,585.0 V 555.0 Q 450.0,550.0 455.0,550.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='768.0' y='570.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>食事をする ことは職業 訓練生の実 践経験とな り、お金を 払うことが 訓練生の支 援に</text>
-    </g>
     <g id='comment_3'>
-      <path d='M 695.0,70.0 H 1167.0 Q 1172.0,70.0 1172.0,75.0 V 105.0 Q 1172.0,110.0 1167.0,110.0 H 726.0 L 700.0,131.0 L 710.0,110.0 H 695.0 Q 690.0,110.0 690.0,105.0 V 75.0 Q 690.0,70.0 695.0,70.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='931.0' y='90.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>家庭環境や経 済的事情によ り、教育や就 労の機会が 限られている</text>
+      <rect x='550.0' y='180.0' width='118' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='550.0,190.0 540.0,200.0 550.0,210.0' fill='#dddddd'/>
+      <text x='609.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='609.0' dy='0'>家庭環境や経済</tspan>
+        <tspan x='609.0' dy='20'>的事情により、</tspan>
+        <tspan x='609.0' dy='20'>教育や就労の機</tspan>
+        <tspan x='609.0' dy='20'>会が限られてい</tspan>
+        <tspan x='609.0' dy='20'>る</tspan>
+      </text>
     </g>
     <g id='comment_5'>
-      <path d='M 695.0,550.0 H 1377.0 Q 1382.0,550.0 1382.0,555.0 V 585.0 Q 1382.0,590.0 1377.0,590.0 H 726.0 L 700.0,611.0 L 710.0,590.0 H 695.0 Q 690.0,590.0 690.0,585.0 V 555.0 Q 690.0,550.0 695.0,550.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='1036.0' y='570.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>教育・社会貢 献に関心のあ る企業・財団 とレストラン での体験で共 感を得た個人 などが支持者</text>
+      <rect x='532.0' y='650.0' width='118' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='650.0,660.0 660.0,670.0 650.0,680.0' fill='#dddddd'/>
+      <text x='591.0' y='670.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='591.0' dy='0'>教育・社会貢献</tspan>
+        <tspan x='591.0' dy='20'>に関心のある企</tspan>
+        <tspan x='591.0' dy='20'>業・財団とレス</tspan>
+        <tspan x='591.0' dy='20'>トランでの体験</tspan>
+        <tspan x='591.0' dy='20'>で共感を得た個</tspan>
+        <tspan x='591.0' dy='20'>人などが支持者</tspan>
+      </text>
     </g>
     <g id='comment_7'>
-      <path d='M 455.0,70.0 H 997.0 Q 1002.0,70.0 1002.0,75.0 V 105.0 Q 1002.0,110.0 997.0,110.0 H 486.0 L 460.0,131.0 L 470.0,110.0 H 455.0 Q 450.0,110.0 450.0,105.0 V 75.0 Q 450.0,70.0 455.0,70.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='726.0' y='90.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>職業訓練の 場であると 同時に KOTOの理念 を社会に伝 える生きた 教室</text>
+      <rect x='10.0' y='430.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='170.0,440.0 180.0,450.0 170.0,460.0' fill='#dddddd'/>
+      <text x='90.0' y='450.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='90.0' dy='0'>職業訓練の場であると</tspan>
+        <tspan x='90.0' dy='20'>同時にKOTOの理念</tspan>
+        <tspan x='90.0' dy='20'>を社会に伝える生きた</tspan>
+        <tspan x='90.0' dy='20'>教室</tspan>
+      </text>
     </g>
     <g id='comment_9'>
-      <path d='M 215.0,70.0 H 1009.0 Q 1014.0,70.0 1014.0,75.0 V 105.0 Q 1014.0,110.0 1009.0,110.0 H 246.0 L 220.0,131.0 L 230.0,110.0 H 215.0 Q 210.0,110.0 210.0,105.0 V 75.0 Q 210.0,70.0 215.0,70.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='612.0' y='90.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>2年間の寮生活 と、調理・飲食 サービスなどの職 業訓練に加え、生 活面や社会性の基 礎スキルを育む支 援を行う</text>
-    </g>
-    <g id='comment_12'>
-      <path d='M 455.0,310.0 H 815.0 Q 820.0,310.0 820.0,315.0 V 345.0 Q 820.0,350.0 815.0,350.0 H 486.0 L 460.0,371.0 L 470.0,350.0 H 455.0 Q 450.0,350.0 450.0,345.0 V 315.0 Q 450.0,310.0 455.0,310.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='635.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>ベトナム発の社会 企業。活動自体は 1999年から</text>
-    </g>
-    <g id='comment_13'>
-      <path d='M 455.0,310.0 H 1403.0 Q 1408.0,310.0 1408.0,315.0 V 345.0 Q 1408.0,350.0 1403.0,350.0 H 486.0 L 460.0,371.0 L 470.0,350.0 H 455.0 Q 450.0,350.0 450.0,345.0 V 315.0 Q 450.0,310.0 455.0,310.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='929.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>ケータリング や料理教室、 スタディツ アー、物販な どの関連事業 も展開し、そ の収益を職業 訓練プログラ ムの運営資金 として活用</text>
+      <rect x='10.0' y='180.0' width='160' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='170.0,190.0 180.0,200.0 170.0,210.0' fill='#dddddd'/>
+      <text x='90.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='90.0' dy='0'>2年間の寮生活と、調</tspan>
+        <tspan x='90.0' dy='20'>理・飲食サービスなど</tspan>
+        <tspan x='90.0' dy='20'>の職業訓練に加え、生</tspan>
+        <tspan x='90.0' dy='20'>活面や社会性の基礎ス</tspan>
+        <tspan x='90.0' dy='20'>キルを育む支援を行う</tspan>
+      </text>
     </g>
     <g id='comment_15'>
-      <path d='M 215.0,310.0 H 827.0 Q 832.0,310.0 832.0,315.0 V 345.0 Q 832.0,350.0 827.0,350.0 H 246.0 L 220.0,371.0 L 230.0,350.0 H 215.0 Q 210.0,350.0 210.0,345.0 V 315.0 Q 210.0,310.0 215.0,310.0 Z' fill='#dddddd' stroke='none'/>
-      <text x='521.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='middle' fill='#000000'>グローバル な資金調達 やパート ナーシップ を通じて KOTOを支 える非営利 組織</text>
+      <rect x='790.0' y='190.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='790.0,200.0 780.0,210.0 790.0,220.0' fill='#dddddd'/>
+      <text x='870.0' y='210.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='870.0' dy='0'>グローバルな資金調達</tspan>
+        <tspan x='870.0' dy='20'>やパートナーシップを</tspan>
+        <tspan x='870.0' dy='20'>通じてKOTOを支え</tspan>
+        <tspan x='870.0' dy='20'>る非営利組織</tspan>
+      </text>
+    </g>
+    <g id='comment_1'>
+      <rect x='310.0' y='650.0' width='118' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='310.0,660.0 300.0,670.0 310.0,680.0' fill='#dddddd'/>
+      <text x='369.0' y='670.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='369.0' dy='0'>食事をすること</tspan>
+        <tspan x='369.0' dy='20'>は職業訓練生の</tspan>
+        <tspan x='369.0' dy='20'>実践経験となり</tspan>
+        <tspan x='369.0' dy='20'>、お金を払うこ</tspan>
+        <tspan x='369.0' dy='20'>とが訓練生の支</tspan>
+        <tspan x='369.0' dy='20'>援に</tspan>
+      </text>
+    </g>
+    <g id='comment_13'>
+      <rect x='393.0' y='575.0' width='174' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='470.0,575.0 480.0,565.0 490.0,575.0' fill='#dddddd'/>
+      <text x='480.0' y='595.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='480.0' dy='0'>ケータリングや料理教室</tspan>
+        <tspan x='480.0' dy='20'>、スタディツアー、物販</tspan>
+        <tspan x='480.0' dy='20'>などの関連事業も展開し</tspan>
+        <tspan x='480.0' dy='20'>、その収益を職業訓練プ</tspan>
+        <tspan x='480.0' dy='20'>ログラムの運営資金とし</tspan>
+        <tspan x='480.0' dy='20'>て活用</tspan>
+      </text>
+    </g>
+    <g id='comment_12'>
+      <rect x='393.0' y='330.0' width='174' height='80' rx='5' ry='5' fill='#dddddd' stroke='none'/>
+      <polygon points='470.0,410.0 480.0,420.0 490.0,410.0' fill='#dddddd'/>
+      <text x='480.0' y='350.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='480.0' dy='0'>ベトナム発の社会企業。</tspan>
+        <tspan x='480.0' dy='20'>活動自体は1999年か</tspan>
+        <tspan x='480.0' dy='20'>ら</tspan>
+      </text>
     </g>
   </g>
 </svg>

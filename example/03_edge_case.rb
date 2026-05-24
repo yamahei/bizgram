@@ -1,6 +1,6 @@
 require_relative "../lib/bizgram"
 
-dot = Bizgram.draw("03_edge_case: 意地悪な配置と多重矢印") do
+svg = Bizgram.draw("03_edge_case: 意地悪な配置と多重矢印") do
   a = user("A", :lt)
   b = business("B", :cm)
   c = company("C", :rt)
@@ -18,5 +18,5 @@ dot = Bizgram.draw("03_edge_case: 意地悪な配置と多重矢印") do
   arrow(:other, "Feedback", d, a)
 end
 
-File.write("example/03_edge_case.svg", dot)
+File.write("example/03_edge_case.svg", svg)
 puts "Generated example/03_edge_case.svg"

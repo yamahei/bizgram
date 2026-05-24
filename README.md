@@ -32,27 +32,26 @@ bundle install
 ----
 
 ### 基本的な例
-
 ```ruby
 require "bizgram"
 
 svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   # 主体の定義
-  user = user("ゲーム利用者", :ct)
-  device = smartphone("利用者のデバイス", :cm)
-  site = other("ゲーム配布サイト", 5)
-  company = company("(株)HOGEゲームズ", 7)
-  # モノ・カネ・情報の定義
+  user = user("ゲーム利用者")
+  device = smartphone("利用者のデバイス", :cm)# 明示的な配置指定
+  site = other("ゲーム配布サイト")
 
-  # 従来の記法（メソッド呼び出し）
-  arrow(:object, "作品アップロード", company, site)
-
-  # 直感的なDSL記法（- ... >）
+  # モノ・カネ・情報の流れを定義
   user -money("ゲーム購入")> site
   site -object("インストール")> device
+  user -object("プレイ")> device
+  ## 主体は直接書くこともできる
+  company("(株)HOGEゲームズ", :cb) -object("作品アップロード")> device# 明示的な配置指定
+  site -money("売上")> company("(株)HOGEゲームズ")
 
   # コメントの定義
   comment_to(site, "Google Play的な")
+
 end
 
 puts svg
@@ -61,39 +60,48 @@ puts svg
 このコードは以下のような SVGドキュメントを出力します：
 
 ```sh
-ruby example/01_normal.rb
+bundle exec ruby example/00_basic_sample.rb
 ```
 
-![](./example/01_normal.svg)
+![](./example/00_basic_sample.svg)
 
 他にも複雑な配置や多重矢印を試すためのサンプルコードを用意しています。
 以下のコマンドをコピペして実行することで、それぞれのSVGを生成できます。
 
 ```sh
 # ①ごく普通のBizgramコード
-ruby example/01_normal.rb
+bundle exec ruby ruby example/01_normal.rb
 
 # ②複雑なBizgramコード
-ruby example/02_complex.rb
+bundle exec ruby ruby example/02_complex.rb
 
 # ③意地悪な（多重・双方向など）Bizgramコード
-ruby example/03_edge_case.rb
+bundle exec ruby ruby example/03_edge_case.rb
 
 # ④新しい直感的なDSL記法のBizgramコード
-ruby example/04_test_dsl.rb
+bundle exec ruby ruby example/04_test_dsl.rb
 
 # ⑤〜⑧ 実際のギャラリーに基づく複雑なBizgramコード（手動配置ベースライン）
-ruby example/05_innoqua.rb
-ruby example/06_bemyeyes.rb
-ruby example/07_washplus.rb
-ruby example/08_koto.rb
+bundle exec ruby ruby example/05_innoqua.rb
+bundle exec ruby ruby example/06_bemyeyes.rb
+bundle exec ruby ruby example/07_washplus.rb
+bundle exec ruby ruby example/08_koto.rb
 
 # ⑤〜⑧ の自動配置版Bizgramコード
-ruby example/05_innoqua_autolayout.rb
-ruby example/06_bemyeyes_autolayout.rb
-ruby example/07_washplus_autolayout.rb
-ruby example/08_koto_autolayout.rb
+bundle exec ruby ruby example/05_innoqua_autolayout.rb
+bundle exec ruby ruby example/06_bemyeyes_autolayout.rb
+bundle exec ruby ruby example/07_washplus_autolayout.rb
+bundle exec ruby ruby example/08_koto_autolayout.rb
 ```
+
+### レイアウトに関する注意事項
+
+Bizgramのコード記述では、主体の位置を明示しない「自動配置」でほとんどの図を綺麗に生成できますが、以下の点にご留意ください。
+
+1. **自動配置の限界**: 図が複雑すぎてどうしても自動配置アルゴリズムで解決できない場合、エラーになることがあります。
+2. **要素の被り**: コメントの文字数が多い場合や、要素が密集している箇所では、図の骨格（矢印）を優先する仕様上、どうしても要素同士の被りが発生することがあります。
+3. **手動配置での調整**: 出力された図の配置が気に入らない場合や上記のエラー・被りを解消したい場合は、各主体に配置ヒント（例：`:ct`, `:cm`, `5`など）を付与することで、部分的または全体的に手動で配置を調整することが可能です。
+
 
 
 テスト

@@ -1,29 +1,29 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<svg version='1.1' viewBox='0.0 0.0 880.0 880.0' width='880' height='880' xmlns='http://www.w3.org/2000/svg'>
+<svg version='1.1' viewBox='0.0 0.0 960.0 960.0' width='960' height='960' xmlns='http://www.w3.org/2000/svg'>
   <title>DSL拡張テスト</title>
-  <text x='440.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>DSL拡張テスト</text>
-  <line x1='0' y1='80' x2='880.0' y2='80' stroke='#000000' stroke-width='1'/>
+  <text x='480.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>DSL拡張テスト</text>
+  <line x1='0' y1='80' x2='960.0' y2='80' stroke='#000000' stroke-width='1'/>
   <defs>
-    <marker id='marker_object' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_object' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_money' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_money' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_information' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_information' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
-    <marker id='marker_other' markerWidth='10' markerHeight='10' refX='9' refY='3' orient='auto' markerUnits='strokeWidth'>
-      <path d='M 0,0 L 10,3 L 0,6 Z' fill='#000000'/>
+    <marker id='marker_other' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
     </marker>
   </defs>
-  <g id='background_grid' stroke='#cccccc' stroke-width='2' stroke-dasharray='8,8'>
-    <line x1='160.0' y1='320.0' x2='720.0' y2='320.0'/>
-    <line x1='160.0' y1='560.0' x2='720.0' y2='560.0'/>
+  <g id='grid_lines'>
+    <line x1='0' y1='360.0' x2='960.0' y2='360.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
+    <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
     <g id='entity_0'>
-      <g transform='translate(140.0, 140.0)'>
+      <g transform='translate(180.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -40,10 +40,12 @@
           </g>
         </g>
       </g>
-      <text x='200.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>ユーザー</text>
+      <text x='240.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>ユーザー</tspan>
+      </text>
     </g>
     <g id='entity_1'>
-      <g transform='translate(620.0, 140.0)'>
+      <g transform='translate(660.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -70,10 +72,12 @@
           </g>
         </g>
       </g>
-      <text x='680.0' y='268.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>会社</text>
+      <text x='720.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>会社</tspan>
+      </text>
     </g>
     <g id='entity_2'>
-      <g transform='translate(140.0, 620.0)'>
+      <g transform='translate(180.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
             <g transform='translate(-94.881887,-130.21929)'>
@@ -95,19 +99,25 @@
           </g>
         </g>
       </g>
-      <text x='200.0' y='748.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000' word-spacing='0' letter-spacing='0' style='white-space: pre-wrap; word-wrap: break-word;'>店舗</text>
+      <text x='240.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>店舗</tspan>
+      </text>
     </g>
   </g>
   <g id='arrows'>
     <g id='arrow_3'>
-      <path d='M 260.0,187.5 L 320.0,187.5 L 440.0,187.5 L 560.0,187.5 L 620.0,187.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
-      <text x='380.0' y='171.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>旧記法の情報</text>
-      <rect x='367.0' y='174.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
+      <path d='M 300.0,222.5 L 660.0,222.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
+      <text x='480.0' y='206.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='480.0' dy='0'>旧記法の情報</tspan>
+      </text>
+      <rect x='467.0' y='209.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_4'>
-      <path d='M 260.0,212.5 L 320.0,212.5 L 440.0,212.5 L 560.0,212.5 L 620.0,212.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_info)'/>
-      <text x='380.0' y='238.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle' style='white-space: pre-wrap; word-wrap: break-word;'>ログイン情報</text>
-      <rect x='367.0' y='199.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
+    <g id='arrow_5'>
+      <path d='M 300.0,257.5 L 660.0,257.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_info)'/>
+      <text x='480.0' y='283.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='480.0' dy='0'>ログイン情報</tspan>
+      </text>
+      <rect x='467.0' y='244.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
   </g>
 </svg>

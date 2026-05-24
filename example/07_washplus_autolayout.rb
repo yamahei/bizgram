@@ -2,39 +2,39 @@ require_relative "../lib/bizgram"
 
 svg = Bizgram.draw("wash+のビジネスモデル") do
 
-  user("人や環境に配慮して\n洗濯する人")
-  comment("人や環境に配慮して\n洗濯する人", "アプリで空き状況の\n確認・事前予約・\nキャッシュレス決済\nまで完結できる")
+  user("人や環境に配慮して洗濯する人")
+  comment("人や環境に配慮して洗濯する人", "アプリで空き状況の確認・事前予約・キャッシュレス決済まで完結できる")
 
-  store("街中のコイン\nランドリー")
-  comment("街中のコイン\nランドリー", "山本製作所\n製機器と接\n続でき、多\n言語表示や\n通知などの\n機能を一体\nで提供する")
+  store("街中のコインランドリー")
+  comment("街中のコインランドリー", "山本製作所製機器と接続でき、多言語表示や通知などの機能を一体で提供する")
 
-  object("wash+\n専用洗濯機")
+  object("wash+専用洗濯機")
 
   information("洗浄・IoT技術")
-  comment("洗浄・IoT技術", "アルカリイ\nオン電解水\nで洗剤を使\nわずに洗\nい、肌刺激\nと排水負荷\nを同時に抑\nえる")
+  comment("洗浄・IoT技術", "アルカリイオン電解水で洗剤を使わずに洗い、肌刺激と排水負荷を同時に抑える")
 
-  user("フランチャイズ\nオーナー")
-  comment("フランチャイズ\nオーナー", "無人運営と遠\n隔監視で人員\n配置を最小化\nし、夜間も含\nめ安定稼働さ\nせる")
+  user("フランチャイズオーナー")
+  comment("フランチャイズオーナー", "無人運営と遠隔監視で人員配置を最小化し、夜間も含め安定稼働させる")
 
-  company("株式会社\nwash-plus")
+  company("株式会社wash-plus")
   
   company("山本製作所")
-  comment("山本製作所", "機器メー\nカーと共同\n開発した制\n御基盤を後\nから更新で\nき、導入後\nの機能劣化\nを防ぐ")
+  comment("山本製作所", "機器メーカーと共同開発した制御基盤を後から更新でき、導入後の機能劣化を防ぐ")
 
-  arrow(:other, "訪れる", "人や環境に配慮して\n洗濯する人", "街中のコイン\nランドリー")
-  arrow(:money, "決済", "人や環境に配慮して\n洗濯する人", "wash+\n専用洗濯機")
-  arrow(:information, "空き状況など", "wash+\n専用洗濯機", "人や環境に配慮して\n洗濯する人")
-  arrow(:object, "", "街中のコイン\nランドリー", "wash+\n専用洗濯機")
-  arrow(:information, "技術", "洗浄・IoT技術", "wash+\n専用洗濯機")
-  arrow(:money, "売上", "街中のコイン\nランドリー", "フランチャイズ\nオーナー")
-  arrow(:other, "店舗を運営", "フランチャイズ\nオーナー", "街中のコイン\nランドリー")
-  arrow(:money, "直営\n売上", "街中のコイン\nランドリー", "株式会社\nwash-plus")
-  arrow(:money, "開発", "株式会社\nwash-plus", "wash+\n専用洗濯機")
-  arrow(:information, "権利", "株式会社\nwash-plus", "フランチャイズ\nオーナー")
-  arrow(:money, "ロイヤリティ等", "フランチャイズ\nオーナー", "株式会社\nwash-plus")
+  arrow(:other, "訪れる", "人や環境に配慮して洗濯する人", "街中のコインランドリー")
+  arrow(:money, "決済", "人や環境に配慮して洗濯する人", "wash+専用洗濯機")
+  arrow(:information, "空き状況など", "wash+専用洗濯機", "人や環境に配慮して洗濯する人")
+  arrow(:object, "", "街中のコインランドリー", "wash+専用洗濯機")
+  arrow(:information, "技術", "洗浄・IoT技術", "wash+専用洗濯機")
+  arrow(:money, "売上", "街中のコインランドリー", "フランチャイズオーナー")
+  arrow(:other, "店舗を運営", "フランチャイズオーナー", "街中のコインランドリー")
+  arrow(:money, "直営売上", "街中のコインランドリー", "株式会社wash-plus")
+  arrow(:money, "開発", "株式会社wash-plus", "wash+専用洗濯機")
+  arrow(:information, "権利", "株式会社wash-plus", "フランチャイズオーナー")
+  arrow(:money, "ロイヤリティ等", "フランチャイズオーナー", "株式会社wash-plus")
   arrow(:information, "技術開発", "山本製作所", "洗浄・IoT技術")
-  arrow(:other, "共同開発", "株式会社\nwash-plus", "山本製作所")
-  arrow(:other, "", "山本製作所", "株式会社\nwash-plus")
+  arrow(:other, "共同開発", "株式会社wash-plus", "山本製作所")
+  arrow(:other, "", "山本製作所", "株式会社wash-plus")
 end
 
 File.write("example/07_washplus_autolayout.svg", svg)

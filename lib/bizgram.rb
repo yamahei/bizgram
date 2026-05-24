@@ -10,8 +10,8 @@ module Bizgram
   SVG_ENTITY_HEIGHT = 120.0
   SVG_GRID_SPACING_X = 240.0
   SVG_GRID_SPACING_Y = 240.0
-  SVG_PADDING_X = 200.0
-  SVG_PADDING_Y = 200.0
+  SVG_PADDING_X = 240.0
+  SVG_PADDING_Y = 240.0
 
   SVG_CANVAS_WIDTH = SVG_PADDING_X * 2 + SVG_GRID_SPACING_X * 2
   SVG_CANVAS_HEIGHT = SVG_PADDING_Y * 2 + SVG_GRID_SPACING_Y * 2
@@ -53,6 +53,10 @@ module Bizgram
     def -(other)
       if other.is_a?(PendingArrow)
         HalfArrow.new(@builder, self, other)
+      elsif other.is_a?(Entity) && [:money, :object, :information, :info, :other].include?(other.type)
+        @builder.remove_entity(other)
+        pending = PendingArrow.new(other.type, other.name)
+        HalfArrow.new(@builder, self, pending)
       else
         raise ArgumentError, "Expected PendingArrow after '-', got #{other.class}"
       end
@@ -154,56 +158,140 @@ module Bizgram
       unassigned = entities.select { |e| e.position.nil? }
       return if unassigned.empty?
 
-      connections = Hash.new(0)
+      connections = Hash.new { |h, k| h[k] = [] }
       arrows.each do |arrow|
-        connections[arrow.from] += 1
-        connections[arrow.to] += 1
+        connections[arrow.from] << arrow.to
+        connections[arrow.to] << arrow.from
       end
 
-      business_types = [:company, :business, :operator, :store]
-      unassigned.sort_by! do |e|
-        deg = connections[e.id]
-        is_biz = business_types.include?(e.type) ? 1 : 0
-        [-deg, -is_biz, e.id]
-      end
-
-      if !occupied_positions.include?(4) && !unassigned.empty?
-        center_entity = unassigned.shift
-        center_entity.position = 4
-        occupied_positions.add(4)
-      end
-
-      empty_positions = (0..8).to_a - occupied_positions.to_a
-      
-      unassigned.each do |e|
-        related_placed_ids = arrows.select { |a| a.from == e.id || a.to == e.id }
-                                   .map { |a| a.from == e.id ? a.to : a.from }
-                                   .uniq
-                                   .select { |id| entities.find { |ent| ent.id == id }&.position }
+      # DFS-based placement
+      while unassigned.any?
+        placed_ids = entities.reject { |e| e.position.nil? }.map(&:id)
         
+        best_candidate = unassigned.max_by do |e|
+          connected_to_placed = (connections[e.id] & placed_ids).size
+          total_connections = connections[e.id].size
+          [connected_to_placed, total_connections]
+        end
+        
+        if placed_ids.empty?
+          pos = 4
+          if !occupied_positions.include?(pos)
+            best_candidate.position = pos
+            occupied_positions.add(pos)
+            unassigned.delete(best_candidate)
+            next
+          else
+            pos = ((0..8).to_a - occupied_positions.to_a).first
+            best_candidate.position = pos
+            occupied_positions.add(pos)
+            unassigned.delete(best_candidate)
+            next
+          end
+        end
+
+        related_placed_ids = (connections[best_candidate.id] & placed_ids)
         best_pos = nil
+
         if related_placed_ids.empty?
-          preferred = [1, 7, 3, 5, 0, 2, 6, 8]
+          empty_positions = (0..8).to_a - occupied_positions.to_a
+          preferred = [1, 7, 3, 5, 0, 2, 6, 8, 4]
           best_pos = preferred.find { |p| empty_positions.include?(p) }
         else
-          best_pos = empty_positions.min_by do |p|
-            px, py = p % 3, p / 3
-            sum_dist = 0
-            related_placed_ids.each do |r_id|
-              r_ent = entities.find { |ent| ent.id == r_id }
-              rx, ry = r_ent.position % 3, r_ent.position / 3
-              sum_dist += (px - rx).abs + (py - ry).abs
-            end
-            sum_dist
-          end
+          best_pos = find_best_adjacent_position(best_candidate, related_placed_ids, entities, occupied_positions)
         end
         
         raise LayoutError, "エンティティの数が9個を超過しているため、自動配置できません。" unless best_pos
         
-        e.position = best_pos
+        best_candidate.position = best_pos
         occupied_positions.add(best_pos)
-        empty_positions.delete(best_pos)
+        unassigned.delete(best_candidate)
       end
+    end
+
+    def self.find_best_adjacent_position(entity, related_placed_ids, entities, occupied_positions)
+      target_id = related_placed_ids.first
+      target_ent = entities.find { |e| e.id == target_id }
+      
+      dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+      
+      # 1. 単純に空いているマスを探す
+      dirs.each do |dx, dy|
+        tx = target_ent.position % 3
+        ty = target_ent.position / 3
+        nx, ny = tx + dx, ty + dy
+        if (0..2).include?(nx) && (0..2).include?(ny)
+          pos = ny * 3 + nx
+          return pos unless occupied_positions.include?(pos)
+        end
+      end
+      
+      # 2. 盤外にはみ出す場合、シフト可能ならシフトする
+      dirs.each do |dx, dy|
+        tx = target_ent.position % 3
+        ty = target_ent.position / 3
+        nx, ny = tx + dx, ty + dy
+        if nx < 0 && try_shift_grid(1, 0, entities, occupied_positions)
+          return ty * 3 + 0
+        elsif nx > 2 && try_shift_grid(-1, 0, entities, occupied_positions)
+          return ty * 3 + 2
+        elsif ny < 0 && try_shift_grid(0, 1, entities, occupied_positions)
+          return 0 * 3 + tx
+        elsif ny > 2 && try_shift_grid(0, -1, entities, occupied_positions)
+          return 2 * 3 + tx
+        end
+      end
+      
+      # 3. 隣接マスの斜めを試す
+      diag_dirs = [[-1, -1], [1, -1], [-1, 1], [1, 1]]
+      diag_dirs.each do |dx, dy|
+        tx = target_ent.position % 3
+        ty = target_ent.position / 3
+        nx, ny = tx + dx, ty + dy
+        if (0..2).include?(nx) && (0..2).include?(ny)
+          pos = ny * 3 + nx
+          return pos unless occupied_positions.include?(pos)
+        end
+      end
+      
+      # 4. どこか空いているマスを距離順で返す
+      empty_positions = (0..8).to_a - occupied_positions.to_a
+      tx = target_ent.position % 3
+      ty = target_ent.position / 3
+      empty_positions.min_by do |p|
+        px = p % 3
+        py = p / 3
+        (px - tx).abs + (py - ty).abs
+      end
+    end
+
+    def self.try_shift_grid(dx, dy, entities, occupied_positions)
+      placed = entities.reject { |e| e.position.nil? }
+      can_shift = placed.all? do |e|
+        x = e.position % 3
+        y = e.position / 3
+        nx = x + dx
+        ny = y + dy
+        (0..2).include?(nx) && (0..2).include?(ny)
+      end
+      
+      return false unless can_shift
+      
+      new_occupied = Set.new
+      placed.each do |e|
+        x = e.position % 3
+        y = e.position / 3
+        nx = x + dx
+        ny = y + dy
+        new_pos = ny * 3 + nx
+        e.position = new_pos
+        new_occupied.add(new_pos)
+      end
+      
+      occupied_positions.clear
+      new_occupied.each { |p| occupied_positions.add(p) }
+      
+      true
     end
   end
 
@@ -240,6 +328,14 @@ module Bizgram
       ent
     end
 
+    def remove_entity(ent)
+      @entities.delete(ent.name)
+      @entities_by_id.delete(ent.id)
+      if ent.position
+        @occupied_positions.delete(ent.position)
+      end
+    end
+
     def person(name, position = nil)
       entity(:person, name, position)
     end
@@ -274,6 +370,11 @@ module Bizgram
 
     def info(name, position = nil)
       entity(:info, name, position)
+    end
+
+    # 新記法用
+    def flow(type, name)
+      PendingArrow.new(type, name)
     end
 
     def smartphone(name, position = nil)
@@ -425,6 +526,7 @@ class SvgGenerator
       @entities_by_position[entity.position] = entity
     end
     @entity_svg_cache = {}
+    @rendered_arrow_lines = []
   end
 
   def generate(title)
@@ -472,13 +574,12 @@ class SvgGenerator
     %w[object money information other].each do |m_type|
       marker = REXML::Element.new("marker")
       marker.add_attributes({
-        "id" => "marker_#{m_type}",
-        "markerWidth" => "10", "markerHeight" => "10",
-        "refX" => "9", "refY" => "3",
+        "id" => "marker_#{m_type}", "markerWidth" => "5", "markerHeight" => "3.5",
+        "refX" => "5", "refY" => "1.75",
         "orient" => "auto", "markerUnits" => "strokeWidth"
       })
       path = REXML::Element.new("path")
-      path.add_attributes({ "d" => "M 0,0 L 10,3 L 0,6 Z", "fill" => "#000000" })
+      path.add_attributes({ "d" => "M 0,0 L 5,1.75 L 0,3.5 Z", "fill" => "#000000" })
       marker.add_element(path)
       defs.add_element(marker)
     end
@@ -507,21 +608,58 @@ class SvgGenerator
       "x1" => (SVG_PADDING_X - 40).to_s, "y1" => y2.to_s,
       "x2" => (SVG_CANVAS_WIDTH - SVG_PADDING_X + 40).to_s, "y2" => y2.to_s
     })
-    grid.add_element(line2)
-    svg.add_element(grid)
-
+    render_grid_lines(svg)
     render_entities(svg)
     render_arrows(svg)
     render_comments(svg)
 
-    formatter = REXML::Formatters::Pretty.new(2)
-    formatter.compact = true
     output = String.new
+    formatter = REXML::Formatters::Pretty.new
+    formatter.compact = true
     formatter.write(doc, output)
     output + "\n"
   end
 
   private
+
+  def render_grid_lines(parent)
+    lines_g = REXML::Element.new("g")
+    lines_g.add_attribute("id", "grid_lines")
+
+    [
+      SVG_PADDING_Y + SVG_GRID_SPACING_Y / 2.0,
+      SVG_PADDING_Y + SVG_GRID_SPACING_Y * 1.5
+    ].each do |y|
+      line = REXML::Element.new("line")
+      line.add_attributes({
+        "x1" => "0", "y1" => y.to_s,
+        "x2" => SVG_CANVAS_WIDTH.to_s, "y2" => y.to_s,
+        "stroke" => "#dddddd", "stroke-width" => "1",
+        "stroke-dasharray" => "8,8"
+      })
+      lines_g.add_element(line)
+    end
+    
+    parent.add_element(lines_g)
+  end
+
+  def wrap_text(text, max_width_px, font_size)
+    char_width = font_size
+    lines = []
+    text.split("\n").each do |orig_line|
+      curr_line = ""
+      orig_line.each_char do |c|
+        if (curr_line.length + 1) * char_width > max_width_px
+          lines << curr_line unless curr_line.empty?
+          curr_line = c
+        else
+          curr_line += c
+        end
+      end
+      lines << curr_line unless curr_line.empty?
+    end
+    lines
+  end
 
   def render_entities(parent)
     entities_g = REXML::Element.new("g")
@@ -558,10 +696,20 @@ class SvgGenerator
         "x" => x.to_s, "y" => label_y.to_s,
         "font-size" => "14", "font-family" => SVG_FONT_FAMILY,
         "text-anchor" => "middle", "dominant-baseline" => "text-before-edge",
-        "fill" => "#000000", "word-spacing" => "0", "letter-spacing" => "0",
-        "style" => "white-space: pre-wrap; word-wrap: break-word;"
+        "fill" => "#000000"
       })
-      text_el.text = entity.name
+      
+      lines = entity.name.split("\n")
+      lines.each_with_index do |line_text, idx|
+        tspan = REXML::Element.new("tspan")
+        tspan.add_attributes({
+          "x" => x.to_s,
+          "dy" => idx == 0 ? "0" : "16"
+        })
+        tspan.text = line_text
+        text_el.add_element(tspan)
+      end
+      
       g.add_element(text_el)
 
       entities_g.add_element(g)
@@ -570,99 +718,235 @@ class SvgGenerator
     parent.add_element(entities_g)
   end
 
-  class GridRouter
-    def initialize(entities_by_position)
-      @entities_by_position = entities_by_position
-      @routed_paths = [] 
+  class GridMap
+    attr_reader :grid
+
+    def initialize(entities)
+      @grid = Array.new(7) { Array.new(7) }
+      entities.each do |_id, e|
+        pos = e.position
+        next unless pos
+        x = (pos % 3) * 2 + 1
+        y = (pos / 3) * 2 + 1
+        @grid[y][x] = {type: :entity, id: e.id}
+      end
     end
 
-    def route_all(arrows)
-      sorted_arrows = arrows.sort_by do |arr|
+    def place_arrow(path, group_id)
+      path.each do |(x, y)|
+        # 主体のマスは矢印のマスとしては上書きしない
+        next if @grid[y][x] && @grid[y][x][:type] == :entity
+        @grid[y][x] = {type: :arrow, group_id: group_id}
+      end
+    end
+
+    def place_comment(x, y, id)
+      @grid[y][x] = {type: :comment, id: id}
+    end
+
+    def can_arrow_pass?(x, y, group_id, strict = true)
+      return false if x < 0 || x > 6 || y < 0 || y > 6
+      cell = @grid[y][x]
+      return true if cell.nil?
+      return true if strict == :fallback && cell[:type] == :comment
+      return false if cell[:type] == :comment
+      return true if cell[:type] == :arrow && cell[:group_id] == group_id
+      return true if cell[:type] == :arrow && (strict == false || strict == :fallback)
+      false
+    end
+
+    def can_comment_place?(x, y)
+      return false if x < 0 || x > 6 || y < 0 || y > 6
+      @grid[y][x].nil?
+    end
+  end
+
+  class GridMapRouter
+    def initialize(grid_map)
+      @grid_map = grid_map
+    end
+
+    def route_groups(groups)
+      results = {}
+      
+      # 中心に近いエンティティからのルートを優先する等のソート
+      sorted_groups = groups.sort_by do |group_id, arrs|
+        arr = arrs.first
         dx = (arr.to_pos % 3) - (arr.from_pos % 3)
         dy = (arr.to_pos / 3) - (arr.from_pos / 3)
-        -(dx.abs + dy.abs)
+        (dx.abs + dy.abs)
       end
 
-      results = {}
-      sorted_arrows.each do |arr|
-        path = find_route(arr)
-        @routed_paths << {arrow: arr, path: path}
-        results[arr.id] = path
+      sorted_groups.each do |group_id, arrs|
+        arr = arrs.first
+        path = find_route(arr, group_id)
+        @grid_map.place_arrow(path, group_id)
+        
+        arrs.each do |a|
+          if a.from_pos == arr.from_pos
+            results[a.id] = simplify_path(path)
+          else
+            results[a.id] = simplify_path(path.reverse)
+          end
+        end
       end
       results
     end
 
     private
 
-    def find_route(arrow)
-      fx = arrow.from_pos % 3
-      fy = arrow.from_pos / 3
-      tx = arrow.to_pos % 3
-      ty = arrow.to_pos / 3
+    def find_route(arrow, group_id, strict = true)
+      start_pos = [(arrow.from_pos % 3) * 2 + 1, (arrow.from_pos / 3) * 2 + 1]
+      end_pos = [(arrow.to_pos % 3) * 2 + 1, (arrow.to_pos / 3) * 2 + 1]
 
-      gx1, gy1 = fx * 2, fy * 2
-      gx2, gy2 = tx * 2, ty * 2
+      open_set = { [start_pos, nil] => 0 }
+      came_from = {}
+      g_score = { [start_pos, nil] => 0 }
 
-      path = bfs_route(arrow, gx1, gy1, gx2, gy2, true)
-      path = bfs_route(arrow, gx1, gy1, gx2, gy2, false) if path.nil?
+      until open_set.empty?
+        current_state, _ = open_set.min_by { |_, f| f }
+        open_set.delete(current_state)
+
+        curr_pos, curr_dir = current_state
+
+        if curr_pos == end_pos
+          return reconstruct_path(came_from, current_state)
+        end
+
+        neighbors(curr_pos).each do |next_pos|
+          # 終点以外の主体マスは通過不可
+          if next_pos != end_pos
+            cell = @grid_map.grid[next_pos[1]][next_pos[0]]
+            next if cell && cell[:type] == :entity
+          end
+
+          # その他のマスは占有チェック
+          next if next_pos != end_pos && !@grid_map.can_arrow_pass?(next_pos[0], next_pos[1], group_id, strict)
+
+          next_dir = direction(curr_pos, next_pos)
+          next if curr_dir && is_opposite?(curr_dir, next_dir)
+
+          is_diagonal = next_dir.to_s.include?('_')
+          step_c = is_diagonal ? 21 : 10
+          
+          # 曲がり角に対するペナルティ
+          if curr_dir && curr_dir != next_dir
+            was_diagonal = curr_dir.to_s.include?('_')
+            if was_diagonal || is_diagonal
+              # 直行⇔斜めの混ざり、または斜め⇔斜めの曲がりは強く禁止（純粋な斜め直線のみを許可）
+              step_c += 1000
+            else
+              # 直行⇔直行の曲がり（L字・クランク）は微小ペナルティ
+              step_c += 1
+            end
+          end
+          
+          # strict=falseや:fallbackの場合の他矢印との交差ペナルティ
+          if (strict == false || strict == :fallback) && next_pos != end_pos
+            cell = @grid_map.grid[next_pos[1]][next_pos[0]]
+            step_c += 1000 if cell && cell[:type] == :arrow && cell[:group_id] != group_id
+            step_c += 5000 if cell && cell[:type] == :comment && strict == :fallback
+          end
+
+          next_state = [next_pos, next_dir]
+          tentative_g = g_score[current_state] + step_c
+
+          if !g_score.key?(next_state) || tentative_g < g_score[next_state]
+            came_from[next_state] = current_state
+            g_score[next_state] = tentative_g
+            f_score = tentative_g + heuristic(next_pos, end_pos)
+            open_set[next_state] = f_score
+          end
+        end
+      end
+
+      if strict == true
+        # 厳密なチェックで見つからなかった場合は、既存の矢印と交差しても良い（ペナルティあり）として再探索
+        return find_route(arrow, group_id, false)
+      elsif strict == false
+        # 矢印交差を許容しても見つからない場合、コメントも貫通して再探索
+        return find_route(arrow, group_id, :fallback)
+      end
+
+      # 経路が見つからない場合の最後のフォールバック（直線）
+      [start_pos, end_pos]
+    end
+
+    def neighbors(pos)
+      x, y = pos
+      [
+        [x + 1, y], [x - 1, y],
+        [x, y + 1], [x, y - 1],
+        [x + 1, y + 1], [x + 1, y - 1],
+        [x - 1, y + 1], [x - 1, y - 1]
+      ].select { |nx, ny| nx >= 0 && nx <= 6 && ny >= 0 && ny <= 6 }
+    end
+
+    def direction(from, to)
+      dx = to[0] - from[0]
+      dy = to[1] - from[1]
       
-      raise "Error: 仕様可能なルートがありません (from: #{arrow.from_pos}, to: #{arrow.to_pos})" if path.nil?
+      if dx > 0 && dy == 0
+        return :right
+      elsif dx < 0 && dy == 0
+        return :left
+      elsif dx == 0 && dy > 0
+        return :down
+      elsif dx == 0 && dy < 0
+        return :up
+      elsif dx > 0 && dy > 0
+        return :down_right
+      elsif dx > 0 && dy < 0
+        return :up_right
+      elsif dx < 0 && dy > 0
+        return :down_left
+      elsif dx < 0 && dy < 0
+        return :up_left
+      end
+    end
+
+    def is_opposite?(d1, d2)
+      opposites = {
+        right: :left, left: :right, up: :down, down: :up,
+        down_right: :up_left, up_left: :down_right,
+        up_right: :down_left, down_left: :up_right
+      }
+      opposites[d1] == d2
+    end
+
+    def heuristic(pos, goal)
+      dx = (pos[0] - goal[0]).abs
+      dy = (pos[1] - goal[1]).abs
+      if dx > dy
+        21 * dy + 10 * (dx - dy)
+      else
+        21 * dx + 10 * (dy - dx)
+      end
+    end
+
+    def reconstruct_path(came_from, current)
+      path = [current[0]]
+      while came_from.key?(current)
+        current = came_from[current]
+        path.unshift(current[0])
+      end
       path
     end
 
-    def bfs_route(arrow, gx1, gy1, gx2, gy2, avoid_intersection)
-      require 'set'
-      queue = [ [[gx1, gy1]] ]
-      visited = Set.new([[gx1, gy1]])
+    def simplify_path(path)
+      return path if path.length <= 2
+      simplified = [path.first]
+      prev_dir = direction(path[0], path[1])
       
-      while !queue.empty?
-        path = queue.shift
-        curr_x, curr_y = path.last
-        
-        return path if curr_x == gx2 && curr_y == gy2
-        
-        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-        if path.length > 1
-          prev_dx = curr_x - path[-2][0]
-          prev_dy = curr_y - path[-2][1]
-          dirs.sort_by! { |d| d == [prev_dx, prev_dy] ? 0 : 1 }
-        end
-        
-        dirs.each do |dx, dy|
-          nx, ny = curr_x + dx, curr_y + dy
-          next if nx < 0 || nx > 4 || ny < 0 || ny > 4
-          next if visited.include?([nx, ny])
-          
-          if nx.even? && ny.even?
-            is_target = (nx == gx2 && ny == gy2)
-            if !is_target
-              pos = (ny / 2) * 3 + (nx / 2)
-              next if @entities_by_position.key?(pos)
-            end
-          end
-          
-          if avoid_intersection
-            intersect = false
-            @routed_paths.each do |routed|
-              r_pair = [routed[:arrow].from_pos, routed[:arrow].to_pos].sort
-              my_pair = [arrow.from_pos, arrow.to_pos].sort
-              next if my_pair == r_pair
-              
-              if routed[:path].include?([nx, ny])
-                unless (nx == gx1 && ny == gy1) || (nx == gx2 && ny == gy2)
-                  intersect = true
-                  break
-                end
-              end
-            end
-            next if intersect
-          end
-          
-          visited.add([nx, ny])
-          queue << (path + [[nx, ny]])
+      (1...path.length - 1).each do |i|
+        curr_dir = direction(path[i], path[i+1])
+        if curr_dir != prev_dir
+          simplified << path[i]
+          prev_dir = curr_dir
         end
       end
-      nil
+      simplified << path.last
+      simplified
     end
   end
 
@@ -685,27 +969,131 @@ class SvgGenerator
       RouterArrow.new(arr.id, from_entity.position, to_entity.position)
     end
 
-    router = GridRouter.new(@entities_by_position)
-    routes = router.route_all(router_arrows)
-
+    @grid_map = GridMap.new(@entities)
+    
+    # 1. 矢印のルーティングを先に決定・予約する
     arrow_groups = {}
-    @arrows.each do |_id, arrow|
-      from_pos = @entities[arrow.from].position
-      to_pos = @entities[arrow.to].position
-      pair = [from_pos, to_pos].sort
-      arrow_groups[pair] ||= []
-      arrow_groups[pair] << arrow
+    router_arrows.each do |arr|
+      group_id = [arr.from_pos, arr.to_pos].sort
+      arrow_groups[group_id] ||= []
+      arrow_groups[group_id] << arr
     end
 
-    arrow_groups.each do |pair, arrows_in_group|
+    router = GridMapRouter.new(@grid_map)
+    routes = router.route_groups(arrow_groups)
+
+    # 2. コメントの配置位置を空きマスに決定・予約する
+    @comment_placements = {}
+    sorted_comments = @comments.values.sort_by do |comment|
+      pos = @entities[comment.to].position
+      pos == 4 ? 1 : 0
+    end
+
+    sorted_comments.each do |comment|
+      target_entity = @entities[comment.to]
+      next unless target_entity.position
+      
+      ex = (target_entity.position % 3) * 2 + 1
+      ey = (target_entity.position / 3) * 2 + 1
+
+      all_dirs = [ [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1] ]
+      allowed_dirs = all_dirs.sort_by do |dx, dy|
+        score = 0
+        score += 10 if dx != 0 && dy != 0 # 斜めは優先度を下げる
+        score += 2 if dy != 0 && dx == 0  # 上下より左右を優先
+        
+        is_top_edge = [0, 1, 2].include?(target_entity.position)
+        is_bottom_edge = [6, 7, 8].include?(target_entity.position)
+        is_left_edge = [0, 3, 6].include?(target_entity.position)
+        is_right_edge = [2, 5, 8].include?(target_entity.position)
+        
+        score += 20 if dy == -1 && is_top_edge
+        score += 20 if dy == 1 && is_bottom_edge
+        score += 5 if dx == -1 && is_left_edge
+        score += 5 if dx == 1 && is_right_edge
+        score
+      end
+
+      placed = false
+      allowed_dirs.each do |dx, dy|
+        cx, cy = ex + dx, ey + dy
+        if @grid_map.can_comment_place?(cx, cy)
+          @grid_map.place_comment(cx, cy, comment.id)
+          @comment_placements[comment.id] = [dx, dy]
+          placed = true
+          break
+        end
+      end
+      
+      unless placed
+        @comment_placements[comment.id] = [0, 1] # fallback to bottom
+      end
+    end
+
+    route_groups = {}
+    @arrows.each do |_id, arrow|
+      path = routes[arrow.id]
+      normalized_path = (path.first <=> path.last) < 0 ? path : path.reverse
+      route_groups[normalized_path] ||= []
+      route_groups[normalized_path] << arrow
+    end
+
+    terminal_groups = {}
+    @arrows.values.each do |arrow|
+      path = routes[arrow.id]
+      next if path.length < 2
+      
+      # Start terminal (leaving)
+      seg_start = [path[0], path[1]]
+      v1 = [path[1][0] - path[0][0], path[1][1] - path[0][1]]
+      if path.length >= 3
+        v2 = [path[2][0] - path[1][0], path[2][1] - path[1][1]]
+        cp = v1[0]*v2[1] - v1[1]*v2[0]
+      else
+        cp = 0
+      end
+      terminal_groups[seg_start] ||= []
+      terminal_groups[seg_start] << { arrow: arrow, cp: cp, type: :leaving }
+      
+      # End terminal (entering)
+      seg_end = [path[-1], path[-2]] # oriented OUTWARD
+      v1_end = [path[-2][0] - path[-1][0], path[-2][1] - path[-1][1]]
+      if path.length >= 3
+        v2_end = [path[-3][0] - path[-2][0], path[-3][1] - path[-2][1]]
+        cp_end = v1_end[0]*v2_end[1] - v1_end[1]*v2_end[0]
+      else
+        cp_end = 0
+      end
+      terminal_groups[seg_end] ||= []
+      terminal_groups[seg_end] << { arrow: arrow, cp: cp_end, type: :entering }
+    end
+
+    suggested_offsets = {}
+    @arrows.values.each { |a| suggested_offsets[a.id] = [] }
+
+    terminal_groups.each do |seg, items|
+      items.sort_by! do |item|
+        id_key = item[:type] == :leaving ? item[:arrow].id : -item[:arrow].id
+        [item[:cp], item[:type] == :leaving ? 0 : 1, id_key]
+      end
+      n = items.length
+      items.each_with_index do |item, idx|
+        base_offset = (idx - (n - 1) / 2.0) * 35.0
+        global_offset = item[:type] == :entering ? -base_offset : base_offset
+        suggested_offsets[item[:arrow].id] << global_offset
+      end
+    end
+
+    final_offsets = {}
+    suggested_offsets.each do |id, offsets|
+      final_offsets[id] = offsets.empty? ? 0.0 : offsets.sum / offsets.length.to_f
+    end
+
+    route_groups.each do |normalized_path, arrows_in_group|
       arrows_in_group.each_with_index do |arrow, index|
-        from_entity = @entities[arrow.from]
-        is_reversed = (from_entity.position != pair[0])
-        
-        offset = (index - (arrows_in_group.length - 1) / 2.0) * 25.0
-        offset = -offset if is_reversed
-        
         grid_path = routes[arrow.id]
+        offset = final_offsets[arrow.id] || 0.0
+        
         svg_points = grid_path.map { |pt| svg_coords_from_grid(pt[0], pt[1]) }
         
         if svg_points.length >= 2
@@ -714,6 +1102,13 @@ class SvgGenerator
         end
         
         shifted_points = apply_offset_to_path(svg_points, offset)
+        
+        shifted_points.each_cons(2) do |a, b|
+          @rendered_arrow_lines << {
+            x1: [a[0], b[0]].min - 10, y1: [a[1], b[1]].min - 10,
+            x2: [a[0], b[0]].max + 10, y2: [a[1], b[1]].max + 10
+          }
+        end
 
         color = ARROW_COLORS[arrow.type]
         marker_id = "marker_#{arrow.type}"
@@ -741,11 +1136,15 @@ class SvgGenerator
         label_y = (best_p1[1] + best_p2[1]) / 2.0
         marker_x = label_x
         marker_y = label_y
-        is_vertical_segment = (best_p1[0] - best_p2[0]).abs < (best_p1[1] - best_p2[1]).abs
 
+        dx = best_p2[0] - best_p1[0]
+        dy = best_p2[1] - best_p1[1]
+        
         text_anchor = "middle"
-        if is_vertical_segment
-          dy = best_p2[1] - best_p1[1]
+        if dx != 0 && dy != 0 && dx.abs == dy.abs # 斜め
+          label_x += (dx > 0 ? -1 : 1) * 20
+          label_y += (dy > 0 ? -1 : 1) * 20
+        elsif dx.abs < dy.abs # 縦
           actual_shift_x = (dy > 0 ? -1 : 1) * offset
           if actual_shift_x < 0
             label_x -= 16
@@ -755,8 +1154,7 @@ class SvgGenerator
             text_anchor = "start"
           end
           label_y += 5
-        else
-          dx = best_p2[0] - best_p1[0]
+        else # 横
           actual_shift_y = (dx > 0 ? 1 : -1) * offset
           if actual_shift_y > 0
             label_y += 26
@@ -782,10 +1180,20 @@ class SvgGenerator
           text_el.add_attributes({
             "x" => label_x.to_s, "y" => label_y.to_s,
             "font-size" => "16", "font-family" => SVG_FONT_FAMILY,
-            "fill" => "#000000", "text-anchor" => text_anchor,
-            "style" => "white-space: pre-wrap; word-wrap: break-word;"
+            "fill" => "#000000", "text-anchor" => text_anchor
           })
-          text_el.text = arrow.name
+          
+          lines = arrow.name.split("\n")
+          lines.each_with_index do |line_text, idx|
+            tspan = REXML::Element.new("tspan")
+            tspan.add_attributes({
+              "x" => label_x.to_s,
+              "dy" => idx == 0 ? "0" : "18"
+            })
+            tspan.text = line_text
+            text_el.add_element(tspan)
+          end
+          
           g.add_element(text_el)
         end
         
@@ -831,29 +1239,21 @@ class SvgGenerator
     parent.add_element(arrows_g)
   end
 
-  def svg_coords_from_grid(gx, gy)
-    col = gx / 2
-    row = gy / 2
-    
-    if gx.even?
-      x = SVG_GRID_COLS[col]
-    else
-      x = (SVG_GRID_COLS[col] + SVG_GRID_COLS[col + 1]) / 2.0
-    end
-    
-    if gy.even?
-      y = SVG_GRID_ROWS[row]
-    else
-      y = (SVG_GRID_ROWS[row] + SVG_GRID_ROWS[row + 1]) / 2.0
-    end
-    [x, y]
+  def svg_coords_from_grid(x, y)
+    # 7x7 grid mapping (x, y in 0..6, entities at 1,3,5)
+    cx = SVG_PADDING_X + ((x - 1) / 4.0) * (SVG_CANVAS_WIDTH - 2 * SVG_PADDING_X)
+    cy = SVG_PADDING_Y + ((y - 1) / 4.0) * (SVG_CANVAS_HEIGHT - 2 * SVG_PADDING_Y)
+    [cx, cy]
   end
 
   def adjust_to_edge(pt, neighbor, is_start)
     dx = neighbor[0] - pt[0]
     dy = neighbor[1] - pt[1]
     
-    if dx.abs > dy.abs
+    if dx != 0 && dy != 0 && dx.abs == dy.abs # 斜め
+      pt[0] += (dx > 0 ? 1 : -1) * SVG_ENTITY_WIDTH / 2.0
+      pt[1] += (dy > 0 ? 1 : -1) * SVG_ENTITY_HEIGHT / 2.0
+    elsif dx.abs > dy.abs
       if dx > 0
         pt[0] += SVG_ENTITY_WIDTH / 2.0
       else
@@ -879,20 +1279,14 @@ class SvgGenerator
         p_next = points[i+1]
         dx = p_next[0] - p[0]
         dy = p_next[1] - p[1]
-        if dx.abs > dy.abs
-          shifted << [p[0], p[1] + (dx > 0 ? 1 : -1) * offset]
-        else
-          shifted << [p[0] + (dy > 0 ? -1 : 1) * offset, p[1]]
-        end
+        norm = Math.sqrt(dx**2 + dy**2)
+        shifted << [p[0] - (dy/norm)*offset, p[1] + (dx/norm)*offset]
       elsif i == points.length - 1
         p_prev = points[i-1]
         dx = p[0] - p_prev[0]
         dy = p[1] - p_prev[1]
-        if dx.abs > dy.abs
-          shifted << [p[0], p[1] + (dx > 0 ? 1 : -1) * offset]
-        else
-          shifted << [p[0] + (dy > 0 ? -1 : 1) * offset, p[1]]
-        end
+        norm = Math.sqrt(dx**2 + dy**2)
+        shifted << [p[0] - (dy/norm)*offset, p[1] + (dx/norm)*offset]
       else
         p_prev = points[i-1]
         p_next = points[i+1]
@@ -902,22 +1296,21 @@ class SvgGenerator
         dx2 = p_next[0] - p[0]
         dy2 = p_next[1] - p[1]
         
-        shift_x = 0
-        shift_y = 0
+        norm1 = Math.sqrt(dx1**2 + dy1**2)
+        s1x = -(dy1/norm1)*offset
+        s1y = (dx1/norm1)*offset
         
-        if dx1.abs > dy1.abs
-          shift_y = (dx1 > 0 ? 1 : -1) * offset
+        norm2 = Math.sqrt(dx2**2 + dy2**2)
+        s2x = -(dy2/norm2)*offset
+        s2y = (dx2/norm2)*offset
+        
+        denom = dx2 * dy1 - dy2 * dx1
+        if denom == 0
+          shifted << [p[0] + s1x, p[1] + s1y]
         else
-          shift_x = (dy1 > 0 ? -1 : 1) * offset
+          t2 = ((s2y - s1y) * dx1 - (s2x - s1x) * dy1) / denom.to_f
+          shifted << [p[0] + s2x + t2 * dx2, p[1] + s2y + t2 * dy2]
         end
-        
-        if dx2.abs > dy2.abs
-          shift_y = (dx2 > 0 ? 1 : -1) * offset
-        else
-          shift_x = (dy2 > 0 ? -1 : 1) * offset
-        end
-        
-        shifted << [p[0] + shift_x, p[1] + shift_y]
       end
     end
     shifted
@@ -929,56 +1322,141 @@ class SvgGenerator
     comments_g = REXML::Element.new("g")
     comments_g.add_attribute("id", "comments")
 
-    @comments.each do |_id, comment|
+    # 中心から遠い主体（周辺）のコメントを先に配置し、中央（4）を最後にする
+    sorted_comments = @comments.values.sort_by do |comment|
+      pos = @entities[comment.to].position
+      pos == 4 ? 1 : 0
+    end
+
+    sorted_comments.each do |comment|
       target_entity = @entities[comment.to]
       target_center_x, target_center_y = position_to_svg_coords(target_entity.position)
-      target_top_y = target_center_y - SVG_ENTITY_HEIGHT / 2.0
-
-      comment_width = [comment.text.length * 14 + 20, 80].max
-      comment_height = 40
-
-      comment_x = target_center_x + 10
-      comment_y = target_top_y - 70
-      comment_box_center_x = comment_x + comment_width / 2.0
-      comment_box_center_y = comment_y + comment_height / 2.0
-
-      tail_width = 16
-      tail_height = 16
-      cx = comment_box_center_x
-      cy = comment_y + comment_height
       
-      path_d = "M #{comment_x + 5},#{comment_y} " +
-               "H #{comment_x + comment_width - 5} " +
-               "Q #{comment_x + comment_width},#{comment_y} #{comment_x + comment_width},#{comment_y + 5} " +
-               "V #{cy - 5} " +
-               "Q #{comment_x + comment_width},#{cy} #{comment_x + comment_width - 5},#{cy} " +
-               "H #{comment_x + 20 + tail_width} " +
-               "L #{comment_x + 10},#{cy + tail_height + 5} " +
-               "L #{comment_x + 20},#{cy} " +
-               "H #{comment_x + 5} " +
-               "Q #{comment_x},#{cy} #{comment_x},#{cy - 5} " +
-               "V #{comment_y + 5} " +
-               "Q #{comment_x},#{comment_y} #{comment_x + 5},#{comment_y} Z"
+      placement = @comment_placements[comment.id] || [0, 1]
+      dx, dy = placement[0], placement[1]
+
+      ex = (target_entity.position % 3) * 2 + 1
+      ey = (target_entity.position / 3) * 2 + 1
+      cx, cy = ex + dx, ey + dy
+
+      is_outer_x = (cx == 0 || cx == 6)
+
+      if cy == 0 || cy == 6
+        max_width_px = 240 # 最上部・最下部は高さを抑えるため幅を広く許可
+      elsif dx != 0
+        max_width_px = is_outer_x ? 140 : 100
+      else
+        max_width_px = 160
+      end
+
+      lines = wrap_text(comment.text, max_width_px, 14)
+      
+      longest_line = lines.map(&:length).max || 0
+      comment_width = [longest_line * 14 + 20, 60].max
+      comment_height = [lines.length * 20 + 20, 40].max
+
+      if dx == -1
+        comment_x = target_center_x - SVG_ENTITY_WIDTH / 2.0 - comment_width - 10
+      elsif dx == 1
+        comment_x = target_center_x + SVG_ENTITY_WIDTH / 2.0 + 10
+      else
+        comment_x = target_center_x - comment_width / 2.0
+      end
+
+      if dy == -1
+        comment_y = target_center_y - SVG_ENTITY_HEIGHT / 2.0 - comment_height - 10
+        if cy == 0 && comment_y < 90
+          comment_y = 90 # タイトル下に強制配置して被りを防ぐ
+        end
+      elsif dy == 1
+        comment_y = target_center_y + SVG_ENTITY_HEIGHT / 2.0 + 35
+      else
+        comment_y = target_center_y - comment_height / 2.0
+      end
+
+      if dx == 1
+        dir = dy == -1 ? :top_right : (dy == 1 ? :bottom_right : :right)
+      elsif dx == -1
+        dir = dy == -1 ? :top_left : (dy == 1 ? :bottom_left : :left)
+      else
+        dir = dy == -1 ? :top : :bottom
+      end
 
       g = REXML::Element.new("g")
       g.add_attribute("id", "comment_#{comment.id}")
       
-      path_el = REXML::Element.new("path")
-      path_el.add_attributes({
-        "d" => path_d,
-        "fill" => "#dddddd",
-        "stroke" => "none"
+      box_el = REXML::Element.new("rect")
+      box_el.add_attributes({
+        "x" => comment_x.to_s, "y" => comment_y.to_s,
+        "width" => comment_width.to_s, "height" => comment_height.to_s,
+        "rx" => "5", "ry" => "5",
+        "fill" => "#dddddd", "stroke" => "none"
       })
-      g.add_element(path_el)
+      g.add_element(box_el)
+      
+      tail_el = REXML::Element.new("polygon")
+      if dir == :right
+        pts = "#{comment_x},#{comment_y + 10} #{comment_x - 10},#{comment_y + 20} #{comment_x},#{comment_y + 30}"
+      elsif dir == :left
+        pts = "#{comment_x + comment_width},#{comment_y + 10} #{comment_x + comment_width + 10},#{comment_y + 20} #{comment_x + comment_width},#{comment_y + 30}"
+      elsif dir == :top
+        pts = "#{comment_x + comment_width/2 - 10},#{comment_y + comment_height} #{comment_x + comment_width/2},#{comment_y + comment_height + 10} #{comment_x + comment_width/2 + 10},#{comment_y + comment_height}"
+      elsif dir == :bottom
+        pts = "#{comment_x + comment_width/2 - 10},#{comment_y} #{comment_x + comment_width/2},#{comment_y - 10} #{comment_x + comment_width/2 + 10},#{comment_y}"
+      elsif dir == :top_right
+        bx1 = comment_x
+        by1 = comment_y + comment_height - 15
+        bx2 = comment_x + 15
+        by2 = comment_y + comment_height
+        tx = bx1 + (target_center_x - bx1) * 0.5
+        ty = by2 + (target_center_y - by2) * 0.5
+        pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
+      elsif dir == :top_left
+        bx1 = comment_x + comment_width - 15
+        by1 = comment_y + comment_height
+        bx2 = comment_x + comment_width
+        by2 = comment_y + comment_height - 15
+        tx = bx2 + (target_center_x - bx2) * 0.5
+        ty = by1 + (target_center_y - by1) * 0.5
+        pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
+      elsif dir == :bottom_right
+        bx1 = comment_x
+        by1 = comment_y + 15
+        bx2 = comment_x + 15
+        by2 = comment_y
+        tx = bx1 + (target_center_x - bx1) * 0.5
+        ty = by2 + (target_center_y - by2) * 0.5
+        pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
+      elsif dir == :bottom_left
+        bx1 = comment_x + comment_width - 15
+        by1 = comment_y
+        bx2 = comment_x + comment_width
+        by2 = comment_y + 15
+        tx = bx2 + (target_center_x - bx2) * 0.5
+        ty = by1 + (target_center_y - by1) * 0.5
+        pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
+      end
+      tail_el.add_attributes("points" => pts, "fill" => "#dddddd")
+      g.add_element(tail_el)
       
       text_el = REXML::Element.new("text")
       text_el.add_attributes({
-        "x" => comment_box_center_x.to_s, "y" => comment_box_center_y.to_s,
+        "x" => (comment_x + comment_width / 2.0).to_s, 
+        "y" => (comment_y + 20).to_s,
         "font-size" => "14", "font-family" => SVG_FONT_FAMILY,
-        "text-anchor" => "middle", "dominant-baseline" => "middle",
-        "fill" => "#000000"
+        "text-anchor" => "middle", "fill" => "#000000"
       })
-      text_el.text = comment.text
+      
+      lines.each_with_index do |line_text, idx|
+        tspan = REXML::Element.new("tspan")
+        tspan.add_attributes({
+          "x" => (comment_x + comment_width / 2.0).to_s,
+          "dy" => idx == 0 ? "0" : "20"
+        })
+        tspan.text = line_text
+        text_el.add_element(tspan)
+      end
+      
       g.add_element(text_el)
       
       comments_g.add_element(g)
