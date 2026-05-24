@@ -372,10 +372,6 @@ module Bizgram
       entity(:info, name, position)
     end
 
-    # 新記法用
-    def flow(type, name)
-      PendingArrow.new(type, name)
-    end
 
     def smartphone(name, position = nil)
       entity(:smartphone, name, position)
