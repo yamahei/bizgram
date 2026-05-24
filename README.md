@@ -50,7 +50,7 @@ svg = Bizgram.draw("例）買い切り型のスマホゲーム") do
   arrow(:other, "プレイ", user, device)# 旧来の記法
 
   ## 主体は直接書くこともできる
-  company("(株)HOGEゲームズ", :cb) -object("作品アップロード")> device# 明示的な配置指定
+  company("(株)HOGEゲームズ", :cb) -object("作品アップロード")> site# 明示的な配置指定
   site -money("売上")> company("(株)HOGEゲームズ")
 
   # コメントの定義
