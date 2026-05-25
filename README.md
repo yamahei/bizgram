@@ -84,28 +84,28 @@ bundle exec ruby example/00_basic_sample.rb
 
 ```sh
 # ①ごく普通のBizgramコード
-bundle exec ruby ruby example/01_normal.rb
+bundle exec ruby example/01_normal.rb
 
 # ②複雑なBizgramコード
-bundle exec ruby ruby example/02_complex.rb
+bundle exec ruby example/02_complex.rb
 
 # ③意地悪な（多重・双方向など）Bizgramコード
-bundle exec ruby ruby example/03_edge_case.rb
+bundle exec ruby example/03_edge_case.rb
 
 # ④新しい直感的なDSL記法のBizgramコード
-bundle exec ruby ruby example/04_test_dsl.rb
+bundle exec ruby example/04_test_dsl.rb
 
 # ⑤〜⑧ 実際のギャラリーに基づく複雑なBizgramコード（手動配置ベースライン）
-bundle exec ruby ruby example/05_innoqua.rb
-bundle exec ruby ruby example/06_bemyeyes.rb
-bundle exec ruby ruby example/07_washplus.rb
-bundle exec ruby ruby example/08_koto.rb
+bundle exec ruby example/05_innoqua.rb
+bundle exec ruby example/06_bemyeyes.rb
+bundle exec ruby example/07_washplus.rb
+bundle exec ruby example/08_koto.rb
 
 # ⑤〜⑧ の自動配置版Bizgramコード
-bundle exec ruby ruby example/05_innoqua_autolayout.rb
-bundle exec ruby ruby example/06_bemyeyes_autolayout.rb
-bundle exec ruby ruby example/07_washplus_autolayout.rb
-bundle exec ruby ruby example/08_koto_autolayout.rb
+bundle exec ruby example/05_innoqua_autolayout.rb
+bundle exec ruby example/06_bemyeyes_autolayout.rb
+bundle exec ruby example/07_washplus_autolayout.rb
+bundle exec ruby example/08_koto_autolayout.rb
 ```
 
 ### レイアウトに関する注意事項
