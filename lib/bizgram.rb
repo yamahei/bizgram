@@ -58,7 +58,7 @@ module Bizgram
         pending = PendingArrow.new(other.type, other.name)
         HalfArrow.new(@builder, self, pending)
       else
-        raise ArgumentError, "Expected PendingArrow after '-', got #{other.class}"
+        raise ArgumentError, "Expected arrow definition (e.g. -money('name')>) after entity '#{self.name}', but got #{other.class}"
       end
     end
   end
@@ -79,7 +79,9 @@ module Bizgram
     end
 
     def >(to_entity)
-      raise ArgumentError, "Expected Entity after '>', got #{to_entity.class}" unless to_entity.is_a?(Entity)
+      unless to_entity.is_a?(Entity)
+        raise ArgumentError, "Expected Entity after '#{@pending_arrow.name}>', but got #{to_entity.class}"
+      end
       @builder.arrow(@pending_arrow.type, @pending_arrow.name, @from, to_entity)
     end
   end
@@ -315,7 +317,9 @@ module Bizgram
         if position
           if ent.position.nil?
             pos = PositionResolver.resolve(position, type, @occupied_positions)
-            raise LayoutError, "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
+            if @occupied_positions.include?(pos)
+              raise LayoutError, "Position #{pos} (from #{position.inspect}) is already occupied when placing entity '#{name}' (type: #{type})"
+            end
             ent.position = pos
             @occupied_positions.add(pos)
           else
@@ -327,7 +331,9 @@ module Bizgram
 
       if position
         pos = PositionResolver.resolve(position, type, @occupied_positions)
-        raise LayoutError, "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
+        if @occupied_positions.include?(pos)
+          raise LayoutError, "Position #{pos} (from #{position.inspect}) is already occupied when placing entity '#{name}' (type: #{type})"
+        end
         @occupied_positions.add(pos)
       else
         pos = nil
@@ -413,8 +419,15 @@ module Bizgram
       from_id = resolve_entity_reference(from)
       to_id = resolve_entity_reference(to)
 
-      raise ArgumentError, "From entity (id: #{from_id}) not found" unless @entities_by_id.key?(from_id)
-      raise ArgumentError, "To entity (id: #{to_id}) not found" unless @entities_by_id.key?(to_id)
+      unless @entities_by_id.key?(from_id)
+        from_name = from.is_a?(Entity) ? from.name : from
+        raise ArgumentError, "Failed to create arrow '#{name}': From entity '#{from_name}' not found"
+      end
+
+      unless @entities_by_id.key?(to_id)
+        to_name = to.is_a?(Entity) ? to.name : to
+        raise ArgumentError, "Failed to create arrow '#{name}': To entity '#{to_name}' not found"
+      end
 
       id = next_id
       arr = Arrow.new(id, name, type, from_id, to_id)
@@ -428,7 +441,10 @@ module Bizgram
       validate_name(text)
 
       to_id = resolve_entity_reference(to)
-      raise ArgumentError, "To entity (id: #{to_id}) not found" unless @entities_by_id.key?(to_id)
+      unless @entities_by_id.key?(to_id)
+        to_name = to.is_a?(Entity) ? to.name : to
+        raise ArgumentError, "Failed to add comment '#{text}': Target entity '#{to_name}' not found"
+      end
 
       id = next_id
       com = Comment.new(id, to_id, text)

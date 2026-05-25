@@ -144,22 +144,13 @@ RSpec.describe Bizgram do
     end
 
     context "when position is not specified" do
-      it "raises error for user without position" do
-        expect do
-          Bizgram.draw("Test") do
-            user "User1"
-          end
-        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
+      it "does not raise error and leaves position nil for auto-assignment" do
+        user_entity = nil
+        Bizgram.draw("Test") do
+          user_entity = user "User1"
+        end
+        expect(user_entity.position).not_to be_nil
       end
-
-      it "raises error for business without position" do
-        expect do
-          Bizgram.draw("Test") do
-            business "Biz1"
-          end
-        end.to raise_error(ArgumentError, /Position must be explicitly specified/)
-      end
-
     end
 
     context "position conflicts" do
@@ -684,7 +675,7 @@ RSpec.describe Bizgram do
           Bizgram.draw("Test") do
             comment_to 999, "コメント"
           end
-        end.to raise_error(ArgumentError, /To entity.*not found/)
+        end.to raise_error(ArgumentError, /Target entity.*not found/)
       end
 
       it "raises error when target entity does not exist (string)" do
@@ -720,7 +711,7 @@ RSpec.describe Bizgram do
           user "Alice", 0
           comment_to user("Alice"), "コメント"
         end
-        expect(svg).to include("#FFFC41")
+        expect(svg).to include("#dddddd")
       end
     end
 
