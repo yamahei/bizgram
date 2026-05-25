@@ -310,7 +310,20 @@ module Bizgram
       validate_entity_type(type)
       validate_name(name)
 
-      return @entities[name] if @entities.key?(name)
+      if @entities.key?(name)
+        ent = @entities[name]
+        if position
+          if ent.position.nil?
+            pos = PositionResolver.resolve(position, type, @occupied_positions)
+            raise LayoutError, "Position #{pos} is already occupied" if @occupied_positions.include?(pos)
+            ent.position = pos
+            @occupied_positions.add(pos)
+          else
+            raise ArgumentError, "Entity '#{name}' already has a position assigned. Multiple position assignments are not allowed."
+          end
+        end
+        return ent
+      end
 
       if position
         pos = PositionResolver.resolve(position, type, @occupied_positions)
