@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'base64'
+require_relative 'bizgram/version'
 
 module Bizgram
   class LayoutError < StandardError; end

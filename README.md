@@ -28,8 +28,17 @@ Bizgram（ビジネスモデル図解）をRubyコードで書くためのDSLラ
 
 ### インストール
 
+Gemfileに以下を追記して、`bundle install` を実行します。
+
+```ruby
+gem 'bizgram', github: 'yamahei/bizgram'
+```
+
+または、直接インストールする場合は以下のコマンドを実行します。
+
 ```bash
-bundle install
+gem build bizgram.gemspec
+gem install bizgram-0.1.0.gem
 ```
 
 使用方法

@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    bizgram (0.1.0)
+      rexml (~> 3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -23,7 +29,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  rexml
+  bizgram!
   rspec (~> 3.0)
 
 BUNDLED WITH
