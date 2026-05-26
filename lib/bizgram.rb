@@ -2,6 +2,7 @@
 
 require 'base64'
 require_relative 'bizgram/version'
+require_relative 'bizgram/validator'
 
 module Bizgram
   class LayoutError < StandardError; end
@@ -1580,5 +1581,10 @@ end
     builder = Builder.new
     builder.instance_eval(&block)
     builder.to_svg(title)
+  end
+
+  def self.eval(dsl_string)
+    Bizgram::Validator.validate!(dsl_string)
+    Kernel.eval(dsl_string, TOPLEVEL_BINDING)
   end
 end
