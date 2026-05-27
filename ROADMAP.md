@@ -30,13 +30,34 @@
 
 ### リスト
 
-#### DSLにBizgram描画以外の拡張構文を検討する
-BizgramをWFのビジネス要件と捉えると、同じ図の中に「システム化範囲」が表現できることで、視覚的かつ機械的に読み取れるビジネス要件ドキュメントとして扱えるようになる。
-（他にもあるかも←今は思いついていない）
-
 #### Cloud Function化 (別リポジトリにて対応予定)
 Markdownでプレビューするためには、インターネット経由でSVG生成できる環境が必要。
 Bizgram本体とは責務を分けるため、本リポジトリではなく別プロジェクト（別リポジトリ）として開発を進める予定。
+
+#### SVG（XML）だけでBizgramの定義が読み取れるようにする
+Bizgramコードで定義される内容はすべてSVGに出力する。
+例えば主体のトップレベルにカスタム属性で定義内容を保持しておく
+```xml
+<g id='entity_0' bizgram:object='entity' bizgram:type='user' bizgram:name='ユーザ' bizgram:position=':ct'>
+```
+矢印のfrom,toだけは、SVGのidを指し示さないと整合が取れないので注意
+```xml
+<g id='arrow_4' bizgram:object='entity' bizgram:type='user' bizgram:name='矢印' bizgram:from='entity_0' bizgram:to='entity_1'>
+```
+
+#### DSLにBizgram描画以外の拡張構文を検討する
+BizgramをWFのビジネス要件と捉えると、同じ図の中に「システム化範囲」が表現できることで、視覚的かつ機械的に読み取れるビジネス要件ドキュメントとして扱えるようになる。
+- システム化範囲を定義するメソッド`systemize`を追加（メソッド名は検討の余地あり）
+   - 引数は「システム名（必須）、Bizgramの主体・矢印オブジェクト（必須、1～N個）」かな
+   - 戻値はシステム化範囲を表す`Systemize`オブジェクト
+- システム化範囲に指定された主体・矢印オブジェクトには、システム化色（自動）で縁取りする
+- システム化範囲は複数定義可能（縁取りの色が異なる）
+- 縁取り色はBizgram本来の役割を邪魔しない程度に淡い色味で、あらかじめ複数色を定義しておく（それがシステム化定義の上限になるが、Bizgramの仕様上9システムを超えることはない）
+
+```ruby
+systemize("SYSTEM_NAME", user, business("事業者"), arrow(:money, "money", fromObj, toObj))
+```
+
 
 <details>
 <summary>対応済み</summary>
