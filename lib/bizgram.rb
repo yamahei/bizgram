@@ -699,6 +699,12 @@ class SvgGenerator
 
       g = REXML::Element.new("g")
       g.add_attribute("id", "entity_#{entity.id}")
+      g.add_attributes({
+        "data-bizgram-object" => "entity",
+        "data-bizgram-type" => entity.type.to_s,
+        "data-bizgram-name" => entity.name.to_s,
+        "data-bizgram-position" => entity.position.to_s
+      })
 
       svg_content = load_entity_svg_with_transform(entity.type, left_x, top_y)
       if svg_content
@@ -1192,6 +1198,13 @@ class SvgGenerator
 
         g = REXML::Element.new("g")
         g.add_attribute("id", "arrow_#{arrow.id}")
+        g.add_attributes({
+          "data-bizgram-object" => "arrow",
+          "data-bizgram-type" => arrow.type.to_s,
+          "data-bizgram-name" => arrow.name.to_s,
+          "data-bizgram-from" => "entity_#{arrow.from}",
+          "data-bizgram-to" => "entity_#{arrow.to}"
+        })
 
         path_el = REXML::Element.new("path")
         path_el.add_attributes({

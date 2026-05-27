@@ -791,4 +791,30 @@ RSpec.describe Bizgram do
       expect(ids.uniq).to eq(ids)  # All IDs are unique
     end
   end
+
+  describe "Metadata attributes (data-bizgram-*)" do
+    it "adds metadata attributes to entity groups" do
+      svg = Bizgram.draw("Test") do
+        user 'Alice "Expert"', 0
+      end
+      expect(svg).to include("data-bizgram-object='entity'")
+      expect(svg).to include("data-bizgram-type='user'")
+      # REXML escapes " as &quot;
+      expect(svg).to include("data-bizgram-name='Alice &quot;Expert&quot;'")
+      expect(svg).to include("data-bizgram-position='0'")
+    end
+
+    it "adds metadata attributes to arrow groups" do
+      svg = Bizgram.draw("Test") do
+        user "Alice", 0
+        company "Bob", 1
+        arrow :money, "Pay", user("Alice"), company("Bob")
+      end
+      expect(svg).to include("data-bizgram-object='arrow'")
+      expect(svg).to include("data-bizgram-type='money'")
+      expect(svg).to include("data-bizgram-name='Pay'")
+      expect(svg).to include("data-bizgram-from='entity_0'")
+      expect(svg).to include("data-bizgram-to='entity_1'")
+    end
+  end
 end

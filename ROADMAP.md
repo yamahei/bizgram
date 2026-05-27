@@ -34,17 +34,6 @@
 Markdownでプレビューするためには、インターネット経由でSVG生成できる環境が必要。
 Bizgram本体とは責務を分けるため、本リポジトリではなく別プロジェクト（別リポジトリ）として開発を進める予定。
 
-#### SVG（XML）だけでBizgramの定義が読み取れるようにする
-Bizgramコードで定義される内容はすべてSVGに出力する。
-例えば主体のトップレベルにカスタム属性で定義内容を保持しておく
-```xml
-<g id='entity_0' bizgram:object='entity' bizgram:type='user' bizgram:name='ユーザ' bizgram:position=':ct'>
-```
-矢印のfrom,toだけは、SVGのidを指し示さないと整合が取れないので注意
-```xml
-<g id='arrow_4' bizgram:object='entity' bizgram:type='user' bizgram:name='矢印' bizgram:from='entity_0' bizgram:to='entity_1'>
-```
-
 #### DSLにBizgram描画以外の拡張構文を検討する
 BizgramをWFのビジネス要件と捉えると、同じ図の中に「システム化範囲」が表現できることで、視覚的かつ機械的に読み取れるビジネス要件ドキュメントとして扱えるようになる。
 - システム化範囲を定義するメソッド`systemize`を追加（メソッド名は検討の余地あり）
@@ -61,6 +50,17 @@ systemize("SYSTEM_NAME", user, business("事業者"), arrow(:money, "money", fro
 
 <details>
 <summary>対応済み</summary>
+
+#### `済` SVG（XML）だけでBizgramの定義が読み取れるようにする
+Bizgramコードで定義される内容はすべてSVGに出力する。
+Web標準の `data-bizgram-*` カスタム属性を用いて、主体や矢印のトップレベル（`<g>`タグ）に定義内容を保持しておく。
+```xml
+<g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='ユーザ' data-bizgram-position='1'>
+```
+矢印のfrom,toは、SVGのidを指し示して整合を取る。
+```xml
+<g id='arrow_4' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='矢印' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
+```
 
 #### `済` 独自言語とパーサーの作成
 「Cloud Function化 (別リポジトリにて対応予定)」を実現する場合、不特定多数のクライアントからBizgramコードを受け取って`eval`/`instance_eval`を実行するのは危険。
