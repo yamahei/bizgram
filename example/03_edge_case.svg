@@ -22,7 +22,7 @@
     <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
-    <g id='entity_0'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='A' data-bizgram-position='0'>
       <g transform='translate(180.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -44,7 +44,7 @@
         <tspan x='240.0' dy='0'>A</tspan>
       </text>
     </g>
-    <g id='entity_1'>
+    <g id='entity_1' data-bizgram-object='entity' data-bizgram-type='business' data-bizgram-name='B' data-bizgram-position='4'>
       <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -76,7 +76,7 @@
         <tspan x='480.0' dy='0'>B</tspan>
       </text>
     </g>
-    <g id='entity_2'>
+    <g id='entity_2' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='C' data-bizgram-position='2'>
       <g transform='translate(660.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -108,7 +108,7 @@
         <tspan x='720.0' dy='0'>C</tspan>
       </text>
     </g>
-    <g id='entity_3'>
+    <g id='entity_3' data-bizgram-object='entity' data-bizgram-type='smartphone' data-bizgram-name='D' data-bizgram-position='6'>
       <g transform='translate(180.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -132,21 +132,21 @@
     </g>
   </g>
   <g id='arrows'>
-    <g id='arrow_4'>
+    <g id='arrow_4' data-bizgram-object='arrow' data-bizgram-type='object' data-bizgram-name='Data 1' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
       <path d='M 300.0,222.5 L 497.5,222.5 L 497.5,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
       <text x='398.75' y='206.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='398.75' dy='0'>Data 1</tspan>
       </text>
       <circle cx='398.75' cy='222.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_5'>
+    <g id='arrow_5' data-bizgram-object='arrow' data-bizgram-type='information' data-bizgram-name='Data 2' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
       <path d='M 300.0,257.5 L 462.5,257.5 L 462.5,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
       <text x='381.25' y='283.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='381.25' dy='0'>Data 2</tspan>
       </text>
       <rect x='368.25' y='244.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_6'>
+    <g id='arrow_6' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='Payment B→C' data-bizgram-from='entity_1' data-bizgram-to='entity_2'>
       <path d='M 540.0,462.5 L 702.5,462.5 L 702.5,335.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='621.25' y='446.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='621.25' dy='0'>Payment B→C</tspan>
@@ -154,7 +154,7 @@
       <rect x='607.25' y='448.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='621.25' y='467.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_7'>
+    <g id='arrow_7' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='Commission C→B' data-bizgram-from='entity_2' data-bizgram-to='entity_1'>
       <path d='M 737.5,335.0 L 737.5,497.5 L 540.0,497.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='638.75' y='523.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='638.75' dy='0'>Commission C→B</tspan>
@@ -162,7 +162,7 @@
       <rect x='624.75' y='483.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='638.75' y='502.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_8'>
+    <g id='arrow_8' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='Feedback' data-bizgram-from='entity_3' data-bizgram-to='entity_0'>
       <path d='M 240.0,660.0 L 240.0,335.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='256.0' y='502.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='256.0' dy='0'>Feedback</tspan>

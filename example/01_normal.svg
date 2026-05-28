@@ -22,7 +22,7 @@
     <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
-    <g id='entity_0'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='ゲーム利用者' data-bizgram-position='1'>
       <g transform='translate(420.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -44,7 +44,7 @@
         <tspan x='480.0' dy='0'>ゲーム利用者</tspan>
       </text>
     </g>
-    <g id='entity_1'>
+    <g id='entity_1' data-bizgram-object='entity' data-bizgram-type='smartphone' data-bizgram-name='利用者のデバイス' data-bizgram-position='4'>
       <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -66,7 +66,7 @@
         <tspan x='480.0' dy='0'>利用者のデバイス</tspan>
       </text>
     </g>
-    <g id='entity_2'>
+    <g id='entity_2' data-bizgram-object='entity' data-bizgram-type='other' data-bizgram-name='ゲーム配布サイト' data-bizgram-position='5'>
       <g transform='translate(660.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -85,7 +85,7 @@
         <tspan x='720.0' dy='0'>ゲーム配布サイト</tspan>
       </text>
     </g>
-    <g id='entity_3'>
+    <g id='entity_3' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='(株)HOGEゲームズ' data-bizgram-position='7'>
       <g transform='translate(420.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -119,7 +119,7 @@
     </g>
   </g>
   <g id='arrows'>
-    <g id='arrow_4'>
+    <g id='arrow_4' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='ゲーム購入' data-bizgram-from='entity_0' data-bizgram-to='entity_2'>
       <path d='M 540.0,240.0 L 720.0,240.0 L 720.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='630.0' y='224.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='630.0' dy='0'>ゲーム購入</tspan>
@@ -127,27 +127,27 @@
       <rect x='616.0' y='226.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='630.0' y='245.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_5'>
+    <g id='arrow_5' data-bizgram-object='arrow' data-bizgram-type='object' data-bizgram-name='インストール' data-bizgram-from='entity_2' data-bizgram-to='entity_1'>
       <path d='M 660.0,480.0 L 540.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
       <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='600.0' dy='0'>インストール</tspan>
       </text>
       <circle cx='600.0' cy='480.0' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_6'>
+    <g id='arrow_6' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='プレイ' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
       <path d='M 480.0,335.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='496.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='496.0' dy='0'>プレイ</tspan>
       </text>
     </g>
-    <g id='arrow_7'>
+    <g id='arrow_7' data-bizgram-object='arrow' data-bizgram-type='object' data-bizgram-name='作品アップロード' data-bizgram-from='entity_3' data-bizgram-to='entity_2'>
       <path d='M 540.0,702.5 L 702.5,702.5 L 702.5,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_object)'/>
       <text x='621.25' y='686.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='621.25' dy='0'>作品アップロード</tspan>
       </text>
       <circle cx='621.25' cy='702.5' r='14' fill='#d4fca9' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_8'>
+    <g id='arrow_8' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='売上' data-bizgram-from='entity_2' data-bizgram-to='entity_3'>
       <path d='M 737.5,575.0 L 737.5,737.5 L 540.0,737.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='638.75' y='763.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='638.75' dy='0'>売上</tspan>

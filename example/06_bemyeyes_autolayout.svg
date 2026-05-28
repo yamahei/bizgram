@@ -22,7 +22,7 @@
     <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
-    <g id='entity_0'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='視覚障害者' data-bizgram-position='3'>
       <g transform='translate(180.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -44,7 +44,7 @@
         <tspan x='240.0' dy='0'>視覚障害者</tspan>
       </text>
     </g>
-    <g id='entity_1'>
+    <g id='entity_1' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='目が見えるボランティア' data-bizgram-position='1'>
       <g transform='translate(420.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -66,7 +66,7 @@
         <tspan x='480.0' dy='0'>目が見えるボランティア</tspan>
       </text>
     </g>
-    <g id='entity_3'>
+    <g id='entity_3' data-bizgram-object='entity' data-bizgram-type='smartphone' data-bizgram-name='Be My Eyes' data-bizgram-position='4'>
       <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -88,7 +88,7 @@
         <tspan x='480.0' dy='0'>Be My Eyes</tspan>
       </text>
     </g>
-    <g id='entity_4'>
+    <g id='entity_4' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='企業のサポート窓口' data-bizgram-position='5'>
       <g transform='translate(660.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -120,7 +120,7 @@
         <tspan x='720.0' dy='0'>企業のサポート窓口</tspan>
       </text>
     </g>
-    <g id='entity_6'>
+    <g id='entity_6' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='Accessibly Inc.' data-bizgram-position='7'>
       <g transform='translate(420.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -154,37 +154,37 @@
     </g>
   </g>
   <g id='arrows'>
-    <g id='arrow_7'>
+    <g id='arrow_7' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='ビデオ通話で助けを求める' data-bizgram-from='entity_0' data-bizgram-to='entity_3'>
       <path d='M 300.0,480.0 L 420.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='360.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='360.0' dy='0'>ビデオ通話で助けを求める</tspan>
       </text>
     </g>
-    <g id='arrow_8'>
+    <g id='arrow_8' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='連携' data-bizgram-from='entity_3' data-bizgram-to='entity_1'>
       <path d='M 480.0,420.0 L 480.0,335.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='496.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='496.0' dy='0'>連携</tspan>
       </text>
     </g>
-    <g id='arrow_9'>
+    <g id='arrow_9' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='連携' data-bizgram-from='entity_3' data-bizgram-to='entity_4'>
       <path d='M 540.0,480.0 L 660.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='600.0' dy='0'>連携</tspan>
       </text>
     </g>
-    <g id='arrow_10'>
+    <g id='arrow_10' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='困り事の解決' data-bizgram-from='entity_1' data-bizgram-to='entity_0'>
       <path d='M 420.0,240.0 L 240.0,240.0 L 240.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='330.0' y='224.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='330.0' dy='0'>困り事の解決</tspan>
       </text>
     </g>
-    <g id='arrow_11'>
+    <g id='arrow_11' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='社員や従業員の困り事の解決' data-bizgram-from='entity_4' data-bizgram-to='entity_0'>
       <path d='M 720.0,575.0 L 720.0,840.0 L 240.0,840.0 L 240.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='480.0' y='824.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='480.0' dy='0'>社員や従業員の困り事の解決</tspan>
       </text>
     </g>
-    <g id='arrow_12'>
+    <g id='arrow_12' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='開発・運営' data-bizgram-from='entity_6' data-bizgram-to='entity_3'>
       <path d='M 480.0,660.0 L 480.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='496.0' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='496.0' dy='0'>開発・運営</tspan>
@@ -192,7 +192,7 @@
       <rect x='466.0' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='480.0' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_13'>
+    <g id='arrow_13' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='利用料' data-bizgram-from='entity_4' data-bizgram-to='entity_6'>
       <path d='M 660.0,540.0 L 540.0,660.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='620.0' y='580.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='620.0' dy='0'>利用料</tspan>

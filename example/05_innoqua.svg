@@ -22,7 +22,7 @@
     <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
-    <g id='entity_0'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='企業・自治体' data-bizgram-position='1'>
       <g transform='translate(420.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -54,7 +54,7 @@
         <tspan x='480.0' dy='0'>企業・自治体</tspan>
       </text>
     </g>
-    <g id='entity_2'>
+    <g id='entity_2' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='来場者' data-bizgram-position='3'>
       <g transform='translate(180.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -76,7 +76,7 @@
         <tspan x='240.0' dy='0'>来場者</tspan>
       </text>
     </g>
-    <g id='entity_4'>
+    <g id='entity_4' data-bizgram-object='entity' data-bizgram-type='other' data-bizgram-name='海の生態系を再現する事業' data-bizgram-position='4'>
       <g transform='translate(420.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -95,7 +95,7 @@
         <tspan x='480.0' dy='0'>海の生態系を再現する事業</tspan>
       </text>
     </g>
-    <g id='entity_5'>
+    <g id='entity_5' data-bizgram-object='entity' data-bizgram-type='information' data-bizgram-name='環境移送技術' data-bizgram-position='5'>
       <g transform='translate(660.0, 420.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -116,7 +116,7 @@
         <tspan x='720.0' dy='0'>環境移送技術</tspan>
       </text>
     </g>
-    <g id='entity_7'>
+    <g id='entity_7' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='株式会社イノカ' data-bizgram-position='7'>
       <g transform='translate(420.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -150,7 +150,7 @@
     </g>
   </g>
   <g id='arrows'>
-    <g id='arrow_8'>
+    <g id='arrow_8' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='販促費スポンサー' data-bizgram-from='entity_0' data-bizgram-to='entity_4'>
       <path d='M 480.0,335.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='496.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='496.0' dy='0'>販促費スポンサー</tspan>
@@ -158,21 +158,21 @@
       <rect x='466.0' y='363.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='480.0' y='382.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_9'>
+    <g id='arrow_9' data-bizgram-object='arrow' data-bizgram-type='information' data-bizgram-name='海洋教育' data-bizgram-from='entity_4' data-bizgram-to='entity_2'>
       <path d='M 420.0,480.0 L 300.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
       <text x='360.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='360.0' dy='0'>海洋教育</tspan>
       </text>
       <rect x='347.0' y='467.0' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_10'>
+    <g id='arrow_10' data-bizgram-object='arrow' data-bizgram-type='information' data-bizgram-name='技術を社会に' data-bizgram-from='entity_5' data-bizgram-to='entity_4'>
       <path d='M 660.0,480.0 L 540.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
       <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='600.0' dy='0'>技術を社会に</tspan>
       </text>
       <rect x='587.0' y='467.0' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_11'>
+    <g id='arrow_11' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='運営' data-bizgram-from='entity_7' data-bizgram-to='entity_4'>
       <path d='M 462.5,660.0 L 462.5,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='446.5' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='end'>
         <tspan x='446.5' dy='0'>運営</tspan>
@@ -180,7 +180,7 @@
       <rect x='448.5' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='462.5' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_12'>
+    <g id='arrow_12' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='売上' data-bizgram-from='entity_4' data-bizgram-to='entity_7'>
       <path d='M 497.5,575.0 L 497.5,660.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
       <text x='513.5' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='513.5' dy='0'>売上</tspan>
@@ -188,14 +188,14 @@
       <rect x='483.5' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
       <text x='497.5' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
     </g>
-    <g id='arrow_13'>
+    <g id='arrow_13' data-bizgram-object='arrow' data-bizgram-type='information' data-bizgram-name='開発' data-bizgram-from='entity_7' data-bizgram-to='entity_5'>
       <path d='M 540.0,720.0 L 720.0,720.0 L 720.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
       <text x='630.0' y='704.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='630.0' dy='0'>開発</tspan>
       </text>
       <rect x='617.0' y='707.0' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_14'>
+    <g id='arrow_14' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='施設に人が集まる' data-bizgram-from='entity_2' data-bizgram-to='entity_0'>
       <path d='M 240.0,420.0 L 240.0,240.0 L 420.0,240.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
       <text x='256.0' y='335.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
         <tspan x='256.0' dy='0'>施設に人が集まる</tspan>

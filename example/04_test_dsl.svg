@@ -22,7 +22,7 @@
     <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
   </g>
   <g id='entities'>
-    <g id='entity_0'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='ユーザー' data-bizgram-position='0'>
       <g transform='translate(180.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -44,7 +44,7 @@
         <tspan x='240.0' dy='0'>ユーザー</tspan>
       </text>
     </g>
-    <g id='entity_1'>
+    <g id='entity_1' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='会社' data-bizgram-position='2'>
       <g transform='translate(660.0, 180.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -76,7 +76,7 @@
         <tspan x='720.0' dy='0'>会社</tspan>
       </text>
     </g>
-    <g id='entity_2'>
+    <g id='entity_2' data-bizgram-object='entity' data-bizgram-type='store' data-bizgram-name='店舗' data-bizgram-position='6'>
       <g transform='translate(180.0, 660.0)'>
         <g transform='translate(26.790844958956583, 0.0)'>
           <g transform='scale(3.282149219139777, 3.282149219139777)'>
@@ -105,14 +105,14 @@
     </g>
   </g>
   <g id='arrows'>
-    <g id='arrow_3'>
+    <g id='arrow_3' data-bizgram-object='arrow' data-bizgram-type='information' data-bizgram-name='旧記法の情報' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
       <path d='M 300.0,222.5 L 660.0,222.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_information)'/>
       <text x='480.0' y='206.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='480.0' dy='0'>旧記法の情報</tspan>
       </text>
       <rect x='467.0' y='209.5' width='26' height='26' fill='#cbecfa' stroke='#000000' stroke-width='2'/>
     </g>
-    <g id='arrow_5'>
+    <g id='arrow_5' data-bizgram-object='arrow' data-bizgram-type='info' data-bizgram-name='ログイン情報' data-bizgram-from='entity_0' data-bizgram-to='entity_1'>
       <path d='M 300.0,257.5 L 660.0,257.5' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_info)'/>
       <text x='480.0' y='283.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
         <tspan x='480.0' dy='0'>ログイン情報</tspan>
