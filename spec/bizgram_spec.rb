@@ -817,4 +817,51 @@ RSpec.describe Bizgram do
       expect(svg).to include("data-bizgram-to='entity_1'")
     end
   end
+
+  describe "Systemize (拡張構文)" do
+    it "adds systemize metadata and background rect to entities" do
+      svg = Bizgram.draw("Test") do
+        u = user "Alice", 0
+        c = company "Bob", 1
+        systemize "Frontend", u
+      end
+      
+      expect(svg).to include("data-bizgram-systemize='Frontend'")
+      expect(svg).to include("stroke='#FFB3B3'")
+      expect(svg).to include("rx='12'")
+    end
+
+    it "adds systemize metadata and background path to arrows" do
+      svg = Bizgram.draw("Test") do
+        u = user "Alice", 0
+        c = company "Bob", 1
+        a = arrow :money, "Pay", u, c
+        systemize "Backend", c, a
+      end
+      
+      expect(svg).to include("data-bizgram-systemize='Backend'")
+      expect(svg).to include("stroke-width='12'")
+      expect(svg).to include("stroke='#FFB3B3'")
+    end
+
+    it "resolves targets by name or ID" do
+      svg = Bizgram.draw("Test") do
+        user "Alice", 0
+        company "Bob", 1
+        arrow :money, "Pay", "Alice", "Bob"
+        systemize "Core", "Alice", 2
+      end
+      expect(svg).to include("data-bizgram-systemize='Core'")
+    end
+
+    it "raises ArgumentError if target is already assigned to another system" do
+      expect {
+        Bizgram.draw("Test") do
+          u = user "Alice", 0
+          systemize "SystemA", u
+          systemize "SystemB", u
+        end
+      }.to raise_error(ArgumentError, /Target 'Alice' is already assigned to system 'SystemA'/)
+    end
+  end
 end

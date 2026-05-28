@@ -103,6 +103,8 @@ bundle exec ruby example/05_innoqua_autolayout.rb
 bundle exec ruby example/06_bemyeyes_autolayout.rb
 bundle exec ruby example/07_washplus_autolayout.rb
 bundle exec ruby example/08_koto_autolayout.rb
+# ⑨ システム化範囲（systemize）の拡張構文を使ったサンプル
+bundle exec ruby example/09_systemize.rb
 ```
 
 ### 応用：文字列からの安全な評価（Web環境向け）

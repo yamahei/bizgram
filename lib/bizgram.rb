@@ -110,6 +110,16 @@ module Bizgram
     end
   end
 
+  class Systemize
+    attr_reader :name, :targets, :color
+
+    def initialize(name, targets, color)
+      @name = name
+      @targets = targets
+      @color = color
+    end
+  end
+
   class PositionResolver
     SYMBOL_TO_POSITION = {
       lt: 0, ct: 1, rt: 2,
@@ -306,6 +316,7 @@ module Bizgram
       @arrows = {}          # {name => Arrow}
       @arrows_by_id = {}    # {id => Arrow}
       @comments = {}        # {id => Comment}
+      @systemizes = []      # [Systemize]
       @next_global_id = 0
       @occupied_positions = Set.new
     end
@@ -460,9 +471,62 @@ module Bizgram
     end
 
 
+    SYSTEM_COLORS = [
+      "#FFB3B3", # Light Red
+      "#B3D9FF", # Light Blue
+      "#B3FFB3", # Light Green
+      "#FFFFB3", # Light Yellow
+      "#FFB3FF", # Light Magenta
+      "#B3FFFF", # Light Cyan
+      "#FFE6B3", # Light Orange
+      "#E6B3FF", # Light Purple
+      "#B3FFE6"  # Light Teal
+    ].freeze
+
+    def systemize(name, *targets)
+      raise ArgumentError, "System name must be a string" unless name.is_a?(String)
+      raise ArgumentError, "No targets specified for systemize" if targets.empty?
+
+      target_ids = targets.map do |target|
+        if target.is_a?(Entity)
+          target.id
+        elsif target.is_a?(Arrow)
+          target.id
+        elsif target.is_a?(Integer)
+          id = target
+          unless @entities_by_id.key?(id) || @arrows_by_id.key?(id)
+            raise ArgumentError, "Target '#{target}' not found"
+          end
+          id
+        elsif target.is_a?(String) || target.is_a?(Symbol)
+          id = resolve_entity_reference(target)
+          unless @entities_by_id.key?(id) || @arrows_by_id.key?(id)
+            raise ArgumentError, "Target '#{target}' not found"
+          end
+          id
+        else
+          raise ArgumentError, "Invalid target for systemize: #{target.inspect}"
+        end
+      end
+
+      # 重複チェック: 既に他のシステムに含まれていないか確認
+      target_ids.each do |id|
+        existing_sys = @systemizes.find { |s| s.targets.include?(id) }
+        if existing_sys
+          target_name = @entities_by_id[id]&.name || @arrows_by_id[id]&.name || id
+          raise ArgumentError, "Target '#{target_name}' is already assigned to system '#{existing_sys.name}'"
+        end
+      end
+
+      color = SYSTEM_COLORS[@systemizes.size % SYSTEM_COLORS.size]
+      sys = Systemize.new(name, target_ids, color)
+      @systemizes << sys
+      sys
+    end
+
     def to_svg(title)
       PositionResolver.auto_assign(@entities_by_id.values, @occupied_positions, @arrows_by_id.values)
-      SvgGenerator.new(@entities_by_id, @arrows_by_id, @comments).generate(title)
+      SvgGenerator.new(@entities_by_id, @arrows_by_id, @comments, @systemizes).generate(title)
     end
 
     private
@@ -544,16 +608,24 @@ class SvgGenerator
     other: "entity_other.svg"
   }.freeze
 
-  def initialize(entities_by_id, arrows_by_id, comments)
+  def initialize(entities_by_id, arrows_by_id, comments, systemizes = [])
     @entities = entities_by_id
     @arrows = arrows_by_id
     @comments = comments
+    @systemizes = systemizes
     @entities_by_position = {}
     @entities.each do |_id, entity|
       @entities_by_position[entity.position] = entity
     end
     @entity_svg_cache = {}
     @rendered_arrow_lines = []
+    
+    @systemize_map = {} # { id => Systemize }
+    @systemizes.each do |sys|
+      sys.targets.each do |tid|
+        @systemize_map[tid] = sys # 最後に定義されたシステムが勝つ
+      end
+    end
   end
 
   def generate(title)
@@ -705,6 +777,21 @@ class SvgGenerator
         "data-bizgram-name" => entity.name.to_s,
         "data-bizgram-position" => entity.position.to_s
       })
+
+      if @systemize_map.key?(entity.id)
+        sys = @systemize_map[entity.id]
+        g.add_attribute("data-bizgram-systemize", sys.name)
+        
+        # 縁取り（主体の背面に配置）
+        bg_rect = REXML::Element.new("rect")
+        bg_rect.add_attributes({
+          "x" => (left_x - 10).to_s, "y" => (top_y - 10).to_s,
+          "width" => (SVG_ENTITY_WIDTH + 20).to_s, "height" => (SVG_ENTITY_HEIGHT + 20).to_s,
+          "rx" => "12", "ry" => "12",
+          "fill" => "none", "stroke" => sys.color, "stroke-width" => "8"
+        })
+        g.add_element(bg_rect)
+      end
 
       svg_content = load_entity_svg_with_transform(entity.type, left_x, top_y)
       if svg_content
@@ -1205,6 +1292,20 @@ class SvgGenerator
           "data-bizgram-from" => "entity_#{arrow.from}",
           "data-bizgram-to" => "entity_#{arrow.to}"
         })
+
+        if @systemize_map.key?(arrow.id)
+          sys = @systemize_map[arrow.id]
+          g.add_attribute("data-bizgram-systemize", sys.name)
+          
+          # 縁取り（背面の太線）
+          bg_path = REXML::Element.new("path")
+          bg_path.add_attributes({
+            "d" => path_data.strip,
+            "stroke" => sys.color, "stroke-width" => "12",
+            "fill" => "none", "stroke-linejoin" => "round"
+          })
+          g.add_element(bg_path)
+        end
 
         path_el = REXML::Element.new("path")
         path_el.add_attributes({
