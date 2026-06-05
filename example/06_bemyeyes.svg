@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>視覚障害者</tspan>
       </text>
     </g>
@@ -62,7 +62,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>目が見えるボランティア</tspan>
       </text>
     </g>
@@ -84,7 +84,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>Be My Eyes</tspan>
       </text>
     </g>
@@ -116,7 +116,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>企業のサポート窓口</tspan>
       </text>
     </g>
@@ -148,7 +148,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>Accessibly Inc.</tspan>
       </text>
     </g>
@@ -203,20 +203,20 @@
   </g>
   <g id='comments'>
     <g id='comment_5'>
-      <rect x='790.0' y='440.0' width='160' height='80' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='790.0,450.0 780.0,460.0 790.0,470.0' fill='#dddddd'/>
-      <text x='870.0' y='460.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='870.0' dy='0'>視覚に障害のある顧客</tspan>
-        <tspan x='870.0' dy='20'>や従業員のためにアプ</tspan>
-        <tspan x='870.0' dy='20'>リを活用</tspan>
+      <rect x='790.0' y='443.0' width='152' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='790.0,453.0 780.0,463.0 790.0,473.0' fill='#ffd6d4'/>
+      <text x='866.0' y='461.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='866.0' dy='0'>視覚に障害のある顧客や</tspan>
+        <tspan x='866.0' dy='18'>従業員のためにアプリを</tspan>
+        <tspan x='866.0' dy='18'>活用</tspan>
       </text>
     </g>
     <g id='comment_2'>
-      <rect x='153.0' y='575.0' width='174' height='60' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='230.0,575.0 240.0,565.0 250.0,575.0' fill='#dddddd'/>
-      <text x='240.0' y='595.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='240.0' dy='0'>賞味期限の確認などちょ</tspan>
-        <tspan x='240.0' dy='20'>っとしたことに対応</tspan>
+      <rect x='152.0' y='575.0' width='176' height='56' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='230.0,575.0 240.0,565.0 250.0,575.0' fill='#ffd6d4'/>
+      <text x='240.0' y='593.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='240.0' dy='0'>賞味期限の確認などちょっと</tspan>
+        <tspan x='240.0' dy='18'>したことに対応</tspan>
       </text>
     </g>
   </g>

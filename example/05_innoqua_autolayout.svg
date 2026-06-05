@@ -50,7 +50,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>企業・自治体</tspan>
       </text>
     </g>
@@ -72,7 +72,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>来場者</tspan>
       </text>
     </g>
@@ -91,7 +91,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>海の生態系を再現する事業</tspan>
       </text>
     </g>
@@ -112,7 +112,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>環境移送技術</tspan>
       </text>
     </g>
@@ -144,7 +144,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>株式会社イノカ</tspan>
       </text>
     </g>
@@ -204,36 +204,34 @@
   </g>
   <g id='comments'>
     <g id='comment_3'>
-      <rect x='292.0' y='650.0' width='118' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='410.0,660.0 420.0,670.0 410.0,680.0' fill='#dddddd'/>
-      <text x='351.0' y='670.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='351.0' dy='0'>施設に設置され</tspan>
-        <tspan x='351.0' dy='20'>たサンゴ礁の水</tspan>
-        <tspan x='351.0' dy='20'>槽を通し、観察</tspan>
-        <tspan x='351.0' dy='20'>・対話によって</tspan>
-        <tspan x='351.0' dy='20'>自然を学べるイ</tspan>
-        <tspan x='351.0' dy='20'>ベントに参加</tspan>
+      <rect x='294.0' y='656.0' width='116' height='128' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='410.0,666.0 420.0,676.0 410.0,686.0' fill='#ffd6d4'/>
+      <text x='352.0' y='674.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='352.0' dy='0'>施設に設置された</tspan>
+        <tspan x='352.0' dy='18'>サンゴ礁の水槽を</tspan>
+        <tspan x='352.0' dy='18'>通し、観察・対話</tspan>
+        <tspan x='352.0' dy='18'>によって自然を学</tspan>
+        <tspan x='352.0' dy='18'>べるイベントに参</tspan>
+        <tspan x='352.0' dy='18'>加</tspan>
       </text>
     </g>
     <g id='comment_6'>
-      <rect x='633.0' y='310.0' width='174' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#dddddd'/>
-      <text x='720.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='720.0' dy='0'>海をはじめとした水域の</tspan>
-        <tspan x='720.0' dy='20'>自然環境を水槽を用いて</tspan>
-        <tspan x='720.0' dy='20'>陸地で再現する独自の技</tspan>
-        <tspan x='720.0' dy='20'>術</tspan>
+      <rect x='632.0' y='336.0' width='176' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#ffd6d4'/>
+      <text x='720.0' y='354.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='720.0' dy='0'>海をはじめとした水域の自然</tspan>
+        <tspan x='720.0' dy='18'>環境を水槽を用いて陸地で再</tspan>
+        <tspan x='720.0' dy='18'>現する独自の技術</tspan>
       </text>
     </g>
     <g id='comment_1'>
-      <rect x='292.0' y='180.0' width='118' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='410.0,190.0 420.0,200.0 410.0,210.0' fill='#dddddd'/>
-      <text x='351.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='351.0' dy='0'>施設の集客やこ</tspan>
-        <tspan x='351.0' dy='20'>どもたちに環境</tspan>
-        <tspan x='351.0' dy='20'>を学ぶ機会を提</tspan>
-        <tspan x='351.0' dy='20'>供したい企業や</tspan>
-        <tspan x='351.0' dy='20'>自治体</tspan>
+      <rect x='294.0' y='194.0' width='116' height='92' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='410.0,204.0 420.0,214.0 410.0,224.0' fill='#ffd6d4'/>
+      <text x='352.0' y='212.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='352.0' dy='0'>施設の集客やこど</tspan>
+        <tspan x='352.0' dy='18'>もたちに環境を学</tspan>
+        <tspan x='352.0' dy='18'>ぶ機会を提供した</tspan>
+        <tspan x='352.0' dy='18'>い企業や自治体</tspan>
       </text>
     </g>
   </g>

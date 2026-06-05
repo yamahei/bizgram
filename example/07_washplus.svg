@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>人や環境に配慮して洗濯する人</tspan>
       </text>
     </g>
@@ -67,7 +67,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>街中のコインランドリー</tspan>
       </text>
     </g>
@@ -85,7 +85,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>wash+専用洗濯機</tspan>
       </text>
     </g>
@@ -106,7 +106,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>洗浄・IoT技術</tspan>
       </text>
     </g>
@@ -128,7 +128,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>フランチャイズオーナー</tspan>
       </text>
     </g>
@@ -160,7 +160,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>株式会社wash-plus</tspan>
       </text>
     </g>
@@ -192,7 +192,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>山本製作所</tspan>
       </text>
     </g>
@@ -294,54 +294,52 @@
   </g>
   <g id='comments'>
     <g id='comment_3'>
-      <rect x='10.0' y='430.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='170.0,440.0 180.0,450.0 170.0,460.0' fill='#dddddd'/>
-      <text x='90.0' y='450.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='90.0' dy='0'>山本製作所製機器と接</tspan>
-        <tspan x='90.0' dy='20'>続でき、多言語表示や</tspan>
-        <tspan x='90.0' dy='20'>通知などの機能を一体</tspan>
-        <tspan x='90.0' dy='20'>で提供する</tspan>
+      <rect x='18.0' y='434.0' width='152' height='92' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='170.0,444.0 180.0,454.0 170.0,464.0' fill='#ffd6d4'/>
+      <text x='94.0' y='452.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='94.0' dy='0'>山本製作所製機器と接続</tspan>
+        <tspan x='94.0' dy='18'>でき、多言語表示や通知</tspan>
+        <tspan x='94.0' dy='18'>などの機能を一体で提供</tspan>
+        <tspan x='94.0' dy='18'>する</tspan>
       </text>
     </g>
     <g id='comment_6'>
-      <rect x='633.0' y='310.0' width='174' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#dddddd'/>
-      <text x='720.0' y='330.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='720.0' dy='0'>アルカリイオン電解水で</tspan>
-        <tspan x='720.0' dy='20'>洗剤を使わずに洗い、肌</tspan>
-        <tspan x='720.0' dy='20'>刺激と排水負荷を同時に</tspan>
-        <tspan x='720.0' dy='20'>抑える</tspan>
+      <rect x='632.0' y='336.0' width='176' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#ffd6d4'/>
+      <text x='720.0' y='354.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='720.0' dy='0'>アルカリイオン電解水で洗剤</tspan>
+        <tspan x='720.0' dy='18'>を使わずに洗い、肌刺激と排</tspan>
+        <tspan x='720.0' dy='18'>水負荷を同時に抑える</tspan>
       </text>
     </g>
     <g id='comment_8'>
-      <rect x='10.0' y='670.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='170.0,680.0 180.0,690.0 170.0,700.0' fill='#dddddd'/>
-      <text x='90.0' y='690.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='90.0' dy='0'>無人運営と遠隔監視で</tspan>
-        <tspan x='90.0' dy='20'>人員配置を最小化し、</tspan>
-        <tspan x='90.0' dy='20'>夜間も含め安定稼働さ</tspan>
-        <tspan x='90.0' dy='20'>せる</tspan>
+      <rect x='18.0' y='683.0' width='152' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='170.0,693.0 180.0,703.0 170.0,713.0' fill='#ffd6d4'/>
+      <text x='94.0' y='701.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='94.0' dy='0'>無人運営と遠隔監視で人</tspan>
+        <tspan x='94.0' dy='18'>員配置を最小化し、夜間</tspan>
+        <tspan x='94.0' dy='18'>も含め安定稼働させる</tspan>
       </text>
     </g>
     <g id='comment_11'>
-      <rect x='790.0' y='670.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='790.0,680.0 780.0,690.0 790.0,700.0' fill='#dddddd'/>
-      <text x='870.0' y='690.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='870.0' dy='0'>機器メーカーと共同開</tspan>
-        <tspan x='870.0' dy='20'>発した制御基盤を後か</tspan>
-        <tspan x='870.0' dy='20'>ら更新でき、導入後の</tspan>
-        <tspan x='870.0' dy='20'>機能劣化を防ぐ</tspan>
+      <rect x='790.0' y='674.0' width='152' height='92' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='790.0,684.0 780.0,694.0 790.0,704.0' fill='#ffd6d4'/>
+      <text x='866.0' y='692.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='866.0' dy='0'>機器メーカーと共同開発</tspan>
+        <tspan x='866.0' dy='18'>した制御基盤を後から更</tspan>
+        <tspan x='866.0' dy='18'>新でき、導入後の機能劣</tspan>
+        <tspan x='866.0' dy='18'>化を防ぐ</tspan>
       </text>
     </g>
     <g id='comment_1'>
-      <rect x='550.0' y='180.0' width='118' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='550.0,190.0 540.0,200.0 550.0,210.0' fill='#dddddd'/>
-      <text x='609.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='609.0' dy='0'>アプリで空き状</tspan>
-        <tspan x='609.0' dy='20'>況の確認・事前</tspan>
-        <tspan x='609.0' dy='20'>予約・キャッシ</tspan>
-        <tspan x='609.0' dy='20'>ュレス決済まで</tspan>
-        <tspan x='609.0' dy='20'>完結できる</tspan>
+      <rect x='550.0' y='185.0' width='116' height='110' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='550.0,195.0 540.0,205.0 550.0,215.0' fill='#ffd6d4'/>
+      <text x='608.0' y='203.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='608.0' dy='0'>アプリで空き状況</tspan>
+        <tspan x='608.0' dy='18'>の確認・事前予約</tspan>
+        <tspan x='608.0' dy='18'>・キャッシュレス</tspan>
+        <tspan x='608.0' dy='18'>決済まで完結でき</tspan>
+        <tspan x='608.0' dy='18'>る</tspan>
       </text>
     </g>
   </g>

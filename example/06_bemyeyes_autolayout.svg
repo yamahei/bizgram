@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>視覚障害者</tspan>
       </text>
     </g>
@@ -62,7 +62,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>目が見えるボランティア</tspan>
       </text>
     </g>
@@ -84,7 +84,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>Be My Eyes</tspan>
       </text>
     </g>
@@ -116,7 +116,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>企業のサポート窓口</tspan>
       </text>
     </g>
@@ -148,7 +148,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>Accessibly Inc.</tspan>
       </text>
     </g>
@@ -203,21 +203,20 @@
   </g>
   <g id='comments'>
     <g id='comment_5'>
-      <rect x='633.0' y='330.0' width='174' height='80' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#dddddd'/>
-      <text x='720.0' y='350.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='720.0' dy='0'>視覚に障害のある顧客や</tspan>
-        <tspan x='720.0' dy='20'>従業員のためにアプリを</tspan>
-        <tspan x='720.0' dy='20'>活用</tspan>
+      <rect x='632.0' y='354.0' width='176' height='56' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='710.0,410.0 720.0,420.0 730.0,410.0' fill='#ffd6d4'/>
+      <text x='720.0' y='372.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='720.0' dy='0'>視覚に障害のある顧客や従業</tspan>
+        <tspan x='720.0' dy='18'>員のためにアプリを活用</tspan>
       </text>
     </g>
     <g id='comment_2'>
-      <rect x='550.0' y='200.0' width='118' height='80' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='550.0,210.0 540.0,220.0 550.0,230.0' fill='#dddddd'/>
-      <text x='609.0' y='220.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='609.0' dy='0'>賞味期限の確認</tspan>
-        <tspan x='609.0' dy='20'>などちょっとし</tspan>
-        <tspan x='609.0' dy='20'>たことに対応</tspan>
+      <rect x='550.0' y='203.0' width='116' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='550.0,213.0 540.0,223.0 550.0,233.0' fill='#ffd6d4'/>
+      <text x='608.0' y='221.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='608.0' dy='0'>賞味期限の確認な</tspan>
+        <tspan x='608.0' dy='18'>どちょっとしたこ</tspan>
+        <tspan x='608.0' dy='18'>とに対応</tspan>
       </text>
     </g>
   </g>

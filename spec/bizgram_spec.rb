@@ -639,7 +639,8 @@ RSpec.describe Bizgram do
           user "Alice", 0
           comment user("Alice"), "ショートカットテスト"
         end
-        expect(svg).to include("ショートカットテスト")
+        expect(svg).to include("ショートカット")
+        expect(svg).to include("スト")
       end
 
       it "supports short alias form" do

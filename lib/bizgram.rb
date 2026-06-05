@@ -814,7 +814,8 @@ class SvgGenerator
       text_el = REXML::Element.new("text")
       text_el.add_attributes({
         "x" => x.to_s, "y" => label_y.to_s,
-        "font-size" => "14", "font-family" => SVG_FONT_FAMILY,
+        "font-size" => "16", "font-family" => SVG_FONT_FAMILY,
+        "font-weight" => "bold",
         "text-anchor" => "middle", "dominant-baseline" => "text-before-edge",
         "fill" => "#000000"
       })
@@ -824,7 +825,7 @@ class SvgGenerator
         tspan = REXML::Element.new("tspan")
         tspan.add_attributes({
           "x" => x.to_s,
-          "dy" => idx == 0 ? "0" : "16"
+          "dy" => idx == 0 ? "0" : "18"
         })
         tspan.text = line_text
         text_el.add_element(tspan)
@@ -1490,11 +1491,11 @@ class SvgGenerator
         max_width_px = 160
       end
 
-      lines = wrap_text(comment.text, max_width_px, 14)
+      lines = wrap_text(comment.text, max_width_px, 12)
       
       longest_line = lines.map(&:length).max || 0
-      comment_width = [longest_line * 14 + 20, 60].max
-      comment_height = [lines.length * 20 + 20, 40].max
+      comment_width = [longest_line * 12 + 20, 60].max
+      comment_height = [lines.length * 18 + 20, 40].max
 
       if dx == -1
         comment_x = target_center_x - SVG_ENTITY_WIDTH / 2.0 - comment_width - 10
@@ -1531,7 +1532,7 @@ class SvgGenerator
         "x" => comment_x.to_s, "y" => comment_y.to_s,
         "width" => comment_width.to_s, "height" => comment_height.to_s,
         "rx" => "5", "ry" => "5",
-        "fill" => "#dddddd", "stroke" => "none"
+        "fill" => "#ffd6d4", "stroke" => "none"
       })
       g.add_element(box_el)
       
@@ -1589,14 +1590,14 @@ class SvgGenerator
         ty = bc_y + (dy / dist) * 15.0
         pts = "#{bx1},#{by1} #{tx},#{ty} #{bx2},#{by2}"
       end
-      tail_el.add_attributes("points" => pts, "fill" => "#dddddd")
+      tail_el.add_attributes("points" => pts, "fill" => "#ffd6d4")
       g.add_element(tail_el)
       
       text_el = REXML::Element.new("text")
       text_el.add_attributes({
         "x" => (comment_x + comment_width / 2.0).to_s, 
-        "y" => (comment_y + 20).to_s,
-        "font-size" => "14", "font-family" => SVG_FONT_FAMILY,
+        "y" => (comment_y + 18).to_s,
+        "font-size" => "12", "font-family" => SVG_FONT_FAMILY,
         "text-anchor" => "middle", "fill" => "#000000"
       })
       
@@ -1604,7 +1605,7 @@ class SvgGenerator
         tspan = REXML::Element.new("tspan")
         tspan.add_attributes({
           "x" => (comment_x + comment_width / 2.0).to_s,
-          "dy" => idx == 0 ? "0" : "20"
+          "dy" => idx == 0 ? "0" : "18"
         })
         tspan.text = line_text
         text_el.add_element(tspan)

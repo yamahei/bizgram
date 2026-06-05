@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>ゲーム利用者</tspan>
       </text>
     </g>
@@ -62,7 +62,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>利用者のデバイス</tspan>
       </text>
     </g>
@@ -81,7 +81,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>ゲーム配布サイト</tspan>
       </text>
     </g>
@@ -113,7 +113,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>(株)HOGEゲームズ</tspan>
       </text>
     </g>
@@ -158,11 +158,11 @@
   </g>
   <g id='comments'>
     <g id='comment_9'>
-      <rect x='790.0' y='450.0' width='160' height='60' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='790.0,460.0 780.0,470.0 790.0,480.0' fill='#dddddd'/>
-      <text x='870.0' y='470.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='870.0' dy='0'>Google Pla</tspan>
-        <tspan x='870.0' dy='20'>y的な</tspan>
+      <rect x='790.0' y='452.0' width='152' height='56' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='790.0,462.0 780.0,472.0 790.0,482.0' fill='#ffd6d4'/>
+      <text x='866.0' y='470.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='866.0' dy='0'>Google Play</tspan>
+        <tspan x='866.0' dy='18'>的な</tspan>
       </text>
     </g>
   </g>

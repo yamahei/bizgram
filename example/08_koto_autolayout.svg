@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>地元の人や旅行客</tspan>
       </text>
     </g>
@@ -62,7 +62,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>恵まれない境遇にある若者たち</tspan>
       </text>
     </g>
@@ -94,7 +94,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>個人・企業および財団</tspan>
       </text>
     </g>
@@ -121,7 +121,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>直営レストラン</tspan>
       </text>
     </g>
@@ -140,7 +140,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>職業訓練プログラム</tspan>
       </text>
     </g>
@@ -165,7 +165,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>寄付や助成</tspan>
       </text>
     </g>
@@ -197,7 +197,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>Know One,Teach One</tspan>
       </text>
     </g>
@@ -229,7 +229,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>KOTOInternational Ltd.</tspan>
       </text>
     </g>
@@ -333,90 +333,85 @@
   </g>
   <g id='comments'>
     <g id='comment_3'>
-      <rect x='550.0' y='180.0' width='118' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='550.0,190.0 540.0,200.0 550.0,210.0' fill='#dddddd'/>
-      <text x='609.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='609.0' dy='0'>家庭環境や経済</tspan>
-        <tspan x='609.0' dy='20'>的事情により、</tspan>
-        <tspan x='609.0' dy='20'>教育や就労の機</tspan>
-        <tspan x='609.0' dy='20'>会が限られてい</tspan>
-        <tspan x='609.0' dy='20'>る</tspan>
+      <rect x='550.0' y='194.0' width='116' height='92' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='550.0,204.0 540.0,214.0 550.0,224.0' fill='#ffd6d4'/>
+      <text x='608.0' y='212.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='608.0' dy='0'>家庭環境や経済的</tspan>
+        <tspan x='608.0' dy='18'>事情により、教育</tspan>
+        <tspan x='608.0' dy='18'>や就労の機会が限</tspan>
+        <tspan x='608.0' dy='18'>られている</tspan>
       </text>
     </g>
     <g id='comment_5'>
-      <rect x='532.0' y='650.0' width='118' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='650.0,660.0 660.0,670.0 650.0,680.0' fill='#dddddd'/>
-      <text x='591.0' y='670.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='591.0' dy='0'>教育・社会貢献</tspan>
-        <tspan x='591.0' dy='20'>に関心のある企</tspan>
-        <tspan x='591.0' dy='20'>業・財団とレス</tspan>
-        <tspan x='591.0' dy='20'>トランでの体験</tspan>
-        <tspan x='591.0' dy='20'>で共感を得た個</tspan>
-        <tspan x='591.0' dy='20'>人などが支持者</tspan>
+      <rect x='534.0' y='656.0' width='116' height='128' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='650.0,666.0 660.0,676.0 650.0,686.0' fill='#ffd6d4'/>
+      <text x='592.0' y='674.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='592.0' dy='0'>教育・社会貢献に</tspan>
+        <tspan x='592.0' dy='18'>関心のある企業・</tspan>
+        <tspan x='592.0' dy='18'>財団とレストラン</tspan>
+        <tspan x='592.0' dy='18'>での体験で共感を</tspan>
+        <tspan x='592.0' dy='18'>得た個人などが支</tspan>
+        <tspan x='592.0' dy='18'>持者</tspan>
       </text>
     </g>
     <g id='comment_7'>
-      <rect x='10.0' y='430.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='170.0,440.0 180.0,450.0 170.0,460.0' fill='#dddddd'/>
-      <text x='90.0' y='450.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='90.0' dy='0'>職業訓練の場であると</tspan>
-        <tspan x='90.0' dy='20'>同時にKOTOの理念</tspan>
-        <tspan x='90.0' dy='20'>を社会に伝える生きた</tspan>
-        <tspan x='90.0' dy='20'>教室</tspan>
+      <rect x='18.0' y='443.0' width='152' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='170.0,453.0 180.0,463.0 170.0,473.0' fill='#ffd6d4'/>
+      <text x='94.0' y='461.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='94.0' dy='0'>職業訓練の場であると同</tspan>
+        <tspan x='94.0' dy='18'>時にKOTOの理念を社</tspan>
+        <tspan x='94.0' dy='18'>会に伝える生きた教室</tspan>
       </text>
     </g>
     <g id='comment_9'>
-      <rect x='10.0' y='180.0' width='160' height='120' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='170.0,190.0 180.0,200.0 170.0,210.0' fill='#dddddd'/>
-      <text x='90.0' y='200.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='90.0' dy='0'>2年間の寮生活と、調</tspan>
-        <tspan x='90.0' dy='20'>理・飲食サービスなど</tspan>
-        <tspan x='90.0' dy='20'>の職業訓練に加え、生</tspan>
-        <tspan x='90.0' dy='20'>活面や社会性の基礎ス</tspan>
-        <tspan x='90.0' dy='20'>キルを育む支援を行う</tspan>
+      <rect x='18.0' y='185.0' width='152' height='110' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='170.0,195.0 180.0,205.0 170.0,215.0' fill='#ffd6d4'/>
+      <text x='94.0' y='203.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='94.0' dy='0'>2年間の寮生活と、調理</tspan>
+        <tspan x='94.0' dy='18'>・飲食サービスなどの職</tspan>
+        <tspan x='94.0' dy='18'>業訓練に加え、生活面や</tspan>
+        <tspan x='94.0' dy='18'>社会性の基礎スキルを育</tspan>
+        <tspan x='94.0' dy='18'>む支援を行う</tspan>
       </text>
     </g>
     <g id='comment_15'>
-      <rect x='790.0' y='190.0' width='160' height='100' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='790.0,200.0 780.0,210.0 790.0,220.0' fill='#dddddd'/>
-      <text x='870.0' y='210.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='870.0' dy='0'>グローバルな資金調達</tspan>
-        <tspan x='870.0' dy='20'>やパートナーシップを</tspan>
-        <tspan x='870.0' dy='20'>通じてKOTOを支え</tspan>
-        <tspan x='870.0' dy='20'>る非営利組織</tspan>
+      <rect x='790.0' y='194.0' width='152' height='92' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='790.0,204.0 780.0,214.0 790.0,224.0' fill='#ffd6d4'/>
+      <text x='866.0' y='212.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='866.0' dy='0'>グローバルな資金調達や</tspan>
+        <tspan x='866.0' dy='18'>パートナーシップを通じ</tspan>
+        <tspan x='866.0' dy='18'>てKOTOを支える非営</tspan>
+        <tspan x='866.0' dy='18'>利組織</tspan>
       </text>
     </g>
     <g id='comment_1'>
-      <rect x='310.0' y='650.0' width='118' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='310.0,660.0 300.0,670.0 310.0,680.0' fill='#dddddd'/>
-      <text x='369.0' y='670.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='369.0' dy='0'>食事をすること</tspan>
-        <tspan x='369.0' dy='20'>は職業訓練生の</tspan>
-        <tspan x='369.0' dy='20'>実践経験となり</tspan>
-        <tspan x='369.0' dy='20'>、お金を払うこ</tspan>
-        <tspan x='369.0' dy='20'>とが訓練生の支</tspan>
-        <tspan x='369.0' dy='20'>援に</tspan>
+      <rect x='310.0' y='665.0' width='116' height='110' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='310.0,675.0 300.0,685.0 310.0,695.0' fill='#ffd6d4'/>
+      <text x='368.0' y='683.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='368.0' dy='0'>食事をすることは</tspan>
+        <tspan x='368.0' dy='18'>職業訓練生の実践</tspan>
+        <tspan x='368.0' dy='18'>経験となり、お金</tspan>
+        <tspan x='368.0' dy='18'>を払うことが訓練</tspan>
+        <tspan x='368.0' dy='18'>生の支援に</tspan>
       </text>
     </g>
     <g id='comment_13'>
-      <rect x='393.0' y='575.0' width='174' height='140' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='470.0,575.0 480.0,565.0 490.0,575.0' fill='#dddddd'/>
-      <text x='480.0' y='595.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='480.0' dy='0'>ケータリングや料理教室</tspan>
-        <tspan x='480.0' dy='20'>、スタディツアー、物販</tspan>
-        <tspan x='480.0' dy='20'>などの関連事業も展開し</tspan>
-        <tspan x='480.0' dy='20'>、その収益を職業訓練プ</tspan>
-        <tspan x='480.0' dy='20'>ログラムの運営資金とし</tspan>
-        <tspan x='480.0' dy='20'>て活用</tspan>
+      <rect x='392.0' y='575.0' width='176' height='110' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='470.0,575.0 480.0,565.0 490.0,575.0' fill='#ffd6d4'/>
+      <text x='480.0' y='593.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='480.0' dy='0'>ケータリングや料理教室、ス</tspan>
+        <tspan x='480.0' dy='18'>タディツアー、物販などの関</tspan>
+        <tspan x='480.0' dy='18'>連事業も展開し、その収益を</tspan>
+        <tspan x='480.0' dy='18'>職業訓練プログラムの運営資</tspan>
+        <tspan x='480.0' dy='18'>金として活用</tspan>
       </text>
     </g>
     <g id='comment_12'>
-      <rect x='393.0' y='330.0' width='174' height='80' rx='5' ry='5' fill='#dddddd' stroke='none'/>
-      <polygon points='470.0,410.0 480.0,420.0 490.0,410.0' fill='#dddddd'/>
-      <text x='480.0' y='350.0' font-size='14' font-family='sans-serif' text-anchor='middle' fill='#000000'>
-        <tspan x='480.0' dy='0'>ベトナム発の社会企業。</tspan>
-        <tspan x='480.0' dy='20'>活動自体は1999年か</tspan>
-        <tspan x='480.0' dy='20'>ら</tspan>
+      <rect x='392.0' y='354.0' width='176' height='56' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='470.0,410.0 480.0,420.0 490.0,410.0' fill='#ffd6d4'/>
+      <text x='480.0' y='372.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='480.0' dy='0'>ベトナム発の社会企業。活動</tspan>
+        <tspan x='480.0' dy='18'>自体は1999年から</tspan>
       </text>
     </g>
   </g>
