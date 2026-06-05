@@ -40,7 +40,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>ユーザー</tspan>
       </text>
     </g>
@@ -63,7 +63,7 @@
           </g>
         </g>
       </g>
-      <text x='240.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='240.0' dy='0'>スマホアプリ</tspan>
       </text>
     </g>
@@ -96,7 +96,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='548.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>EC基盤</tspan>
       </text>
     </g>
@@ -129,7 +129,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='308.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>決済代行</tspan>
       </text>
     </g>
@@ -156,7 +156,7 @@
           </g>
         </g>
       </g>
-      <text x='480.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='480.0' dy='0'>加盟店</tspan>
       </text>
     </g>
@@ -189,7 +189,7 @@
           </g>
         </g>
       </g>
-      <text x='720.0' y='788.0' font-size='14' font-family='sans-serif' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+      <text x='720.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
         <tspan x='720.0' dy='0'>配送業者</tspan>
       </text>
     </g>
