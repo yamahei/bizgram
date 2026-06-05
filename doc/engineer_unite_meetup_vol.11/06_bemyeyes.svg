@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<svg version='1.1' viewBox='0.0 0.0 960.0 960.0' width='960' height='960' xmlns='http://www.w3.org/2000/svg'>
+  <title>Be My Eyesのビジネスモデル</title>
+  <text x='480.0' y='40' font-size='28' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle' dominant-baseline='hanging'>Be My Eyesのビジネスモデル</text>
+  <line x1='0' y1='80' x2='960.0' y2='80' stroke='#000000' stroke-width='1'/>
+  <defs>
+    <marker id='marker_object' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
+    </marker>
+    <marker id='marker_money' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
+    </marker>
+    <marker id='marker_information' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
+    </marker>
+    <marker id='marker_other' markerWidth='5' markerHeight='3.5' refX='5' refY='1.75' orient='auto' markerUnits='strokeWidth'>
+      <path d='M 0,0 L 5,1.75 L 0,3.5 Z' fill='#000000'/>
+    </marker>
+  </defs>
+  <g id='grid_lines'>
+    <line x1='0' y1='360.0' x2='960.0' y2='360.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
+    <line x1='0' y1='600.0' x2='960.0' y2='600.0' stroke='#dddddd' stroke-width='1' stroke-dasharray='8,8'/>
+  </g>
+  <g id='entities'>
+    <g id='entity_0' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='視覚障害者' data-bizgram-position='1'>
+      <g transform='translate(420.0, 180.0)'>
+        <g transform='translate(26.790844958956583, 0.0)'>
+          <g transform='scale(3.282149219139777, 3.282149219139777)'>
+            <g transform='translate(-94.881887,-130.21929)'>
+              <g id='g1824'>
+                <path style='fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round' d='M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z' id='path1111'/>
+                <g id='g1700' transform='translate(73.281554,-29.02709)'>
+                  <path fill='#ffffff' d='m 22.170036,195.27863 h 19.128105 c 0,0 0.679225,-20.76975 -9.81524,-20.76975 -10.494462,0 -9.312865,20.76975 -9.312865,20.76975 z' fill-rule='evenodd' id='path87' style='fill:none;stroke-width:0.264583'/>
+                  <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='m 22.170036,195.27863 h 19.128105 c 0,0 0.679225,-20.76975 -9.81524,-20.76975 -10.494462,0 -9.312865,20.76975 -9.312865,20.76975 z' fill-rule='evenodd' id='path89' style='fill:#ffffff'/>
+                  <path fill='#ffffff' d='m 22.900193,168.67867 c 0,-4.91706 3.880956,-8.90312 8.668367,-8.90312 2.298991,0 4.503822,0.938 6.129459,2.60766 1.625632,1.66966 2.538902,3.93421 2.538902,6.29546 0,4.91706 -3.880956,8.90313 -8.668361,8.90313 -4.787411,0 -8.668367,-3.98607 -8.668367,-8.90313 z' fill-rule='evenodd' id='path91' style='fill:none;stroke-width:0.264583'/>
+                  <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='m 22.900193,168.67867 c 0,-4.91706 3.880956,-8.90312 8.668367,-8.90312 2.298991,0 4.503822,0.938 6.129459,2.60766 1.625632,1.66966 2.538902,3.93421 2.538902,6.29546 0,4.91706 -3.880956,8.90313 -8.668361,8.90313 -4.787411,0 -8.668367,-3.98607 -8.668367,-8.90313 z' fill-rule='evenodd' id='path93' style='fill:#ffffff'/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text x='480.0' y='308.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>視覚障害者</tspan>
+      </text>
+    </g>
+    <g id='entity_1' data-bizgram-object='entity' data-bizgram-type='user' data-bizgram-name='目が見えるボランティア' data-bizgram-position='3'>
+      <g transform='translate(180.0, 420.0)'>
+        <g transform='translate(26.790844958956583, 0.0)'>
+          <g transform='scale(3.282149219139777, 3.282149219139777)'>
+            <g transform='translate(-94.881887,-130.21929)'>
+              <g id='g1824'>
+                <path style='fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round' d='M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z' id='path1111'/>
+                <g id='g1700' transform='translate(73.281554,-29.02709)'>
+                  <path fill='#ffffff' d='m 22.170036,195.27863 h 19.128105 c 0,0 0.679225,-20.76975 -9.81524,-20.76975 -10.494462,0 -9.312865,20.76975 -9.312865,20.76975 z' fill-rule='evenodd' id='path87' style='fill:none;stroke-width:0.264583'/>
+                  <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='m 22.170036,195.27863 h 19.128105 c 0,0 0.679225,-20.76975 -9.81524,-20.76975 -10.494462,0 -9.312865,20.76975 -9.312865,20.76975 z' fill-rule='evenodd' id='path89' style='fill:#ffffff'/>
+                  <path fill='#ffffff' d='m 22.900193,168.67867 c 0,-4.91706 3.880956,-8.90312 8.668367,-8.90312 2.298991,0 4.503822,0.938 6.129459,2.60766 1.625632,1.66966 2.538902,3.93421 2.538902,6.29546 0,4.91706 -3.880956,8.90313 -8.668361,8.90313 -4.787411,0 -8.668367,-3.98607 -8.668367,-8.90313 z' fill-rule='evenodd' id='path91' style='fill:none;stroke-width:0.264583'/>
+                  <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='m 22.900193,168.67867 c 0,-4.91706 3.880956,-8.90312 8.668367,-8.90312 2.298991,0 4.503822,0.938 6.129459,2.60766 1.625632,1.66966 2.538902,3.93421 2.538902,6.29546 0,4.91706 -3.880956,8.90313 -8.668361,8.90313 -4.787411,0 -8.668367,-3.98607 -8.668367,-8.90313 z' fill-rule='evenodd' id='path93' style='fill:#ffffff'/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text x='240.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='240.0' dy='0'>目が見えるボランティア</tspan>
+      </text>
+    </g>
+    <g id='entity_3' data-bizgram-object='entity' data-bizgram-type='smartphone' data-bizgram-name='Be My Eyes' data-bizgram-position='4'>
+      <g transform='translate(420.0, 420.0)'>
+        <g transform='translate(26.790844958956583, 0.0)'>
+          <g transform='scale(3.282149219139777, 3.282149219139777)'>
+            <g transform='translate(-94.881887,-130.21929)'>
+              <path style='fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round' d='M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z' id='path1111'/>
+              <g id='g27996' transform='translate(30.762363,-5.9084355)'>
+                <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='m 64.820576,138.43423 c 0,-0.88072 0.713976,-1.59469 1.594686,-1.59469 h 15.644749 c 0.422939,0 0.828551,0.16801 1.127612,0.46707 0.299061,0.29906 0.467074,0.70468 0.467074,1.12762 v 31.9484 c 0,0.88072 -0.713973,1.59469 -1.594686,1.59469 H 66.415262 c -0.88071,0 -1.594686,-0.71397 -1.594686,-1.59469 z' fill-rule='evenodd' id='path97'/>
+                <path fill='#ffffff' d='m 64.820576,138.43423 c 0,-0.88072 0.713976,-1.59469 1.594686,-1.59469 h 15.644749 c 0.422939,0 0.828551,0.16801 1.127612,0.46707 0.299061,0.29906 0.467074,0.70468 0.467074,1.12762 v 31.9484 c 0,0.88072 -0.713973,1.59469 -1.594686,1.59469 H 66.415262 c -0.88071,0 -1.594686,-0.71397 -1.594686,-1.59469 z' fill-rule='evenodd' id='path95' style='stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 66.976049,139.46192 h 14.811775 v 25.3869 H 66.976049 Z' fill-rule='evenodd' id='path101'/>
+                <path fill='#ffffff' d='m 66.976049,139.46192 h 14.811775 v 25.3869 H 66.976049 Z' fill-rule='evenodd' id='path99' style='stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 72.538869,168.26383 c 0,-1.05612 0.832167,-1.91227 1.858687,-1.91227 0.492945,0 0.965721,0.20147 1.314294,0.56009 0.348557,0.35862 0.544396,0.84501 0.544396,1.35218 0,1.0561 -0.83217,1.91225 -1.85869,1.91225 -1.02652,0 -1.858687,-0.85615 -1.858687,-1.91225 z' fill-rule='evenodd' id='path105'/>
+                <path fill='#ffffff' d='m 72.538869,168.26383 c 0,-1.05612 0.832167,-1.91227 1.858687,-1.91227 0.492945,0 0.965721,0.20147 1.314294,0.56009 0.348557,0.35862 0.544396,0.84501 0.544396,1.35218 0,1.0561 -0.83217,1.91225 -1.85869,1.91225 -1.02652,0 -1.858687,-0.85615 -1.858687,-1.91225 z' fill-rule='evenodd' id='path103' style='stroke-width:0.264583'/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text x='480.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>Be My Eyes</tspan>
+      </text>
+    </g>
+    <g id='entity_4' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='企業のサポート窓口' data-bizgram-position='5'>
+      <g transform='translate(660.0, 420.0)'>
+        <g transform='translate(26.790844958956583, 0.0)'>
+          <g transform='scale(3.282149219139777, 3.282149219139777)'>
+            <g transform='translate(-94.881887,-130.21929)'>
+              <path style='fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round' d='M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z' id='path1111'/>
+              <g id='g2207' transform='translate(88.332917,-53.070036)'>
+                <path fill='#ffffff' d='M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z' fill-rule='evenodd' id='path413' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z' fill-rule='evenodd' id='path415' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path417' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path419' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path421' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path423' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path425' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path427' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path429' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path431' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path433' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path435' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path437' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path439' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#000000' fill-opacity='0' d='M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z' fill-rule='evenodd' id='path441' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z' fill-rule='evenodd' id='path443' style='fill:#ffffff;stroke:#000000'/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text x='720.0' y='548.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='720.0' dy='0'>企業のサポート窓口</tspan>
+      </text>
+    </g>
+    <g id='entity_6' data-bizgram-object='entity' data-bizgram-type='company' data-bizgram-name='Accessibly Inc.' data-bizgram-position='7'>
+      <g transform='translate(420.0, 660.0)'>
+        <g transform='translate(26.790844958956583, 0.0)'>
+          <g transform='scale(3.282149219139777, 3.282149219139777)'>
+            <g transform='translate(-94.881887,-130.21929)'>
+              <path style='fill:none;stroke:none;stroke-width:0.99781;stroke-linecap:round;stroke-linejoin:round' d='M 94.915565,148.5 V 130.47807 H 105 115.08443 V 148.5 166.52193 H 105 94.915565 Z' id='path1111'/>
+              <g id='g2207' transform='translate(88.332917,-53.070036)'>
+                <path fill='#ffffff' d='M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z' fill-rule='evenodd' id='path413' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='1.05833' stroke-miterlimit='400' stroke-linecap='butt' d='M 7.0795828,184.00753 H 26.254582 v 35.125 H 7.0795828 Z' fill-rule='evenodd' id='path415' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path417' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,187.48545 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path419' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path421' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,187.48545 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path423' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path425' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,195.4355 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path427' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path429' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,195.4355 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path431' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path433' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 10.339382,203.38556 h 5.050006 v 5.2 h -5.050006 z' fill-rule='evenodd' id='path435' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#ffffff' d='m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path437' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='m 17.944247,203.38556 h 5.049999 v 5.2 h -5.049999 z' fill-rule='evenodd' id='path439' style='fill:#ffffff;stroke:#000000'/>
+                <path fill='#000000' fill-opacity='0' d='M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z' fill-rule='evenodd' id='path441' style='fill:#ffffff;stroke:#000000;stroke-width:0.264583'/>
+                <path stroke='#000000' stroke-width='0.529167' stroke-miterlimit='400' stroke-linecap='butt' d='M 11.908131,212.74378 H 21.4998 v 6.54166 h -9.591669 z' fill-rule='evenodd' id='path443' style='fill:#ffffff;stroke:#000000'/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <text x='480.0' y='788.0' font-size='16' font-family='sans-serif' font-weight='bold' text-anchor='middle' dominant-baseline='text-before-edge' fill='#000000'>
+        <tspan x='480.0' dy='0'>Accessibly Inc.</tspan>
+      </text>
+    </g>
+  </g>
+  <g id='arrows'>
+    <g id='arrow_7' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='ビデオ通話で助けを求める' data-bizgram-from='entity_0' data-bizgram-to='entity_3'>
+      <path d='M 480.0,335.0 L 480.0,420.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='496.0' y='382.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='496.0' dy='0'>ビデオ通話で助けを求める</tspan>
+      </text>
+    </g>
+    <g id='arrow_8' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='連携' data-bizgram-from='entity_3' data-bizgram-to='entity_1'>
+      <path d='M 420.0,480.0 L 300.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='360.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='360.0' dy='0'>連携</tspan>
+      </text>
+    </g>
+    <g id='arrow_9' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='連携' data-bizgram-from='entity_3' data-bizgram-to='entity_4'>
+      <path d='M 540.0,480.0 L 660.0,480.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='600.0' y='464.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='600.0' dy='0'>連携</tspan>
+      </text>
+    </g>
+    <g id='arrow_10' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='困り事の解決' data-bizgram-from='entity_1' data-bizgram-to='entity_0'>
+      <path d='M 240.0,420.0 L 240.0,240.0 L 420.0,240.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='256.0' y='335.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='256.0' dy='0'>困り事の解決</tspan>
+      </text>
+    </g>
+    <g id='arrow_11' data-bizgram-object='arrow' data-bizgram-type='other' data-bizgram-name='社員や従業員の困り事の解決' data-bizgram-from='entity_4' data-bizgram-to='entity_0'>
+      <path d='M 720.0,420.0 L 720.0,240.0 L 540.0,240.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_other)'/>
+      <text x='736.0' y='335.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='736.0' dy='0'>社員や従業員の困り事の解決</tspan>
+      </text>
+    </g>
+    <g id='arrow_12' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='開発・運営' data-bizgram-from='entity_6' data-bizgram-to='entity_3'>
+      <path d='M 480.0,660.0 L 480.0,575.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='496.0' y='622.5' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='start'>
+        <tspan x='496.0' dy='0'>開発・運営</tspan>
+      </text>
+      <rect x='466.0' y='603.5' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='480.0' y='622.5' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+    </g>
+    <g id='arrow_13' data-bizgram-object='arrow' data-bizgram-type='money' data-bizgram-name='利用料' data-bizgram-from='entity_4' data-bizgram-to='entity_6'>
+      <path d='M 720.0,575.0 L 720.0,720.0 L 540.0,720.0' stroke='#000000' stroke-width='3' fill='none' stroke-linejoin='round' marker-end='url(#marker_money)'/>
+      <text x='630.0' y='704.0' font-size='16' font-family='sans-serif' fill='#000000' text-anchor='middle'>
+        <tspan x='630.0' dy='0'>利用料</tspan>
+      </text>
+      <rect x='616.0' y='706.0' rx='6' ry='6' width='28' height='28' fill='#fffc41' stroke='#000000' stroke-width='2'/>
+      <text x='630.0' y='725.0' font-size='16' font-family='sans-serif' font-weight='bold' fill='#000000' text-anchor='middle'>￥</text>
+    </g>
+  </g>
+  <g id='comments'>
+    <g id='comment_5'>
+      <rect x='790.0' y='443.0' width='152' height='74' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='790.0,453.0 780.0,463.0 790.0,473.0' fill='#ffd6d4'/>
+      <text x='866.0' y='461.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='866.0' dy='0'>視覚に障害のある顧客や</tspan>
+        <tspan x='866.0' dy='18'>従業員のためにアプリを</tspan>
+        <tspan x='866.0' dy='18'>活用</tspan>
+      </text>
+    </g>
+    <g id='comment_2'>
+      <rect x='152.0' y='575.0' width='176' height='56' rx='5' ry='5' fill='#ffd6d4' stroke='none'/>
+      <polygon points='230.0,575.0 240.0,565.0 250.0,575.0' fill='#ffd6d4'/>
+      <text x='240.0' y='593.0' font-size='12' font-family='sans-serif' text-anchor='middle' fill='#000000'>
+        <tspan x='240.0' dy='0'>賞味期限の確認などちょっと</tspan>
+        <tspan x='240.0' dy='18'>したことに対応</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
