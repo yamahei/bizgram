@@ -79,7 +79,7 @@ end
 puts svg
 ```
 
-`Graphiz`とか`PlantUML`とか`Mermaid.js`みたいなのを、**RubyDSL**で実装
+`Graphviz`とか`PlantUML`とか`Mermaid.js`みたいなのを、**RubyDSL**で実装
 
 ---
 
@@ -94,7 +94,7 @@ puts svg
 ---
 
 # 見栄えの調整に一番時間がかかった
-|Graphiz版(最初期)→|SVG版(初期)→|SVG版(現在)|
+|Graphviz(最初期)→|SVG版(初期)→|SVG版(現在)|
 |-|-|-|
 |![width:350px](./game_graphiz.svg)|![height:256px](./game_svg_first.svg)|![width:400px](./game_svg_last.svg)|
 
