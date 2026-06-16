@@ -12,9 +12,7 @@ marp: true
 # ENgineer UNite #11
 ## 個人開発自慢LT大会
 
-<small>エクスウェア株式会社</small>
-
-山折 一平
+yamahei
 
 ---
 
